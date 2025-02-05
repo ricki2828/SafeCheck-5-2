@@ -48,7 +48,7 @@ export const handler: Handler = async (event) => {
 
     const data: CertnRequestBody = JSON.parse(event.body);
     
-    // Make request to Certn API
+    // Create the case with the Canadian Criminal Check package
     const certnResponse = await fetch('https://api.sandbox.certn.co/api/v3/cases/', {
       method: 'POST',
       headers: {
@@ -69,16 +69,24 @@ export const handler: Handler = async (event) => {
           postal_code: data.address.postal_code,
           province: data.address.province,
         },
-        // Add any additional required fields based on Certn's API documentation
+        package_type: 'canadian_criminal_check', // Specify the package type
+        consent: true, // Assuming consent was given during the form process
+        send_email: true, // Request email delivery of the report
+        email_language: 'en', // Set email language to English
+        webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook', // Optional: for status updates
       }),
     });
 
     if (!certnResponse.ok) {
       const errorData = await certnResponse.json();
+      console.error('Certn API error details:', errorData);
       throw new Error(`Certn API error: ${JSON.stringify(errorData)}`);
     }
 
     const result = await certnResponse.json();
+
+    // Log the successful case creation
+    console.log('Certn case created:', result);
 
     return {
       statusCode: 200,
@@ -86,17 +94,19 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({
         message: 'Background check initiated successfully',
         caseId: result.id,
-        // Include any other relevant response data
+        status: result.status,
+        estimatedCompletionTime: result.estimated_completion_time,
       }),
     };
 
   } catch (error: any) {
     console.error('Background check error:', error);
     return {
-      statusCode: 500,
+      statusCode: error.response?.status || 500,
       headers,
       body: JSON.stringify({
         error: error.message || 'Failed to initiate background check',
+        details: error.response?.data || {},
       }),
     };
   }
