@@ -7,6 +7,7 @@ interface CertnWebhookPayload {
   report_url?: string;
   estimated_completion_time?: string;
   created_at: string;
+  challenge_string?: string;  // Added for verification
   // Add other fields as needed based on Certn's webhook documentation
 }
 
@@ -16,37 +17,69 @@ export const handler: Handler = async (event) => {
   };
 
   try {
-    if (!event.body) {
-      throw new Error('No webhook payload received');
+    // Handle GET request for webhook verification
+    if (event.httpMethod === 'GET') {
+      const params = new URLSearchParams(event.rawQuery);
+      const challengeString = params.get('challenge_string');
+      
+      if (challengeString) {
+        console.log('Received challenge string:', challengeString);
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ challenge_string: challengeString })
+        };
+      }
     }
 
-    const payload: CertnWebhookPayload = JSON.parse(event.body);
-    console.log('Received webhook from Certn:', payload);
+    // Handle POST request for actual webhooks
+    if (event.httpMethod === 'POST') {
+      if (!event.body) {
+        throw new Error('No webhook payload received');
+      }
 
-    // Handle different webhook events
-    switch (payload.event) {
-      case 'case.completed':
-        // Background check is complete
-        console.log('Background check completed:', payload.case_id);
-        // Here you could:
-        // 1. Store the result in your database
-        // 2. Send additional notifications to the user
-        // 3. Update your UI via a websocket if needed
-        break;
+      const payload: CertnWebhookPayload = JSON.parse(event.body);
+      console.log('Processed webhook payload:', payload);
 
-      case 'case.failed':
-        // Background check failed
-        console.error('Background check failed:', payload.case_id);
-        // Handle the failure (e.g., notify admin, retry, etc.)
-        break;
+      // Handle challenge string in POST request as well
+      if (payload.challenge_string) {
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({ challenge_string: payload.challenge_string })
+        };
+      }
 
-      case 'case.updated':
-        // Status update received
-        console.log('Background check status updated:', payload.status);
-        break;
+      // Verify the webhook is coming from Certn (you should implement proper verification)
+      // if (!verifyWebhookSignature(event)) {
+      //   throw new Error('Invalid webhook signature');
+      // }
 
-      default:
-        console.log('Unhandled webhook event:', payload.event);
+      // Handle different webhook events
+      switch (payload.event) {
+        case 'case.completed':
+          console.log(`Background check completed for case ${payload.case_id}`);
+          if (payload.report_url) {
+            console.log(`Report available at: ${payload.report_url}`);
+          }
+          // Here you could:
+          // 1. Store the result in your database
+          // 2. Send additional notifications to the user
+          // 3. Update your UI via a websocket if needed
+          break;
+
+        case 'case.failed':
+          console.error(`Background check failed for case ${payload.case_id}`);
+          // Handle the failure (e.g., notify admin, retry, etc.)
+          break;
+
+        case 'case.updated':
+          console.log(`Status update for case ${payload.case_id}: ${payload.status}`);
+          break;
+
+        default:
+          console.log(`Unhandled webhook event: ${payload.event}`);
+      }
     }
 
     return {
