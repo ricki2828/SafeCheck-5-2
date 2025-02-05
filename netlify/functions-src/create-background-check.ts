@@ -17,6 +17,15 @@ interface CertnRequestBody {
   };
 }
 
+interface CertnResponse {
+  id: string;
+  status: string;
+  estimated_completion_time: string;
+  created_at: string;
+  updated_at: string;
+  // Add other fields as needed
+}
+
 export const handler: Handler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -69,11 +78,11 @@ export const handler: Handler = async (event) => {
           postal_code: data.address.postal_code,
           province: data.address.province,
         },
-        package_type: 'canadian_criminal_check', // Specify the package type
-        consent: true, // Assuming consent was given during the form process
-        send_email: true, // Request email delivery of the report
-        email_language: 'en', // Set email language to English
-        webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook', // Optional: for status updates
+        package_type: 'canadian_criminal_check',
+        consent: true,
+        send_email: true,
+        email_language: 'en',
+        webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook',
       }),
     });
 
@@ -83,7 +92,7 @@ export const handler: Handler = async (event) => {
       throw new Error(`Certn API error: ${JSON.stringify(errorData)}`);
     }
 
-    const result = await certnResponse.json();
+    const result = await certnResponse.json() as CertnResponse;
 
     // Log the successful case creation
     console.log('Certn case created:', result);
