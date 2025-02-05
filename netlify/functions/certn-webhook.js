@@ -1,15 +1,22 @@
 import { Handler } from '@netlify/functions';
 
 export const handler: Handler = async (event) => {
-  console.log('DEBUG - Request received:', {
+  // Log everything
+  console.log('DEBUG - Full event:', {
     method: event.httpMethod,
-    query: event.queryStringParameters
+    path: event.path,
+    query: event.queryStringParameters,
+    headers: event.headers,
+    rawQuery: event.rawQuery
   });
 
-  // Handle GET request (webhook verification)
+  // For GET requests (webhook verification)
   if (event.httpMethod === 'GET') {
     const challenge = event.queryStringParameters?.challenge;
-    console.log('DEBUG - Challenge:', challenge);
+    console.log('DEBUG - Challenge value:', challenge);
+
+    // Always log what we're returning
+    console.log('DEBUG - Responding with:', challenge || 'no challenge found');
 
     if (challenge) {
       return {
@@ -23,6 +30,8 @@ export const handler: Handler = async (event) => {
     }
   }
 
+  // Log error case
+  console.log('DEBUG - Invalid request received');
   return {
     statusCode: 400,
     body: 'Invalid request'
