@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build && npm run build:functions",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:functions": "tsc -p netlify/functions-src"
   },
   "dependencies": {
     "@netlify/functions": "^2.6.0",
