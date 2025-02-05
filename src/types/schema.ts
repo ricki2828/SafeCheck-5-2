@@ -23,3 +23,18 @@ export const createPaymentRequestSchema = z.object({
 });
 
 export type CreatePaymentRequest = z.infer<typeof createPaymentRequestSchema>;
+
+export const BackgroundCheckStatus = z.enum([
+  'pending',
+  'in_progress',
+  'completed',
+  'failed'
+]);
+
+export type BackgroundCheckStatus = z.infer<typeof BackgroundCheckStatus>;
+
+export interface BackgroundCheckResponse {
+  caseId: string;
+  status: string;
+  estimatedCompletionTime: string;
+}
