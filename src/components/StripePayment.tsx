@@ -53,6 +53,10 @@ function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
       if (submitError) {
         setError(submitError.message || 'Payment failed');
       } else {
+        // Payment successful - call onSuccess immediately
+        onSuccess();
+        
+        // Try background check creation separately
         try {
           const response = await fetch('/.netlify/functions/create-background-check', {
             method: 'POST',
@@ -77,19 +81,18 @@ function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
           });
 
           if (!response.ok) {
-            throw new Error('Failed to initiate background check');
+            console.error('Background check creation failed:', await response.text());
+          } else {
+            const data = await response.json();
+            setBackgroundCheck(data);
           }
-
-          const data = await response.json();
-          setBackgroundCheck(data);
-          
-          onSuccess();
         } catch (error) {
-          console.error('Error:', error);
-          setError(error instanceof Error ? error.message : 'An error occurred');
+          console.error('Background check error:', error);
+          // Don't block the flow, just log the error
         }
       }
     } catch (err) {
+      console.error('Payment error:', err);
       setError(err instanceof Error ? err.message : 'Payment failed');
     } finally {
       setProcessing(false);
