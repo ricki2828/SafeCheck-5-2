@@ -12,7 +12,8 @@ interface CertnWebhookPayload {
 }
 
 export const handler: Handler = async (event) => {
-  console.log('Received request:', {
+  // Log all incoming requests for debugging
+  console.log('Incoming request:', {
     method: event.httpMethod,
     query: event.queryStringParameters,
     body: event.body,
@@ -20,19 +21,10 @@ export const handler: Handler = async (event) => {
   });
 
   const headers = {
-    'Content-Type': 'application/json',
+    'Content-Type': 'text/plain',  // Changed to text/plain
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS'
   };
-
-  // Handle preflight requests
-  if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: ''
-    };
-  }
 
   // Handle GET request (initial verification)
   if (event.httpMethod === 'GET') {
@@ -43,71 +35,51 @@ export const handler: Handler = async (event) => {
       return {
         statusCode: 200,
         headers,
-        body: challengeString // Return the raw challenge string
+        body: challengeString  // Return just the string
       };
     }
   }
 
-  // Handle POST requests (actual webhooks)
-  if (event.httpMethod === 'POST' && event.body) {
+  // Handle POST request
+  if (event.httpMethod === 'POST') {
     try {
-      const payload = JSON.parse(event.body);
-      console.log('Received webhook payload:', payload);
+      if (event.body) {
+        const payload = JSON.parse(event.body);
+        console.log('Received webhook payload:', payload);
 
-      // Handle challenge in POST request
-      if (payload.challenge_string) {
+        // Handle challenge in POST request
+        if (payload.challenge_string) {
+          return {
+            statusCode: 200,
+            headers,
+            body: payload.challenge_string  // Return just the string
+          };
+        }
+
+        // Handle normal webhook events
         return {
           statusCode: 200,
-          headers,
-          body: payload.challenge_string // Return the raw challenge string
+          headers: { ...headers, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ received: true })
         };
       }
-
-      // Verify the webhook is coming from Certn (you should implement proper verification)
-      // if (!verifyWebhookSignature(event)) {
-      //   throw new Error('Invalid webhook signature');
-      // }
-
-      // Handle different webhook events
-      switch (payload.event) {
-        case 'case.completed':
-          console.log(`Background check completed for case ${payload.case_id}`);
-          if (payload.report_url) {
-            console.log(`Report available at: ${payload.report_url}`);
-          }
-          // Here you could:
-          // 1. Store the result in your database
-          // 2. Send additional notifications to the user
-          // 3. Update your UI via a websocket if needed
-          break;
-
-        case 'case.failed':
-          console.error(`Background check failed for case ${payload.case_id}`);
-          // Handle the failure (e.g., notify admin, retry, etc.)
-          break;
-
-        case 'case.updated':
-          console.log(`Status update for case ${payload.case_id}: ${payload.status}`);
-          break;
-
-        default:
-          console.log(`Unhandled webhook event: ${payload.event}`);
-      }
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({ received: true })
-      };
     } catch (error) {
       console.error('Error processing webhook:', error);
     }
   }
 
-  // Default response for unhandled cases
+  // Handle OPTIONS request
+  if (event.httpMethod === 'OPTIONS') {
+    return {
+      statusCode: 200,
+      headers,
+      body: ''
+    };
+  }
+
   return {
     statusCode: 400,
-    headers,
+    headers: { ...headers, 'Content-Type': 'application/json' },
     body: JSON.stringify({ error: 'Invalid request' })
   };
 }; 
