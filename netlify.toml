@@ -11,13 +11,19 @@
 [functions]
   node_bundler = "esbuild"
   directory = "netlify/functions"
+  included_files = ["netlify/functions-src/**/*"]
+  external_node_modules = ["stripe"]
 
 [dev]
+  framework = "#auto"
+  targetPort = 5173
+  port = 8888
   functions = "netlify/functions"
-  functionsPort = 8888
+  functionsPort = 9999
 
 [build.environment]
-  SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLIC_KEY"
+  SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLIC_KEY,VITE_*,STRIPE_SECRET_KEY"
+  SECRETS_SCAN_OMIT_PATHS = "/dist/*,/build/*,/supabase/functions/create-checkout-session/.env"
 
 [build.processing]
   skip_processing = false

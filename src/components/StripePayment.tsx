@@ -101,13 +101,16 @@ export function StripePayment(props: StripePaymentProps) {
       try {
         // Determine the base URL based on environment
         const baseUrl = import.meta.env.DEV 
-          ? 'http://localhost:8888' // Default Netlify Functions port
+          ? 'http://localhost:8888' 
           : '';
+        
+        console.log('Making request to:', `${baseUrl}/.netlify/functions/create-payment-intent`);
         
         const response = await fetch(`${baseUrl}/.netlify/functions/create-payment-intent`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json',
           },
           body: JSON.stringify({ 
             amount: Math.round(props.price * 100)
@@ -115,17 +118,20 @@ export function StripePayment(props: StripePaymentProps) {
         });
 
         console.log('Response status:', response.status);
+        console.log('Response headers:', Object.fromEntries(response.headers.entries()));
+        
         const responseText = await response.text();
-        console.log('Response body:', responseText);
+        console.log('Raw response:', responseText);
 
-        if (responseText.trim().startsWith('{')) {
+        try {
           const data = JSON.parse(responseText);
           if (!data.clientSecret) {
             throw new Error('No client secret received from payment service');
           }
           setClientSecret(data.clientSecret);
-        } else {
-          throw new Error('Received HTML instead of JSON response. Please ensure Netlify Functions are properly configured.');
+        } catch (parseError) {
+          console.error('JSON Parse Error:', parseError);
+          throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}...`);
         }
       } catch (err) {
         console.error('Error creating payment intent:', err);
