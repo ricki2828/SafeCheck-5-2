@@ -244,7 +244,22 @@ function App() {
           <div className="space-y-6">
             {progressBar}
             <Elements stripe={stripePromise}>
-              <StripePayment onSuccess={handlePaymentSuccess} price={price} />
+              <StripePayment 
+                onSuccess={handlePaymentSuccess} 
+                price={price} 
+                formData={{
+                  firstName: formData.firstName,
+                  middleName: formData.middleName,
+                  lastName: formData.lastName,
+                  email: email,
+                  phoneNumber: formData.phoneNumber,
+                  dateOfBirth: formData.dateOfBirth,
+                  streetAddress: formData.streetAddress,
+                  city: formData.city,
+                  province: formData.province,
+                  postalCode: formData.postalCode
+                }} 
+              />
             </Elements>
           </div>
         );

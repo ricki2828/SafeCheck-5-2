@@ -12,9 +12,21 @@ import { BackgroundCheckResponse } from '../types/schema';
 interface StripePaymentProps {
   onSuccess: () => void;
   price: number;
+  formData: {
+    firstName: string;
+    middleName?: string;
+    lastName: string;
+    email: string;
+    phoneNumber: string;
+    dateOfBirth: string;
+    streetAddress: string;
+    city: string;
+    province: string;
+    postalCode: string;
+  };
 }
 
-function PaymentForm({ onSuccess, price }: StripePaymentProps) {
+function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -144,7 +156,7 @@ function PaymentForm({ onSuccess, price }: StripePaymentProps) {
   );
 }
 
-export function StripePayment(props: StripePaymentProps) {
+export function StripePayment({ price, onSuccess, formData }: StripePaymentProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -165,7 +177,7 @@ export function StripePayment(props: StripePaymentProps) {
             'Accept': 'application/json',
           },
           body: JSON.stringify({ 
-            amount: Math.round(props.price * 100)
+            amount: Math.round(price * 100)
           }),
         });
 
@@ -196,7 +208,7 @@ export function StripePayment(props: StripePaymentProps) {
     };
 
     createIntent();
-  }, [props.price]);
+  }, [price]);
 
   if (error) {
     return (
@@ -230,7 +242,7 @@ export function StripePayment(props: StripePaymentProps) {
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm {...props} />
+      <PaymentForm price={price} onSuccess={onSuccess} formData={formData} />
     </Elements>
   );
 }
