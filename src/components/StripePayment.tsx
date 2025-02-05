@@ -48,6 +48,45 @@ function PaymentForm({ onSuccess, price }: StripePaymentProps) {
     }
   };
 
+  const handlePaymentSuccess = async (formData: any) => {
+    try {
+      const response = await fetch('/.netlify/functions/create-background-check', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: formData.firstName,
+          middle_name: formData.middleName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phoneNumber,
+          date_of_birth: formData.dateOfBirth,
+          address: {
+            street_address: formData.streetAddress,
+            city: formData.city,
+            province: formData.province,
+            postal_code: formData.postalCode,
+            country: 'CA',
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to initiate background check');
+      }
+
+      const data = await response.json();
+      console.log('Background check initiated:', data);
+      
+      // Handle success (e.g., show success message, redirect to confirmation page)
+      
+    } catch (error) {
+      console.error('Error initiating background check:', error);
+      // Handle error (e.g., show error message to user)
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="bg-primary/5 rounded-xl p-6">
