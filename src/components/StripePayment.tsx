@@ -7,6 +7,7 @@ import {
   Elements,
 } from '@stripe/react-stripe-js';
 import { stripePromise } from '../lib/stripe';
+import { BackgroundCheckResponse } from '../types/schema';
 
 interface StripePaymentProps {
   onSuccess: () => void;
@@ -18,6 +19,7 @@ function PaymentForm({ onSuccess, price }: StripePaymentProps) {
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [backgroundCheck, setBackgroundCheck] = useState<BackgroundCheckResponse | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -39,13 +41,62 @@ function PaymentForm({ onSuccess, price }: StripePaymentProps) {
       if (submitError) {
         setError(submitError.message || 'Payment failed');
       } else {
-        onSuccess();
+        try {
+          const response = await fetch('/.netlify/functions/create-background-check', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              first_name: formData.firstName,
+              middle_name: formData.middleName,
+              last_name: formData.lastName,
+              email: formData.email,
+              phone: formData.phoneNumber,
+              date_of_birth: formData.dateOfBirth,
+              address: {
+                street_address: formData.streetAddress,
+                city: formData.city,
+                province: formData.province,
+                postal_code: formData.postalCode,
+                country: 'CA',
+              },
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to initiate background check');
+          }
+
+          const data = await response.json();
+          setBackgroundCheck(data);
+          
+          onSuccess();
+        } catch (error) {
+          console.error('Error:', error);
+          setError(error instanceof Error ? error.message : 'An error occurred');
+        }
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Payment failed');
     } finally {
       setProcessing(false);
     }
+  };
+
+  const renderStatus = () => {
+    if (!backgroundCheck) return null;
+
+    return (
+      <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+        <h3 className="font-semibold text-lg mb-2">Background Check Status</h3>
+        <div className="space-y-2">
+          <p>Case ID: {backgroundCheck.caseId}</p>
+          <p>Status: {backgroundCheck.status}</p>
+          <p>Estimated Completion: {new Date(backgroundCheck.estimatedCompletionTime).toLocaleString()}</p>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -88,6 +139,7 @@ function PaymentForm({ onSuccess, price }: StripePaymentProps) {
           <ArrowRight className="h-5 w-5" />
         </button>
       </div>
+      {renderStatus()}
     </form>
   );
 }
