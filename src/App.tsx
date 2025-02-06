@@ -277,7 +277,7 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-28">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <div className="bg-dark p-3 rounded-xl">
@@ -294,10 +294,15 @@ function App() {
                   </div>
                 </div>
               </div>
-              <nav className="hidden md:flex items-center space-x-8">
-                <a href="#how-it-works" className="text-white/80 hover:text-primary transition-colors">How it Works</a>
-                <a href="#about" className="text-white/80 hover:text-primary transition-colors">About</a>
-                <a href="#help" className="text-white/80 hover:text-primary transition-colors">Help</a>
+              <nav className="flex items-center">
+                <div className="md:hidden">
+                  {/* Mobile menu button if needed */}
+                </div>
+                <div className="flex flex-col md:flex-row md:items-center md:space-x-8 space-y-2 md:space-y-0">
+                  <a href="#how-it-works" className="text-white/80 hover:text-primary transition-colors">How it Works</a>
+                  <a href="#about" className="text-white/80 hover:text-primary transition-colors">About</a>
+                  <a href="#help" className="text-white/80 hover:text-primary transition-colors">Help</a>
+                </div>
               </nav>
             </div>
           </div>
@@ -305,7 +310,7 @@ function App() {
         <main className="relative">
           <div className="relative pt-8 pb-20">
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="absolute top-0 right-0 max-w-md transform -translate-y-[20%]">
+              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '6rem' }}>
                 <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm">
                   <div className="flex items-start gap-2">
                     <img 
