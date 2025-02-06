@@ -16,7 +16,7 @@ const Hero = () => {
     <div className="fixed inset-0 -z-10 overflow-hidden">
       <video 
         ref={videoRef}
-        className="absolute h-full w-full object-cover scale-125 translate-x-[5%]"
+        className="absolute h-full w-full object-cover"
         autoPlay 
         muted 
         loop 
