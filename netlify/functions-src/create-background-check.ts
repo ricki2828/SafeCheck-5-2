@@ -57,7 +57,29 @@ export const handler: Handler = async (event) => {
 
     const data: CertnRequestBody = JSON.parse(event.body);
     
-    // Create the case with the Canadian Criminal Check package
+    // Add logging to see what we're sending
+    console.log('Sending to Certn:', {
+      url: 'https://api.sandbox.certn.co/api/v3/cases/',
+      headers: {
+        'Authorization': 'Bearer [REDACTED]',
+        'Content-Type': 'application/json',
+      },
+      body: {
+        first_name: data.first_name,
+        middle_name: data.middle_name,
+        last_name: data.last_name,
+        email: data.email,
+        phone: data.phone,
+        date_of_birth: data.date_of_birth,
+        address: data.address,
+        package_type: 'canadian_criminal_check',
+        consent: true,
+        send_email: true,
+        email_language: 'en',
+        webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook',
+      }
+    });
+
     const certnResponse = await fetch('https://api.sandbox.certn.co/api/v3/cases/', {
       method: 'POST',
       headers: {
@@ -86,15 +108,14 @@ export const handler: Handler = async (event) => {
       }),
     });
 
+    // Add error response logging
     if (!certnResponse.ok) {
-      const errorData = await certnResponse.json();
-      console.error('Certn API error details:', errorData);
-      throw new Error(`Certn API error: ${JSON.stringify(errorData)}`);
+      const responseText = await certnResponse.text();
+      console.error('Certn API error response:', responseText);
+      throw new Error(`Certn API error: ${responseText}`);
     }
 
-    const result = await certnResponse.json() as CertnResponse;
-
-    // Log the successful case creation
+    const result = await certnResponse.json();
     console.log('Certn case created:', result);
 
     return {
@@ -109,7 +130,7 @@ export const handler: Handler = async (event) => {
     };
 
   } catch (error: any) {
-    console.error('Background check error:', error);
+    console.error('Background check error details:', error);
     return {
       statusCode: error.response?.status || 500,
       headers,
