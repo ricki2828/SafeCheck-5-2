@@ -64,6 +64,14 @@ export const handler: Handler = async (event) => {
 
     const authHeader = `Token ${process.env.CERTN_API_KEY}`;
 
+    // Hardcode the package ID for Canadian criminal checks
+    const CANADIAN_CRIMINAL_CHECK_PACKAGE_ID = "2b1e6443-35e4-408a-98b8-d6db7e5ad9c5";
+
+    const requestBody = {
+      package: CANADIAN_CRIMINAL_CHECK_PACKAGE_ID,
+      email_address: data.email
+    };
+
     // Update the logging to show exactly what we're sending
     console.info('Sending to Certn:', {
       url: 'https://api.sandbox.certn.co/api/public/cases/order-package/',
@@ -71,20 +79,7 @@ export const handler: Handler = async (event) => {
         Authorization: authHeader.replace(process.env.CERTN_API_KEY, '[REDACTED]'),
         'Content-Type': 'application/json'
       },
-      body: {
-        first_name: data.first_name,
-        middle_name: data.middle_name,
-        last_name: data.last_name,
-        email: data.email,
-        phone: data.phone,
-        date_of_birth: data.date_of_birth,
-        address: data.address,
-        package_type: 'canadian_criminal_check',
-        consent: true,
-        send_email: true,
-        email_language: 'en',
-        webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook',
-      }
+      body: requestBody
     });
 
     const certnResponse = await fetch('https://api.sandbox.certn.co/api/public/cases/order-package/', {
@@ -93,26 +88,7 @@ export const handler: Handler = async (event) => {
         'Content-Type': 'application/json',
         'Authorization': authHeader,
       },
-      body: JSON.stringify({
-        first_name: data.first_name,
-        middle_name: data.middle_name,
-        last_name: data.last_name,
-        email: data.email,
-        phone: data.phone,
-        date_of_birth: data.date_of_birth,
-        address: {
-          street_address: data.address.street_address,
-          city: data.address.city,
-          country: data.address.country || 'CA',
-          postal_code: data.address.postal_code,
-          province: data.address.province,
-        },
-        package_type: 'canadian_criminal_check',
-        consent: true,
-        send_email: true,
-        email_language: 'en',
-        webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook',
-      }),
+      body: JSON.stringify(requestBody)
     });
 
     // Add detailed error logging
