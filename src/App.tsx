@@ -101,11 +101,20 @@ function App() {
 
   const renderStep = () => {
     const progressBar = (
-      <ProgressBar 
-        currentStep={step} 
-        totalSteps={totalSteps} 
-        estimatedMinutes={estimatedMinutes} 
-      />
+      <div className="mb-8">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
+          <span className="text-sm text-gray-600">
+            {Math.min(Math.round((step / 4) * 2), 2)} min remaining
+          </span>
+        </div>
+        <div className="h-2 bg-gray-200 rounded-full">
+          <div
+            className="h-full bg-primary rounded-full transition-all duration-500"
+            style={{ width: `${(step / 4) * 100}%` }}
+          ></div>
+        </div>
+      </div>
     );
 
     switch (step) {
