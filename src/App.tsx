@@ -243,7 +243,26 @@ function App() {
         return (
           <div className="space-y-6">
             {progressBar}
-            <div className="bg-primary/5 rounded-xl p-6 mb-6">
+            <Elements stripe={stripePromise}>
+              <StripePayment 
+                onSuccess={handlePaymentSuccess} 
+                price={price}
+                voucherCode={appliedVoucher}
+                formData={{
+                  firstName: formData.firstName,
+                  middleName: formData.middleName,
+                  lastName: formData.lastName,
+                  email: email,
+                  phoneNumber: formData.phoneNumber,
+                  dateOfBirth: formData.dateOfBirth,
+                  streetAddress: formData.streetAddress,
+                  city: formData.city,
+                  province: formData.province,
+                  postalCode: formData.postalCode
+                }} 
+              />
+            </Elements>
+            <div className="bg-primary/5 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800">Have a voucher code?</h3>
                 <span className="text-sm text-gray-600">Optional</span>
@@ -278,25 +297,6 @@ function App() {
                 </div>
               )}
             </div>
-            <Elements stripe={stripePromise}>
-              <StripePayment 
-                onSuccess={handlePaymentSuccess} 
-                price={price}
-                voucherCode={appliedVoucher}
-                formData={{
-                  firstName: formData.firstName,
-                  middleName: formData.middleName,
-                  lastName: formData.lastName,
-                  email: email,
-                  phoneNumber: formData.phoneNumber,
-                  dateOfBirth: formData.dateOfBirth,
-                  streetAddress: formData.streetAddress,
-                  city: formData.city,
-                  province: formData.province,
-                  postalCode: formData.postalCode
-                }} 
-              />
-            </Elements>
           </div>
         );
 
