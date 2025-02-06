@@ -368,7 +368,7 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="bg-white/50 backdrop-blur-sm">
+          <div className="bg-dark/50 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-3">
@@ -492,7 +492,7 @@ function App() {
                   </div>
                 </div>
                 <div className="order-1 lg:order-2">
-                  <div className="space-y-6">
+                  <div className="space-y-6 translate-y-full">
                     <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
                       <h1 className="text-4xl font-bold text-white">
                         The fastest official criminal check in Canada
