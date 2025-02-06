@@ -13,10 +13,10 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="relative h-48 w-full overflow-hidden">
+    <div className="fixed inset-0 -z-10">
       <video 
         ref={videoRef}
-        className="absolute top-0 left-0 w-full h-full object-cover"
+        className="w-full h-full object-cover"
         autoPlay 
         muted 
         loop 
@@ -24,12 +24,7 @@ const Hero = () => {
       >
         <source src="/hero-video.mp4" type="video/mp4" />
       </video>
-      
-      <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-        <h1 className="text-4xl md:text-5xl font-bold text-white">
-          Get Work Ready
-        </h1>
-      </div>
+      <div className="absolute inset-0 bg-gradient-to-b from-secondary/95 via-secondary/90 to-secondary"></div>
     </div>
   );
 };

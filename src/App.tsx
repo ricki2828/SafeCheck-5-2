@@ -275,14 +275,6 @@ function App() {
     <main className="min-h-screen">
       <Hero />
       <div className="relative">
-        <div className="absolute inset-0 h-[100vh]">
-          <img 
-            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80" 
-            alt="Office background" 
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-secondary/95 via-secondary/90 to-secondary"></div>
-        </div>
         <header className="relative z-50">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex justify-between items-center">
