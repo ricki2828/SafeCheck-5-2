@@ -312,7 +312,7 @@ function App() {
         <main className="relative">
           <div className="relative pt-8 pb-20">
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '6rem' }}>
+              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '4rem' }}>
                 <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm">
                   <div className="flex items-start gap-2">
                     <img 
