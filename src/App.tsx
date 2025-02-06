@@ -276,10 +276,10 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-28">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                <div className="bg-dark/40 backdrop-blur-sm p-3 rounded-xl">
+                <div className="bg-dark p-3 rounded-xl">
                   <div className="flex items-center space-x-3">
                     <Shield className="h-8 w-8 text-primary" />
                     <div className="flex flex-col">
@@ -301,9 +301,9 @@ function App() {
           </div>
         </header>
         <main className="relative">
-          <div className="relative pt-16 pb-20">
+          <div className="relative pt-8 pb-20">
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="absolute top-0 right-0 max-w-md transform -translate-y-1/2">
+              <div className="absolute top-0 right-0 max-w-md transform -translate-y-[20%]">
                 <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm">
                   <div className="flex items-start gap-2">
                     <img 
