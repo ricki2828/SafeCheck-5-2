@@ -34,7 +34,14 @@ async function createCertnOrder(packageId: string, email: string) {
 }
 
 export const handler: Handler = async (event) => {
+  // Log incoming request
+  console.log('Webhook received:', {
+    method: event.httpMethod,
+    headers: event.headers,
+  });
+
   if (event.httpMethod !== 'POST') {
+    console.log('Not a POST request:', event.httpMethod);
     return {
       statusCode: 405,
       body: 'Method Not Allowed',
@@ -42,6 +49,7 @@ export const handler: Handler = async (event) => {
   }
 
   const sig = event.headers['stripe-signature'];
+  console.log('Stripe signature present:', !!sig);
 
   try {
     const stripeEvent = stripe.webhooks.constructEvent(
@@ -49,6 +57,8 @@ export const handler: Handler = async (event) => {
       sig!,
       webhookSecret
     );
+
+    console.log('Stripe event type:', stripeEvent.type);
 
     // Handle the event
     switch (stripeEvent.type) {
