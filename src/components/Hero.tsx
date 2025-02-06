@@ -4,8 +4,8 @@ const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
-    // Ensure video plays
     if (videoRef.current) {
+      videoRef.current.load();
       videoRef.current.play().catch(e => {
         console.error('Error playing video:', e);
       });
@@ -22,7 +22,7 @@ const Hero = () => {
         loop 
         playsInline
       >
-        <source src="/hero-video.mp4" type="video/mp4" />
+        <source src={`/hero-video.mp4?v=${Date.now()}`} type="video/mp4" />
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 via-secondary/50 to-secondary/70"></div>
     </div>
