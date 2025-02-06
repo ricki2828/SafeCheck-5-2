@@ -296,14 +296,19 @@ function App() {
                 </div>
               </div>
               <nav className="flex items-center">
-                <div className="md:hidden">
-                  {/* Mobile menu button if needed */}
-                </div>
                 <div className="flex flex-col md:flex-row md:items-center md:space-x-8 space-y-2 md:space-y-0">
-                  <a href="#how-it-works" className="text-white/80 hover:text-primary transition-colors">How it Works</a>
-                  <a href="#faq" className="text-white/80 hover:text-primary transition-colors">FAQ</a>
-                  <a href="#about" className="text-white/80 hover:text-primary transition-colors">About</a>
-                  <a href="#help" className="text-white/80 hover:text-primary transition-colors">Help</a>
+                  <a href="#how-it-works" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                    How it Works
+                  </a>
+                  <a href="#faq" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                    FAQ
+                  </a>
+                  <a href="#about" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                    About
+                  </a>
+                  <a href="#help" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                    Help
+                  </a>
                 </div>
               </nav>
             </div>
@@ -312,8 +317,8 @@ function App() {
         <main className="relative">
           <div className="relative pt-8 pb-20">
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '4rem' }}>
-                <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm">
+              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
+                <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
                   <div className="flex items-start gap-2">
                     <img 
                       src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&auto=format" 
@@ -347,10 +352,10 @@ function App() {
                 </div>
                 <div className="order-1 lg:order-2">
                   <div className="space-y-6">
-                    <h1 className="text-4xl font-bold text-white">
+                    <h1 className="text-4xl font-bold text-white/70">
                       The fastest official criminal check in Canada
                     </h1>
-                    <p className="text-xl text-white/80">
+                    <p className="text-xl text-white/70">
                       Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
                     </p>
                   </div>

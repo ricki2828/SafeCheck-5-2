@@ -35,7 +35,7 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
 
 const FAQ = () => {
   return (
-    <section id="faq" className="py-20 bg-dark/40 backdrop-blur-sm">
+    <section id="faq" className="py-20 bg-black">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
