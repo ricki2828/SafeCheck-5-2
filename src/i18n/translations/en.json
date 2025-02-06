@@ -1,0 +1,54 @@
+{
+    "header": {
+      "howItWorks": "How it Works",
+      "faq": "FAQ"
+    },
+    "hero": {
+      "title": "The fastest official criminal check in Canada",
+      "subtitle": "Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.",
+      "testimonial": {
+        "quote": "I got my background check in minutes. Started my new job the next day!",
+        "name": "Emily Chen",
+        "role": "Software Developer"
+      }
+    },
+    "form": {
+      "orderProgress": "Order Progress",
+      "timeRemaining": "{{time}} min remaining",
+      "paymentDetails": "Payment Details",
+      "voucherCode": {
+        "title": "Have a voucher code?",
+        "optional": "Optional",
+        "placeholder": "Enter code",
+        "apply": "Apply",
+        "applying": "Applying...",
+        "success": "Voucher applied successfully!"
+      }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Get your criminal record check in 4 simple steps",
+      "steps": {
+        "1": {
+          "title": "Apply Online",
+          "description": "Fill out our secure online form with your basic information. No need to visit a police station."
+        },
+        "2": {
+          "title": "Verify Identity",
+          "description": "We use secure electronic ID verification to confirm your identity, protecting you against fraud."
+        },
+        "3": {
+          "title": "Quick Processing",
+          "description": "Most results are available within 15 minutes. We'll notify you as soon as your check is complete."
+        },
+        "4": {
+          "title": "Get Results",
+          "description": "Download your secure PDF certificate immediately. Share it directly with your employer."
+        }
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Everything you need to know about our criminal record checks"
+    }
+  } 

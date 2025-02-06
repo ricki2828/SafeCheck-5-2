@@ -1,0 +1,54 @@
+{
+    "header": {
+      "howItWorks": "Comment ça marche",
+      "faq": "FAQ"
+    },
+    "hero": {
+      "title": "La vérification judiciaire officielle la plus rapide au Canada",
+      "subtitle": "Obtenez votre vérification du casier judiciaire en quelques minutes, pas en semaines. Approuvé par les employeurs à travers le Canada.",
+      "testimonial": {
+        "quote": "J'ai reçu ma vérification en quelques minutes. J'ai commencé mon nouveau travail le lendemain !",
+        "name": "Emily Chen",
+        "role": "Développeuse de logiciels"
+      }
+    },
+    "form": {
+      "orderProgress": "Progression de la commande",
+      "timeRemaining": "{{time}} min restantes",
+      "paymentDetails": "Détails du paiement",
+      "voucherCode": {
+        "title": "Vous avez un code promo ?",
+        "optional": "Optionnel",
+        "placeholder": "Entrez le code",
+        "apply": "Appliquer",
+        "applying": "Application...",
+        "success": "Code promo appliqué avec succès !"
+      }
+    },
+    "howItWorks": {
+      "title": "Comment ça marche",
+      "subtitle": "Obtenez votre vérification du casier judiciaire en 4 étapes simples",
+      "steps": {
+        "1": {
+          "title": "Demande en ligne",
+          "description": "Remplissez notre formulaire sécurisé en ligne avec vos informations de base. Pas besoin de vous rendre au poste de police."
+        },
+        "2": {
+          "title": "Vérification d'identité",
+          "description": "Nous utilisons une vérification d'identité électronique sécurisée pour confirmer votre identité, vous protégeant contre la fraude."
+        },
+        "3": {
+          "title": "Traitement rapide",
+          "description": "La plupart des résultats sont disponibles en 15 minutes. Nous vous notifierons dès que votre vérification sera terminée."
+        },
+        "4": {
+          "title": "Obtention des résultats",
+          "description": "Téléchargez votre certificat PDF sécurisé immédiatement. Partagez-le directement avec votre employeur."
+        }
+      }
+    },
+    "faq": {
+      "title": "Questions fréquentes",
+      "subtitle": "Tout ce que vous devez savoir sur nos vérifications de casier judiciaire"
+    }
+  } 
