@@ -276,7 +276,7 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
                 <div className="bg-dark p-3 rounded-xl">
@@ -296,12 +296,6 @@ function App() {
               <nav className="hidden md:flex items-center space-x-8">
                 <a href="#about" className="text-white/80 hover:text-primary transition-colors">About</a>
                 <a href="#help" className="text-white/80 hover:text-primary transition-colors">Help</a>
-                <a 
-                  href="#login" 
-                  className="px-4 py-2 border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-all duration-300"
-                >
-                  Login
-                </a>
               </nav>
             </div>
           </div>
