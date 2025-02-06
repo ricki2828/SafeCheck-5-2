@@ -368,16 +368,16 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="bg-dark/95 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+          <div className="bg-white/50 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
               <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-3">
-                  <div className="bg-dark p-3 rounded-xl">
+                  <div className="bg-dark p-2 rounded-xl">
                     <div className="flex items-center space-x-3">
-                      <Shield className="h-8 w-8 text-primary" />
+                      <Shield className="h-6 w-6 text-primary" />
                       <div className="flex flex-col">
                         <div className="flex items-baseline">
-                          <span className="text-2xl font-black tracking-tight leading-none text-primary">
+                          <span className="text-xl font-black tracking-tight leading-none text-primary">
                             SAFE<span className="text-white">hire</span>
                           </span>
                         </div>
@@ -392,9 +392,9 @@ function App() {
                     className="p-2 rounded-lg text-white/70 hover:text-primary"
                   >
                     {isMobileMenuOpen ? (
-                      <X className="h-6 w-6" />
+                      <X className="h-5 w-5" />
                     ) : (
-                      <Menu className="h-6 w-6" />
+                      <Menu className="h-5 w-5" />
                     )}
                   </button>
                 </div>
@@ -508,10 +508,10 @@ function App() {
                 </div>
                 <div className="order-1 lg:order-2">
                   <div className="space-y-6">
-                    <h1 className="text-4xl font-bold text-white/70">
+                    <h1 className="text-4xl font-bold text-white/50">
                       The fastest official criminal check in Canada
                     </h1>
-                    <p className="text-xl text-white/70">
+                    <p className="text-xl text-white/50">
                       Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
                     </p>
                   </div>
