@@ -15,6 +15,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import ProgressBar from './components/ProgressBar';
 import { StripePayment } from './components/StripePayment';
+import Hero from './components/Hero';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -271,7 +272,8 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-secondary font-inter">
+    <main className="min-h-screen">
+      <Hero />
       <div className="relative">
         <div className="absolute inset-0 h-[100vh]">
           <img 
@@ -401,7 +403,7 @@ function App() {
           </div>
         </main>
       </div>
-    </div>
+    </main>
   );
 }
 
