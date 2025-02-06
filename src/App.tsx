@@ -40,46 +40,6 @@ function App() {
   const estimatedMinutes = 5;
   const price = 65;
 
-  const addressInputRef = useRef<HTMLInputElement>(null);
-  const [addressAutocomplete, setAddressAutocomplete] = useState<google.maps.places.Autocomplete | null>(null);
-
-  useEffect(() => {
-    const initializeAutocomplete = async () => {
-      if (
-        step === 4 &&
-        addressInputRef.current &&
-        !addressAutocomplete &&
-        typeof window.google !== 'undefined'
-      ) {
-        await google.maps.importLibrary("places");
-
-        const autocomplete = new window.google.maps.places.Autocomplete(addressInputRef.current, {
-          componentRestrictions: { country: 'ca' },
-          fields: ['address_components', 'formatted_address'],
-          types: ['address'],
-        });
-        autocomplete.addListener('place_changed', () => {
-          const place = autocomplete.getPlace();
-          if (place.address_components) {
-            const getComponent = (type: string) => {
-              const comp = place.address_components.find((c: any) => c.types[0] === type);
-              return comp ? comp.long_name : '';
-            };
-            setFormData(prev => ({
-              ...prev,
-              streetAddress: `${getComponent('street_number')} ${getComponent('route')}`.trim(),
-              city: getComponent('locality'),
-              province: getComponent('administrative_area_level_1'),
-              postalCode: getComponent('postal_code'),
-            }));
-          }
-        });
-        setAddressAutocomplete(autocomplete);
-      }
-    };
-    initializeAutocomplete();
-  }, [step, addressAutocomplete]);
-
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
     setStep(2);
@@ -266,149 +226,6 @@ function App() {
 
       case 4:
         return (
-          <form onSubmit={handleAddressSubmit} className="space-y-6">
-            {progressBar}
-            <h3 className="text-xl font-semibold text-gray-800">Personal Information</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Legal First Name"
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              />
-              <input
-                type="text"
-                placeholder="Middle Name (Optional)"
-                value={formData.middleName}
-                onChange={(e) => setFormData({ ...formData, middleName: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Legal Last Name"
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              />
-              <input
-                type="text"
-                placeholder="Maiden Name (if applicable)"
-                value={formData.maidenName}
-                onChange={(e) => setFormData({ ...formData, maidenName: e.target.value })}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              />
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Date of Birth (MM-DD-YYYY)"
-                value={formData.dateOfBirth}
-                onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              />
-              <select
-                value={formData.sex}
-                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              >
-                <option value="">Select Your Sex</option>
-                <option value="male">Male</option>
-                <option value="female">Female</option>
-                <option value="other">Other</option>
-              </select>
-            </div>
-            <input
-              type="tel"
-              placeholder="Phone Number"
-              value={formData.phoneNumber}
-              onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-            />
-            <h3 className="text-xl font-semibold text-gray-800">Your Most Recent Address in Canada</h3>
-            <input
-              ref={addressInputRef}
-              type="text"
-              placeholder="Street Address"
-              value={formData.streetAddress}
-              onChange={(e) => setFormData({ ...formData, streetAddress: e.target.value })}
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-            />
-            <input
-              type="text"
-              placeholder="Unit/Suite Number"
-              value={formData.unitNumber}
-              onChange={(e) => setFormData({ ...formData, unitNumber: e.target.value })}
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="City/Municipality"
-                value={formData.city}
-                onChange={(e) => setFormData({ ...formData, city: e.target.value })}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              />
-              <select
-                value={formData.province}
-                onChange={(e) => setFormData({ ...formData, province: e.target.value })}
-                required
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-              >
-                <option value="">Select Province</option>
-                <option value="AB">Alberta</option>
-                <option value="BC">British Columbia</option>
-                <option value="MB">Manitoba</option>
-                <option value="NB">New Brunswick</option>
-                <option value="NL">Newfoundland and Labrador</option>
-                <option value="NS">Nova Scotia</option>
-                <option value="ON">Ontario</option>
-                <option value="PE">Prince Edward Island</option>
-                <option value="QC">Quebec</option>
-                <option value="SK">Saskatchewan</option>
-                <option value="NT">Northwest Territories</option>
-                <option value="NU">Nunavut</option>
-                <option value="YT">Yukon</option>
-              </select>
-            </div>
-            <input
-              type="text"
-              placeholder="Postal Code"
-              value={formData.postalCode}
-              onChange={(e) => setFormData({ ...formData, postalCode: e.target.value })}
-              required
-              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-            />
-            <div className="flex space-x-4">
-              <button
-                type="button"
-                onClick={() => setStep(3)}
-                className="flex-1 border-2 border-primary text-primary font-semibold py-4 px-6 rounded-xl transition-all duration-200 hover:bg-primary hover:text-white"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                className="flex-1 bg-primary hover:bg-opacity-90 text-white font-semibold py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                <span>Submit Application</span>
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
-          </form>
-        );
-
-      case 5:
-        return (
           <div className="space-y-6">
             {progressBar}
             <div className="bg-primary/5 rounded-xl p-6 space-y-4">
@@ -429,15 +246,6 @@ function App() {
                 <div>
                   <p className="text-sm text-gray-600">Phone</p>
                   <p className="font-medium">{formData.phoneNumber}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Address</p>
-                  <p className="font-medium">
-                    {formData.streetAddress}
-                    {formData.unitNumber && `, Unit ${formData.unitNumber}`}
-                    <br />
-                    {formData.city}, {formData.province} {formData.postalCode}
-                  </p>
                 </div>
               </div>
             </div>
@@ -535,8 +343,6 @@ function App() {
                         ? 'Important Information'
                         : step === 3
                         ? 'Payment Information'
-                        : step === 4
-                        ? 'Personal Information'
                         : 'Review Information'}
                     </h2>
                     {renderStep()}
