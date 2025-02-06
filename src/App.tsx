@@ -18,6 +18,7 @@ import { StripePayment } from './components/StripePayment';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
+import { scrollToSection } from './utils/scroll';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -229,36 +230,53 @@ function App() {
 
       case 4:
         return (
-          <div className="space-y-6">
-            {progressBar}
-            <div className="bg-primary/5 rounded-xl p-6 space-y-4">
-              <div className="flex items-center space-x-3 text-primary">
+          <div className="space-y-8">
+            <div className="bg-primary/10 rounded-xl p-6 border border-primary/20">
+              <div className="flex items-center space-x-3 text-primary mb-4">
                 <CheckCircle className="h-6 w-6" />
-                <h3 className="font-semibold">Application Submitted</h3>
+                <h3 className="text-xl font-semibold">Payment Successful</h3>
               </div>
-              <h3 className="font-semibold text-gray-800">Review Your Information</h3>
-              <div className="grid grid-cols-2 gap-4">
+              
+              <div className="space-y-6">
                 <div>
-                  <p className="text-sm text-gray-600">Email</p>
-                  <p className="font-medium">{email}</p>
+                  <p className="text-gray-800 mb-2">
+                    Thank you for choosing SafeHire. Here's what happens next:
+                  </p>
+                  <ul className="space-y-3">
+                    <li className="flex items-start">
+                      <Mail className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">
+                        Check your email for instructions from Certn to complete your verification
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <FileText className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">
+                        Follow the link to provide your details securely in the Certn portal
+                      </span>
+                    </li>
+                    <li className="flex items-start">
+                      <Clock className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-600">
+                        Receive your criminal record check within 15 minutes
+                      </span>
+                    </li>
+                  </ul>
                 </div>
-                <div>
-                  <p className="text-sm text-gray-600">Name</p>
-                  <p className="font-medium">{formData.firstName} {formData.lastName}</p>
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600">Phone</p>
-                  <p className="font-medium">{formData.phoneNumber}</p>
+
+                <div className="bg-dark/5 rounded-lg p-4">
+                  <p className="text-sm text-gray-600">
+                    <span className="font-semibold">Important:</span> Your results will be delivered to the email address you provided ({email}). 
+                    If you don't receive an email from Certn within 5 minutes, please check your spam folder.
+                  </p>
                 </div>
               </div>
             </div>
+
             <div className="text-center">
-              <p className="text-gray-600 mb-4">
-                Your background check application has been submitted. We'll contact you shortly with next steps.
-              </p>
               <button
                 type="button"
-                onClick={() => (window.location.href = '/')}
+                onClick={() => window.location.href = '/'}
                 className="bg-primary hover:bg-opacity-90 text-white font-semibold py-4 px-8 rounded-xl inline-flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
                 <span>Return to Home</span>
@@ -297,18 +315,30 @@ function App() {
               </div>
               <nav className="flex items-center">
                 <div className="flex flex-col md:flex-row md:items-center md:space-x-8 space-y-2 md:space-y-0">
-                  <a href="#how-it-works" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                  <button 
+                    onClick={() => scrollToSection('how-it-works')} 
+                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
+                  >
                     How it Works
-                  </a>
-                  <a href="#faq" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection('faq')} 
+                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
+                  >
                     FAQ
-                  </a>
-                  <a href="#about" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection('about')} 
+                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
+                  >
                     About
-                  </a>
-                  <a href="#help" className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center">
+                  </button>
+                  <button 
+                    onClick={() => scrollToSection('help')} 
+                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
+                  >
                     Help
-                  </a>
+                  </button>
                 </div>
               </nav>
             </div>
