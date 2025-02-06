@@ -508,8 +508,12 @@ function App() {
           </div>
         </main>
       </div>
+      <div id="how-it-works" className="-mt-16 pt-16" />
       <HowItWorks />
+      <div id="faq" className="-mt-16 pt-16" />
       <FAQ />
+      <div id="help" className="-mt-16 pt-16" />
+      <Help />
     </main>
   );
 }
