@@ -412,12 +412,6 @@ function App() {
                     >
                       FAQ
                     </button>
-                    <button 
-                      onClick={() => scrollToSection('help')} 
-                      className="text-white/70 hover:text-primary transition-colors"
-                    >
-                      Help
-                    </button>
                   </div>
                 </nav>
               </div>
@@ -441,15 +435,6 @@ function App() {
                   className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
                 >
                   FAQ
-                </button>
-                <button 
-                  onClick={() => {
-                    scrollToSection('help');
-                    setIsMobileMenuOpen(false);
-                  }} 
-                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                >
-                  Help
                 </button>
               </div>
             </div>
@@ -512,8 +497,6 @@ function App() {
       <HowItWorks />
       <div id="faq" className="-mt-16 pt-16" />
       <FAQ />
-      <div id="help" className="-mt-16 pt-16" />
-      <Help />
     </main>
   );
 }

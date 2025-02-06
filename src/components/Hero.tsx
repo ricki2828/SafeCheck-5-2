@@ -51,22 +51,24 @@ const Hero = () => {
 
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      <video 
-        ref={videoRef}
-        className="absolute h-full w-full object-cover"
-        playsInline
-        muted
-        loop
-        preload="auto"
-        autoPlay
-        webkit-playsinline="true"
-        x5-playsinline="true"
-        x5-video-player-type="h5"
-        x5-video-player-fullscreen="true"
-        x5-video-orientation="portraint"
-      >
-        <source src="/hero-video.mp4" type="video/mp4" />
-      </video>
+      <div className="absolute inset-0 flex justify-end overflow-hidden">
+        <video 
+          ref={videoRef}
+          className="h-full object-cover min-w-[100vw] origin-right"
+          playsInline
+          muted
+          loop
+          preload="auto"
+          autoPlay
+          webkit-playsinline="true"
+          x5-playsinline="true"
+          x5-video-player-type="h5"
+          x5-video-player-fullscreen="true"
+          x5-video-orientation="portraint"
+        >
+          <source src="/hero-video.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 via-secondary/50 to-secondary/70"></div>
     </div>
   );
