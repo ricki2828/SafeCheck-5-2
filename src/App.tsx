@@ -9,7 +9,9 @@ import {
   Info,
   FileText,
   Search,
-  Mail
+  Mail,
+  Menu,
+  X
 } from 'lucide-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -43,6 +45,11 @@ function App() {
   const totalSteps = 5;
   const estimatedMinutes = 5;
   const price = 65;
+  const [voucherCode, setVoucherCode] = useState('');
+  const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
+  const [appliedVoucher, setAppliedVoucher] = useState('');
+  const [voucherError, setVoucherError] = useState('');
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,6 +68,35 @@ function App() {
   const handleAddressSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setStep(5);
+  };
+
+  const handleApplyVoucher = async () => {
+    setIsApplyingVoucher(true);
+    setVoucherError('');
+    
+    try {
+      // Call your backend to validate the voucher with Stripe
+      const response = await fetch('/api/validate-voucher', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: voucherCode }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.valid) {
+        setAppliedVoucher(voucherCode);
+        setVoucherCode(''); // Clear input after successful application
+      } else {
+        setVoucherError(data.message || 'Invalid voucher code');
+      }
+    } catch (error) {
+      setVoucherError('Error applying voucher. Please try again.');
+    } finally {
+      setIsApplyingVoucher(false);
+    }
   };
 
   const renderStep = () => {
@@ -207,10 +243,46 @@ function App() {
         return (
           <div className="space-y-6">
             {progressBar}
+            <div className="bg-primary/5 rounded-xl p-6 mb-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800">Have a voucher code?</h3>
+                <span className="text-sm text-gray-600">Optional</span>
+              </div>
+              <div className="flex space-x-2">
+                <input
+                  type="text"
+                  placeholder="Enter code"
+                  className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
+                  value={voucherCode}
+                  onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                />
+                <button
+                  onClick={handleApplyVoucher}
+                  disabled={!voucherCode || isApplyingVoucher}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    !voucherCode || isApplyingVoucher
+                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                      : 'bg-primary text-white hover:bg-primary/90'
+                  }`}
+                >
+                  {isApplyingVoucher ? 'Applying...' : 'Apply'}
+                </button>
+              </div>
+              {voucherError && (
+                <p className="mt-2 text-sm text-red-600">{voucherError}</p>
+              )}
+              {appliedVoucher && (
+                <div className="mt-2 flex items-center text-sm text-primary">
+                  <CheckCircle className="h-4 w-4 mr-1" />
+                  <span>Voucher applied successfully!</span>
+                </div>
+              )}
+            </div>
             <Elements stripe={stripePromise}>
               <StripePayment 
                 onSuccess={handlePaymentSuccess} 
-                price={price} 
+                price={price}
+                voucherCode={appliedVoucher}
                 formData={{
                   firstName: formData.firstName,
                   middleName: formData.middleName,
@@ -296,51 +368,105 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center space-x-3">
-                <div className="bg-dark p-3 rounded-xl">
-                  <div className="flex items-center space-x-3">
-                    <Shield className="h-8 w-8 text-primary" />
-                    <div className="flex flex-col">
-                      <div className="flex items-baseline">
-                        <span className="text-2xl font-black tracking-tight leading-none text-primary">
-                          SAFE<span className="text-white">hire</span>
-                        </span>
+          <div className="bg-dark/95 backdrop-blur-sm">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+              <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-3">
+                  <div className="bg-dark p-3 rounded-xl">
+                    <div className="flex items-center space-x-3">
+                      <Shield className="h-8 w-8 text-primary" />
+                      <div className="flex flex-col">
+                        <div className="flex items-baseline">
+                          <span className="text-2xl font-black tracking-tight leading-none text-primary">
+                            SAFE<span className="text-white">hire</span>
+                          </span>
+                        </div>
+                        <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
                       </div>
-                      <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
                     </div>
                   </div>
                 </div>
-              </div>
-              <nav className="flex items-center">
-                <div className="flex flex-col md:flex-row md:items-center md:space-x-8 space-y-2 md:space-y-0">
-                  <button 
-                    onClick={() => scrollToSection('how-it-works')} 
-                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
+                <div className="md:hidden">
+                  <button
+                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                    className="p-2 rounded-lg text-white/70 hover:text-primary"
                   >
-                    How it Works
-                  </button>
-                  <button 
-                    onClick={() => scrollToSection('faq')} 
-                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
-                  >
-                    FAQ
-                  </button>
-                  <button 
-                    onClick={() => scrollToSection('about')} 
-                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
-                  >
-                    About
-                  </button>
-                  <button 
-                    onClick={() => scrollToSection('help')} 
-                    className="px-3 py-2 rounded-lg bg-dark/30 backdrop-blur-sm text-white/70 hover:text-primary transition-colors border border-white/10 text-center"
-                  >
-                    Help
+                    {isMobileMenuOpen ? (
+                      <X className="h-6 w-6" />
+                    ) : (
+                      <Menu className="h-6 w-6" />
+                    )}
                   </button>
                 </div>
-              </nav>
+                <nav className="hidden md:flex items-center">
+                  <div className="flex items-center space-x-8">
+                    <button 
+                      onClick={() => scrollToSection('how-it-works')} 
+                      className="text-white/70 hover:text-primary transition-colors"
+                    >
+                      How it Works
+                    </button>
+                    <button 
+                      onClick={() => scrollToSection('faq')} 
+                      className="text-white/70 hover:text-primary transition-colors"
+                    >
+                      FAQ
+                    </button>
+                    <button 
+                      onClick={() => scrollToSection('about')} 
+                      className="text-white/70 hover:text-primary transition-colors"
+                    >
+                      About
+                    </button>
+                    <button 
+                      onClick={() => scrollToSection('help')} 
+                      className="text-white/70 hover:text-primary transition-colors"
+                    >
+                      Help
+                    </button>
+                  </div>
+                </nav>
+              </div>
+            </div>
+            <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+              <div className="px-4 pt-2 pb-6 space-y-4">
+                <button 
+                  onClick={() => {
+                    scrollToSection('how-it-works');
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                >
+                  How it Works
+                </button>
+                <button 
+                  onClick={() => {
+                    scrollToSection('faq');
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                >
+                  FAQ
+                </button>
+                <button 
+                  onClick={() => {
+                    scrollToSection('about');
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                >
+                  About
+                </button>
+                <button 
+                  onClick={() => {
+                    scrollToSection('help');
+                    setIsMobileMenuOpen(false);
+                  }} 
+                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                >
+                  Help
+                </button>
+              </div>
             </div>
           </div>
         </header>

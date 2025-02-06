@@ -12,6 +12,7 @@ import { BackgroundCheckResponse } from '../types/schema';
 interface StripePaymentProps {
   onSuccess: () => void;
   price: number;
+  voucherCode?: string;
   formData: {
     firstName: string;
     middleName?: string;
@@ -24,10 +25,9 @@ interface StripePaymentProps {
     province: string;
     postalCode: string;
   };
-  packageId: string;
 }
 
-function PaymentForm({ onSuccess, price, formData, packageId }: StripePaymentProps) {
+function PaymentForm({ onSuccess, price, voucherCode, formData }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -54,8 +54,10 @@ function PaymentForm({ onSuccess, price, formData, packageId }: StripePaymentPro
       if (submitError) {
         setError(submitError.message || 'Payment failed');
       } else {
+        // Payment successful - call onSuccess immediately
         onSuccess();
         
+        // Try background check creation separately
         try {
           const response = await fetch('/.netlify/functions/create-background-check', {
             method: 'POST',
@@ -87,6 +89,7 @@ function PaymentForm({ onSuccess, price, formData, packageId }: StripePaymentPro
           }
         } catch (error) {
           console.error('Background check error:', error);
+          // Don't block the flow, just log the error
         }
       }
     } catch (err) {
@@ -157,13 +160,14 @@ function PaymentForm({ onSuccess, price, formData, packageId }: StripePaymentPro
   );
 }
 
-export function StripePayment({ price, onSuccess, formData, packageId }: StripePaymentProps) {
+export function StripePayment({ onSuccess, price, voucherCode, formData }: StripePaymentProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const createIntent = async () => {
       try {
+        // Determine the base URL based on environment
         const baseUrl = import.meta.env.DEV 
           ? 'http://localhost:8888' 
           : '';
@@ -178,8 +182,7 @@ export function StripePayment({ price, onSuccess, formData, packageId }: StripeP
           },
           body: JSON.stringify({ 
             amount: Math.round(price * 100),
-            packageId: packageId,
-            email: formData.email
+            voucherCode,
           }),
         });
 
@@ -210,7 +213,7 @@ export function StripePayment({ price, onSuccess, formData, packageId }: StripeP
     };
 
     createIntent();
-  }, [price, formData.email, packageId]);
+  }, [price, voucherCode]);
 
   if (error) {
     return (
@@ -244,7 +247,7 @@ export function StripePayment({ price, onSuccess, formData, packageId }: StripeP
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm price={price} onSuccess={onSuccess} formData={formData} packageId={packageId} />
+      <PaymentForm price={price} onSuccess={onSuccess} voucherCode={voucherCode} formData={formData} />
     </Elements>
   );
-} 
+}
