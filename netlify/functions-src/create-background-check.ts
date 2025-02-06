@@ -76,7 +76,8 @@ export const handler: Handler = async (event) => {
     console.info('Sending to Certn:', {
       url: 'https://api.sandbox.certn.co/api/public/cases/order-package/',
       headers: {
-        Authorization: authHeader.replace(process.env.CERTN_API_KEY, '[REDACTED]'),
+        Authorization: 'Api-Key [REDACTED]',
+        Accept: 'application/json',
         'Content-Type': 'application/json'
       },
       body: requestBody
@@ -85,8 +86,9 @@ export const handler: Handler = async (event) => {
     const certnResponse = await fetch('https://api.sandbox.certn.co/api/public/cases/order-package/', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': authHeader,
+        Authorization: `Api-Key ${process.env.CERTN_API_KEY}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(requestBody)
     });
