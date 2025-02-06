@@ -9,7 +9,27 @@
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBm39aWCiDOTOFUsfDx7_tR406GnJXr-go&libraries=places"></script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div class="relative h-screen w-full overflow-hidden">
+        <!-- Video Background -->
+        <video 
+          class="absolute top-0 left-0 w-full h-full object-cover"
+          autoplay 
+          muted 
+          loop 
+          playsinline
+        >
+          <source src="/src/files/hero-video.mp4" type="video/mp4">
+        </video>
+        
+        <!-- Overlay with text -->
+        <div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+          <h1 class="text-6xl md:text-8xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 animate-shimmer bg-[length:200%_100%]">
+            Get Work Ready
+          </h1>
+        </div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
