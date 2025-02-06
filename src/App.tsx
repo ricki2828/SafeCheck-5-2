@@ -50,6 +50,7 @@ function App() {
   const [appliedVoucher, setAppliedVoucher] = useState('');
   const [voucherError, setVoucherError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [remainingSeconds, setRemainingSeconds] = useState(120); // 2 minutes in seconds
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,19 +100,38 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    
+    if (step > 0 && step < 4) {
+      timer = setInterval(() => {
+        setRemainingSeconds((prev) => {
+          if (prev <= 0) return 0;
+          return prev - 1;
+        });
+      }, 1000);
+    }
+
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [step]);
+
   const renderStep = () => {
     const progressBar = (
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
           <span className="text-sm text-gray-600">
-            {Math.min(Math.round((step / 4) * 2), 2)} min remaining
+            {Math.ceil(remainingSeconds / 60)} min remaining
           </span>
         </div>
         <div className="h-2 bg-gray-200 rounded-full">
           <div
             className="h-full bg-primary rounded-full transition-all duration-500"
-            style={{ width: `${(step / 4) * 100}%` }}
+            style={{ 
+              width: `${100 - ((remainingSeconds / 120) * 100)}%` 
+            }}
           ></div>
         </div>
       </div>
