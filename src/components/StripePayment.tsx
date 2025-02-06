@@ -24,9 +24,10 @@ interface StripePaymentProps {
     province: string;
     postalCode: string;
   };
+  packageId: string;
 }
 
-function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
+function PaymentForm({ onSuccess, price, formData, packageId }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -53,10 +54,8 @@ function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
       if (submitError) {
         setError(submitError.message || 'Payment failed');
       } else {
-        // Payment successful - call onSuccess immediately
         onSuccess();
         
-        // Try background check creation separately
         try {
           const response = await fetch('/.netlify/functions/create-background-check', {
             method: 'POST',
@@ -88,7 +87,6 @@ function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
           }
         } catch (error) {
           console.error('Background check error:', error);
-          // Don't block the flow, just log the error
         }
       }
     } catch (err) {
@@ -159,14 +157,13 @@ function PaymentForm({ onSuccess, price, formData }: StripePaymentProps) {
   );
 }
 
-export function StripePayment({ price, onSuccess, formData }: StripePaymentProps) {
+export function StripePayment({ price, onSuccess, formData, packageId }: StripePaymentProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const createIntent = async () => {
       try {
-        // Determine the base URL based on environment
         const baseUrl = import.meta.env.DEV 
           ? 'http://localhost:8888' 
           : '';
@@ -180,7 +177,9 @@ export function StripePayment({ price, onSuccess, formData }: StripePaymentProps
             'Accept': 'application/json',
           },
           body: JSON.stringify({ 
-            amount: Math.round(price * 100)
+            amount: Math.round(price * 100),
+            packageId: packageId,
+            email: formData.email
           }),
         });
 
@@ -211,7 +210,7 @@ export function StripePayment({ price, onSuccess, formData }: StripePaymentProps
     };
 
     createIntent();
-  }, [price]);
+  }, [price, formData.email, packageId]);
 
   if (error) {
     return (
@@ -245,7 +244,7 @@ export function StripePayment({ price, onSuccess, formData }: StripePaymentProps
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm price={price} onSuccess={onSuccess} formData={formData} />
+      <PaymentForm price={price} onSuccess={onSuccess} formData={formData} packageId={packageId} />
     </Elements>
   );
-}
+} 

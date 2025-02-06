@@ -62,13 +62,13 @@ export const handler: Handler = async (event) => {
 
     // Handle the event
     switch (stripeEvent.type) {
-      case 'checkout.session.completed': {
-        const session = stripeEvent.data.object as Stripe.Checkout.Session;
-        console.log('Checkout completed:', session.id);
+      case 'payment_intent.succeeded': {
+        const paymentIntent = stripeEvent.data.object as Stripe.PaymentIntent;
+        console.log('Payment succeeded:', paymentIntent.id);
         
         // Get the package ID and email from the metadata
-        const packageId = session.metadata?.packageId;
-        const email = session.customer_email;
+        const packageId = paymentIntent.metadata?.packageId;
+        const email = paymentIntent.metadata?.email;
 
         if (!packageId || !email) {
           throw new Error('Missing required metadata: packageId or email');
@@ -79,10 +79,11 @@ export const handler: Handler = async (event) => {
         console.log('Certn order created:', certnOrder);
         break;
       }
-      case 'payment_intent.payment_failed':
-        const failedPayment = stripeEvent.data.object;
-        console.log('Payment failed:', failedPayment.id);
+      case 'payment_intent.payment_failed': {
+        const paymentIntent = stripeEvent.data.object as Stripe.PaymentIntent;
+        console.log('Payment failed:', paymentIntent.id);
         break;
+      }
       default:
         console.log(`Unhandled event type ${stripeEvent.type}`);
     }
