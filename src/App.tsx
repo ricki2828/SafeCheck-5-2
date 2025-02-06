@@ -350,44 +350,6 @@ function App() {
                     <p className="text-xl text-white/80">
                       Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
                     </p>
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="bg-dark/40 backdrop-blur-sm p-4 rounded-xl">
-                        <div className="flex items-center space-x-3 text-primary mb-2">
-                          <Clock className="h-5 w-5" />
-                          <span className="font-semibold">Fast Results</span>
-                        </div>
-                        <p className="text-white/70 text-sm">
-                          Most results available within 15 minutes
-                        </p>
-                      </div>
-                      <div className="bg-dark/40 backdrop-blur-sm p-4 rounded-xl">
-                        <div className="flex items-center space-x-3 text-primary mb-2">
-                          <Shield className="h-5 w-5" />
-                          <span className="font-semibold">Secure</span>
-                        </div>
-                        <p className="text-white/70 text-sm">
-                          Bank-level encryption and security
-                        </p>
-                      </div>
-                      <div className="bg-dark/40 backdrop-blur-sm p-4 rounded-xl">
-                        <div className="flex items-center space-x-3 text-primary mb-2">
-                          <CheckCircle className="h-5 w-5" />
-                          <span className="font-semibold">Accepted</span>
-                        </div>
-                        <p className="text-white/70 text-sm">
-                          Recognized by employers nationwide
-                        </p>
-                      </div>
-                      <div className="bg-dark/40 backdrop-blur-sm p-4 rounded-xl">
-                        <div className="flex items-center space-x-3 text-primary mb-2">
-                          <MessageCircle className="h-5 w-5" />
-                          <span className="font-semibold">Support</span>
-                        </div>
-                        <p className="text-white/70 text-sm">
-                          24/7 customer service available
-                        </p>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </div>
