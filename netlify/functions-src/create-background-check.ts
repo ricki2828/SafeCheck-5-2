@@ -62,15 +62,14 @@ export const handler: Handler = async (event) => {
       throw new Error('Missing required CERTN_API_KEY environment variable');
     }
 
-    console.info('API Key exists:', !!process.env.CERTN_API_KEY);
-    console.info('API Key prefix:', process.env.CERTN_API_KEY?.substring(0, 4) + '...');
+    const authHeader = `Token ${process.env.CERTN_API_KEY}`;
 
-    // Add logging to see what we're sending
-    console.log('Sending to Certn:', {
+    // Update the logging to show exactly what we're sending
+    console.info('Sending to Certn:', {
       url: 'https://api.sandbox.certn.co/api/public/cases/order-package/',
       headers: {
-        'Authorization': 'Bearer [REDACTED]',
-        'Content-Type': 'application/json',
+        Authorization: authHeader.replace(process.env.CERTN_API_KEY, '[REDACTED]'),
+        'Content-Type': 'application/json'
       },
       body: {
         first_name: data.first_name,
@@ -92,7 +91,7 @@ export const handler: Handler = async (event) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Token ${process.env.CERTN_API_KEY}`,
+        'Authorization': authHeader,
       },
       body: JSON.stringify({
         first_name: data.first_name,
