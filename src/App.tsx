@@ -276,10 +276,10 @@ function App() {
       <Hero />
       <div className="relative">
         <header className="relative z-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-3">
-                <div className="bg-dark p-3 rounded-xl">
+                <div className="bg-dark/40 backdrop-blur-sm p-3 rounded-xl">
                   <div className="flex items-center space-x-3">
                     <Shield className="h-8 w-8 text-primary" />
                     <div className="flex flex-col">
@@ -304,15 +304,15 @@ function App() {
           <div className="relative pt-16 pb-20">
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="absolute top-0 right-0 max-w-md transform -translate-y-1/2">
-                <div className="bg-dark/40 rounded-2xl p-8 backdrop-blur-sm">
-                  <div className="flex items-start gap-4">
+                <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm">
+                  <div className="flex items-start gap-2">
                     <img 
                       src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&auto=format" 
                       alt="Job Seeker" 
-                      className="w-12 h-12 rounded-full border-2 border-primary object-cover"
+                      className="w-10 h-10 rounded-full border-2 border-primary object-cover"
                     />
-                    <div>
-                      <p className="text-white/90 text-sm italic mb-2">
+                    <div className="space-y-1">
+                      <p className="text-white/90 text-sm italic">
                         "I got my background check in minutes. Started my new job the next day!"
                       </p>
                       <p className="text-primary text-sm font-semibold">Emily Chen</p>
