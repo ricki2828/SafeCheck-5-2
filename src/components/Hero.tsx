@@ -54,7 +54,7 @@ const Hero = () => {
       <div className="absolute inset-0 flex justify-end overflow-hidden">
         <video 
           ref={videoRef}
-          className="h-full object-cover min-w-[100vw] origin-right"
+          className="h-full object-cover min-w-[120vw] origin-right scale-110"
           playsInline
           muted
           loop
