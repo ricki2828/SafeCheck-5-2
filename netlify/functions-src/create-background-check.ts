@@ -79,11 +79,15 @@ export const handler: Handler = async (event) => {
       }
     });
 
+    // Log the first few characters of the API key for debugging (safely)
+    console.info('API Key prefix:', process.env.CERTN_API_KEY?.substring(0, 4) + '...');
+
     const certnResponse = await fetch('https://api.sandbox.certn.co/api/public/cases/order-package/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${process.env.CERTN_API_KEY}`,
+        // According to Certn's docs, the token might need to be prefixed with 'Token' instead of 'Bearer'
+        'Authorization': `Token ${process.env.CERTN_API_KEY}`,
       },
       body: JSON.stringify({
         first_name: data.first_name,
