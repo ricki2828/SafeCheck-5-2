@@ -56,6 +56,15 @@ export const handler: Handler = async (event) => {
 
     const data: CertnRequestBody = JSON.parse(event.body);
     
+    // Check for API key at the start
+    if (!process.env.CERTN_API_KEY) {
+      console.error('CERTN_API_KEY environment variable is not set');
+      throw new Error('Missing required CERTN_API_KEY environment variable');
+    }
+
+    console.info('API Key exists:', !!process.env.CERTN_API_KEY);
+    console.info('API Key prefix:', process.env.CERTN_API_KEY?.substring(0, 4) + '...');
+
     // Add logging to see what we're sending
     console.log('Sending to Certn:', {
       url: 'https://api.sandbox.certn.co/api/public/cases/order-package/',
@@ -79,14 +88,10 @@ export const handler: Handler = async (event) => {
       }
     });
 
-    // Log the first few characters of the API key for debugging (safely)
-    console.info('API Key prefix:', process.env.CERTN_API_KEY?.substring(0, 4) + '...');
-
     const certnResponse = await fetch('https://api.sandbox.certn.co/api/public/cases/order-package/', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        // According to Certn's docs, the token might need to be prefixed with 'Token' instead of 'Bearer'
         'Authorization': `Token ${process.env.CERTN_API_KEY}`,
       },
       body: JSON.stringify({
