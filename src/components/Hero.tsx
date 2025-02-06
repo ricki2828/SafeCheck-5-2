@@ -13,19 +13,17 @@ const Hero = () => {
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10">
-      <div className="relative w-[120%] h-full overflow-hidden">
-        <video 
-          ref={videoRef}
-          className="absolute top-0 -right-[10%] w-full h-full object-cover scale-120 origin-center"
-          autoPlay 
-          muted 
-          loop 
-          playsInline
-        >
-          <source src="/hero-video.mp4" type="video/mp4" />
-        </video>
-      </div>
+    <div className="fixed inset-0 -z-10 overflow-hidden">
+      <video 
+        ref={videoRef}
+        className="absolute h-full w-full object-cover scale-125 translate-x-[5%]"
+        autoPlay 
+        muted 
+        loop 
+        playsInline
+      >
+        <source src="/hero-video.mp4" type="video/mp4" />
+      </video>
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 via-secondary/50 to-secondary/70"></div>
     </div>
   );

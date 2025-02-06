@@ -492,7 +492,7 @@ function App() {
                   </div>
                 </div>
                 <div className="order-1 lg:order-2">
-                  <div className="space-y-6 translate-y-full">
+                  <div className="space-y-6 translate-y-1/2">
                     <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
                       <h1 className="text-4xl font-bold text-white">
                         The fastest official criminal check in Canada
