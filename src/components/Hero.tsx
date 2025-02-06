@@ -5,25 +5,40 @@ const Hero = () => {
   const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
-    if (videoRef.current) {
-      // Reset the video source
-      videoRef.current.src = '/hero-video.mp4';
-      
-      videoRef.current.load();
-      
-      const playPromise = videoRef.current.play();
-      
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            console.log('Video playing successfully');
-          })
-          .catch(e => {
-            console.error('Error playing video:', e);
-            setVideoError(true);
+    const playVideo = async () => {
+      if (videoRef.current) {
+        try {
+          videoRef.current.src = '/hero-video.mp4';
+          videoRef.current.load();
+          await videoRef.current.play();
+          
+          // Add event listeners for mobile
+          document.addEventListener('touchstart', () => {
+            videoRef.current?.play();
+          }, { once: true });
+
+          // Handle when the video is paused by the browser
+          videoRef.current.addEventListener('pause', () => {
+            videoRef.current?.play();
           });
+
+        } catch (e) {
+          console.error('Error playing video:', e);
+          setVideoError(true);
+        }
       }
-    }
+    };
+
+    playVideo();
+
+    // Cleanup
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.removeEventListener('pause', () => {
+          videoRef.current?.play();
+        });
+      }
+    };
   }, []);
 
   if (videoError) {
@@ -43,9 +58,14 @@ const Hero = () => {
         muted
         loop
         preload="auto"
+        autoPlay
+        webkit-playsinline="true"
+        x5-playsinline="true"
+        x5-video-player-type="h5"
+        x5-video-player-fullscreen="true"
+        x5-video-orientation="portraint"
       >
         <source src="/hero-video.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
       </video>
       <div className="absolute inset-0 bg-gradient-to-b from-secondary/60 via-secondary/50 to-secondary/70"></div>
     </div>
