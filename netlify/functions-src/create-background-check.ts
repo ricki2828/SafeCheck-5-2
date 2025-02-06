@@ -58,7 +58,7 @@ export const handler: Handler = async (event) => {
     
     // Add logging to see what we're sending
     console.log('Sending to Certn:', {
-      url: 'https://api.sandbox.certn.co/api/v3/case/',
+      url: 'https://api.sandbox.certn.co/api/public/cases/order-package/',
       headers: {
         'Authorization': 'Bearer [REDACTED]',
         'Content-Type': 'application/json',
@@ -79,11 +79,11 @@ export const handler: Handler = async (event) => {
       }
     });
 
-    const certnResponse = await fetch('https://api.sandbox.certn.co/api/v3/case/', {
+    const certnResponse = await fetch('https://api.sandbox.certn.co/api/public/cases/order-package/', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.CERTN_KEY}`,
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.CERTN_API_KEY}`,
       },
       body: JSON.stringify({
         first_name: data.first_name,
@@ -107,15 +107,17 @@ export const handler: Handler = async (event) => {
       }),
     });
 
-    // Add status code to error logging
+    // Add detailed error logging
     if (!certnResponse.ok) {
-      const responseText = await certnResponse.text();
+      const errorBody = await certnResponse.text();
       console.error('Certn API error response:', {
         status: certnResponse.status,
         statusText: certnResponse.statusText,
-        body: responseText
+        body: errorBody,
+        requestUrl: certnResponse.url
       });
-      throw new Error(`Certn API error: ${certnResponse.status} - ${responseText}`);
+      
+      throw new Error(`Certn API error: ${certnResponse.status} - ${errorBody}`);
     }
 
     const result = (await certnResponse.json()) as CertnResponse;
