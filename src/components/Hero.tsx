@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 const Hero = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoError, setVideoError] = useState<string>('');
+  const [videoError, setVideoError] = useState(false);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -20,19 +20,22 @@ const Hero = () => {
           })
           .catch(e => {
             console.error('Error playing video:', e);
-            setVideoError(e.message);
+            setVideoError(true);
           });
       }
     }
   }, []);
 
+  if (videoError) {
+    return (
+      <div className="fixed inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary via-primary to-secondary"></div>
+      </div>
+    );
+  }
+
   return (
     <div className="fixed inset-0 -z-10 overflow-hidden">
-      {videoError && (
-        <div className="absolute top-0 left-0 bg-red-500 text-white p-2 z-50">
-          Error loading video: {videoError}
-        </div>
-      )}
       <video 
         ref={videoRef}
         className="absolute h-full w-full object-cover"
