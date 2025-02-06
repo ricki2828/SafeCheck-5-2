@@ -14,11 +14,10 @@ const Hero = () => {
 
   return (
     <div className="fixed inset-0 -z-10">
-      <div className="relative w-[150%] h-full overflow-hidden">
+      <div className="relative w-full h-full overflow-hidden">
         <video 
           ref={videoRef}
-          className="absolute top-0 -right-1/3 h-full object-cover"
-          style={{ width: '150%' }}
+          className="absolute top-0 left-0 w-full h-full object-cover scale-120"
           autoPlay 
           muted 
           loop 
