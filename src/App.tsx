@@ -17,6 +17,7 @@ import ProgressBar from './components/ProgressBar';
 import { StripePayment } from './components/StripePayment';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
+import FAQ from './components/FAQ';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -300,6 +301,7 @@ function App() {
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center md:space-x-8 space-y-2 md:space-y-0">
                   <a href="#how-it-works" className="text-white/80 hover:text-primary transition-colors">How it Works</a>
+                  <a href="#faq" className="text-white/80 hover:text-primary transition-colors">FAQ</a>
                   <a href="#about" className="text-white/80 hover:text-primary transition-colors">About</a>
                   <a href="#help" className="text-white/80 hover:text-primary transition-colors">Help</a>
                 </div>
@@ -359,6 +361,7 @@ function App() {
         </main>
       </div>
       <HowItWorks />
+      <FAQ />
     </main>
   );
 }
