@@ -23,7 +23,6 @@ interface CertnResponse {
   estimated_completion_time: string;
   created_at: string;
   updated_at: string;
-  // Add other fields as needed
 }
 
 export const handler: Handler = async (event) => {
@@ -115,7 +114,7 @@ export const handler: Handler = async (event) => {
       throw new Error(`Certn API error: ${responseText}`);
     }
 
-    const result = await certnResponse.json();
+    const result = (await certnResponse.json()) as CertnResponse;
     console.log('Certn case created:', result);
 
     return {
