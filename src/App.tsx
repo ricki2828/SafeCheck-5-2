@@ -508,12 +508,14 @@ function App() {
                 </div>
                 <div className="order-1 lg:order-2">
                   <div className="space-y-6">
-                    <h1 className="text-4xl font-bold text-white/50">
-                      The fastest official criminal check in Canada
-                    </h1>
-                    <p className="text-xl text-white/50">
-                      Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
-                    </p>
+                    <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
+                      <h1 className="text-4xl font-bold text-white">
+                        The fastest official criminal check in Canada
+                      </h1>
+                      <p className="text-xl text-white/80 mt-4">
+                        Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
