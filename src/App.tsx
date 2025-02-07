@@ -581,16 +581,16 @@ function App() {
                 <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
                   <div className="flex items-start gap-2">
                     <img 
-                      src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=200&h=200&fit=crop&auto=format" 
-                      alt="Job Seeker" 
+                      src="/images/hockey-coach.png"
+                      alt="Hockey Coach" 
                       className="w-10 h-10 rounded-full border-2 border-primary object-cover"
                     />
                     <div className="space-y-1">
                       <p className="text-white/90 text-sm italic">
-                        "I got my background check in minutes. Started my new job the next day!"
+                        "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
                       </p>
-                      <p className="text-primary text-sm font-semibold">Emily Chen</p>
-                      <p className="text-white/60 text-xs">Software Developer</p>
+                      <p className="text-primary text-sm font-semibold">Mike Thompson</p>
+                      <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
                     </div>
                   </div>
                 </div>
