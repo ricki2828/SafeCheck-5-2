@@ -387,6 +387,7 @@ function App() {
                 onSuccess={handlePaymentSuccess} 
                 price={price}
                 formData={formData}
+                appliedVoucher={appliedVoucher}
               />
             </Elements>
             <div className="bg-primary/5 rounded-xl p-6">

@@ -15,6 +15,7 @@ interface StripePaymentProps {
   onBack: () => void;
   price: number;
   voucherCode?: string;
+  appliedVoucher?: string;
   formData: {
     firstName: string;
     middleName?: string;
@@ -29,7 +30,7 @@ interface StripePaymentProps {
   };
 }
 
-function PaymentForm({ onSuccess, onBack, price, voucherCode, formData }: StripePaymentProps) {
+function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, formData }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -123,7 +124,14 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, formData }: Stripe
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-lg font-semibold text-gray-800">Payment Details</h3>
           <div className="text-right">
-            <p className="text-lg font-bold text-primary">${price} CAD</p>
+            {appliedVoucher ? (
+              <div>
+                <p className="text-sm line-through text-gray-500">${price} CAD</p>
+                <p className="text-lg font-bold text-primary">${(price * 0.9).toFixed(2)} CAD</p>
+              </div>
+            ) : (
+              <p className="text-lg font-bold text-primary">${price} CAD</p>
+            )}
           </div>
         </div>
         <div className="space-y-4">
@@ -172,7 +180,7 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, formData }: Stripe
   );
 }
 
-export function StripePayment({ onSuccess, onBack, price, voucherCode, formData }: StripePaymentProps) {
+export function StripePayment({ onSuccess, onBack, price, voucherCode, appliedVoucher, formData }: StripePaymentProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -260,7 +268,8 @@ export function StripePayment({ onSuccess, onBack, price, voucherCode, formData 
         price={price} 
         onSuccess={onSuccess} 
         onBack={onBack}
-        voucherCode={voucherCode} 
+        voucherCode={voucherCode}
+        appliedVoucher={appliedVoucher}
         formData={formData} 
       />
     </Elements>
