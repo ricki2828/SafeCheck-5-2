@@ -157,7 +157,7 @@ function App() {
               <img 
                 src="/images/medal.svg" 
                 alt="Trust Medal" 
-                className="absolute -top-3 -right-3 w-12 h-12 z-10"
+                className="absolute -top-8 -right-8 w-32 h-32 z-10"
               />
               <div className="flex items-center justify-between mb-4">
                 <div>
