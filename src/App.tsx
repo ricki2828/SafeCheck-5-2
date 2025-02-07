@@ -104,8 +104,8 @@ function App() {
     setVoucherError('');
     
     try {
-      // Call your backend to validate the voucher with Stripe
-      const response = await fetch('/api/validate-voucher', {
+      // Call Stripe's API to validate the promotion code
+      const response = await fetch('/api/stripe/validate-promotion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,13 +116,13 @@ function App() {
       const data = await response.json();
       
       if (data.valid) {
-        setAppliedVoucher(voucherCode);
+        setAppliedVoucher(data.promotion_code);
         setVoucherCode(''); // Clear input after successful application
       } else {
-        setVoucherError(data.message || 'Invalid voucher code');
+        setVoucherError('Invalid promotion code');
       }
     } catch (error) {
-      setVoucherError('Error applying voucher. Please try again.');
+      setVoucherError('Error applying promotion code. Please try again.');
     } finally {
       setIsApplyingVoucher(false);
     }
@@ -382,7 +382,7 @@ function App() {
               <StripePayment 
                 onSuccess={handlePaymentSuccess} 
                 price={price}
-                voucherCode={appliedVoucher}
+                promotionCode={appliedVoucher}
                 formData={{
                   firstName: formData.firstName,
                   middleName: formData.middleName,
