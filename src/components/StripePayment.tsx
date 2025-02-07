@@ -92,6 +92,14 @@ export const StripePayment: React.FC<StripePaymentProps> = ({
               colorPrimary: '#0066FF',
             },
           },
+          locale: 'en',
+          defaultValues: {
+            billingDetails: {
+              address: {
+                country: 'CA',
+              }
+            }
+          }
         }}
       >
         <PaymentForm onSuccess={onSuccess} />
@@ -101,6 +109,25 @@ export const StripePayment: React.FC<StripePaymentProps> = ({
 };
 
 const PaymentForm = ({ onSuccess }: { onSuccess: () => void }) => {
-  // ... PaymentForm implementation
-  return <PaymentElement />;
+  return (
+    <form>
+      <PaymentElement 
+        options={{
+          defaultValues: {
+            billingDetails: {
+              address: {
+                country: 'CA',
+              }
+            }
+          }
+        }}
+      />
+      <button
+        type="submit"
+        className="mt-4 w-full inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+      >
+        Pay Now
+      </button>
+    </form>
+  );
 };
