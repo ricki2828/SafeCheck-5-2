@@ -12,6 +12,7 @@ import { BackgroundCheckResponse } from '../types/schema';
 
 interface StripePaymentProps {
   onSuccess: () => void;
+  onBack: () => void;
   price: number;
   voucherCode?: string;
   formData: {
@@ -28,7 +29,7 @@ interface StripePaymentProps {
   };
 }
 
-function PaymentForm({ onSuccess, price, voucherCode, formData }: StripePaymentProps) {
+function PaymentForm({ onSuccess, onBack, price, voucherCode, formData }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -142,7 +143,7 @@ function PaymentForm({ onSuccess, price, voucherCode, formData }: StripePaymentP
       <div className="flex space-x-4">
         <button
           type="button"
-          onClick={() => window.history.back()}
+          onClick={onBack}
           className="flex-1 border-2 border-primary text-primary font-semibold py-4 px-6 rounded-xl transition-all duration-200 hover:bg-primary hover:text-white"
         >
           Back
@@ -161,7 +162,7 @@ function PaymentForm({ onSuccess, price, voucherCode, formData }: StripePaymentP
   );
 }
 
-export function StripePayment({ onSuccess, price, voucherCode, formData }: StripePaymentProps) {
+export function StripePayment({ onSuccess, onBack, price, voucherCode, formData }: StripePaymentProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -248,7 +249,13 @@ export function StripePayment({ onSuccess, price, voucherCode, formData }: Strip
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm price={price} onSuccess={onSuccess} voucherCode={voucherCode} formData={formData} />
+      <PaymentForm 
+        price={price} 
+        onSuccess={onSuccess} 
+        onBack={onBack}
+        voucherCode={voucherCode} 
+        formData={formData} 
+      />
     </Elements>
   );
 }

@@ -382,6 +382,7 @@ function App() {
             {progressBar}
             <Elements stripe={stripePromise}>
               <StripePayment 
+                onBack={() => setStep(2)}
                 onSuccess={handlePaymentSuccess} 
                 price={price}
                 formData={{
