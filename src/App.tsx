@@ -210,8 +210,7 @@ function App() {
                           stroke="currentColor" 
                           strokeWidth="2"
                         >
-                          <path d="M19 7v10H9l-5-5 5-5h10z" strokeLinejoin="round" />
-                          <path d="M9 12h10" strokeLinejoin="round" />
+                          <path d="M20 4L20 10L8 10L8 6L3 12L8 18L8 14L20 14L20 20" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                       </div>
                     </div>
