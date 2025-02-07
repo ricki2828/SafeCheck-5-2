@@ -482,7 +482,6 @@ function App() {
 
             <div className="text-center">
               <button
-                type="button"
                 onClick={() => window.location.href = '/'}
                 className="bg-primary hover:bg-opacity-90 text-white font-semibold py-4 px-8 rounded-xl inline-flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl"
               >
