@@ -15,9 +15,9 @@ import {
 } from 'lucide-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import ProgressBar from './components/ProgressBar';
+import ProgressBar from "./components/ProgressBar";
 import { StripePayment } from './components/StripePayment';
-import Hero from './components/Hero';
+import Hero from "./components/Hero";
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
 import { scrollToSection } from './utils/scroll';
@@ -136,103 +136,91 @@ const App = () => {
     setVoucherError('');
   };
 
-  const renderPricing = () => {
-    return (
-      <div className="mt-4 space-y-2">
-        <div className="flex justify-between items-center">
-          <span>Original Price:</span>
-          <span>${originalPrice.toFixed(2)}</span>
-        </div>
-        
-        {appliedVoucher && (
-          <>
-            <div className="flex justify-between items-center text-green-600">
-              <span className="flex items-center">
-                Applied Voucher
-                <button
-                  onClick={handleRemoveVoucher}
-                  className="ml-2 text-red-500 hover:text-red-700"
-                  title="Remove voucher"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                </button>
-              </span>
-              <span>-${(originalPrice - (discountedPrice || originalPrice)).toFixed(2)}</span>
-            </div>
-            <div className="flex justify-between items-center font-bold">
-              <span>Final Price:</span>
-              <span>${(discountedPrice || originalPrice).toFixed(2)}</span>
-            </div>
-          </>
-        )}
-      </div>
-    );
-  };
+  const progressBar = (
+    <div className="space-y-2">
+      <ProgressBar 
+        currentStep={step}
+        totalSteps={totalSteps}
+        estimatedMinutes={estimatedMinutes}
+      />
+      <div className="text-sm text-gray-600">Step {step} of {totalSteps}</div>
+    </div>
+  );
 
   const renderStep = () => {
-    const progressBar = step < 4 ? (
-      <div className="mb-8">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
-          <span className="text-sm text-gray-600">
-            {Math.ceil(remainingSeconds / 60)} min remaining
-          </span>
-        </div>
-        <div className="h-2 bg-gray-200 rounded-full">
-          <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
-            style={{ 
-              width: `${100 - ((remainingSeconds / 120) * 100)}%` 
-            }}
-          ></div>
-        </div>
-      </div>
-    ) : null;
-
     switch (step) {
       case 1:
         return (
-          <div className="space-y-6">
-            {progressBar}
-            <form onSubmit={handleEmailSubmit} className="space-y-6">
-              <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email Address *
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                />
+          <>
+            <Hero />
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+              <div className="max-w-3xl mx-auto space-y-8">
+                <div className="text-center space-y-4">
+                  <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Background Check Process
+                  </h2>
+                  <p className="text-lg text-gray-600">
+                    Complete your background check in three simple steps
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+                  <div className="relative p-6 bg-white shadow-sm rounded-lg border border-gray-200">
+                    <div className="absolute -top-4 left-4 inline-block rounded-full bg-blue-600 p-2">
+                      <Search className="h-4 w-4 text-white" />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-gray-900">Identity Verification</h3>
+                    <p className="mt-2 text-gray-600">Securely verify your identity with basic information</p>
+                  </div>
+
+                  <div className="relative p-6 bg-white shadow-sm rounded-lg border border-gray-200">
+                    <div className="absolute -top-4 left-4 inline-block rounded-full bg-blue-600 p-2">
+                      <Info className="h-4 w-4 text-white" />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-gray-900">Background Check</h3>
+                    <p className="mt-2 text-gray-600">We'll process your background check quickly and securely</p>
+                  </div>
+
+                  <div className="relative p-6 bg-white shadow-sm rounded-lg border border-gray-200">
+                    <div className="absolute -top-4 left-4 inline-block rounded-full bg-blue-600 p-2">
+                      <MessageCircle className="h-4 w-4 text-white" />
+                    </div>
+                    <h3 className="mt-4 text-lg font-semibold text-gray-900">Results Delivery</h3>
+                    <p className="mt-2 text-gray-600">Receive your results quickly and securely</p>
+                  </div>
+                </div>
+
+                {progressBar}
+                <form onSubmit={handleEmailSubmit} className="space-y-6">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      name="email"
+                      required
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    />
+                  </div>
+                  <div className="flex justify-end">
+                    <button
+                      type="submit"
+                      disabled={!email}
+                      className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                    >
+                      Continue
+                    </button>
+                  </div>
+                </form>
               </div>
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={!email}
-                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-                >
-                  Continue
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
+            <HowItWorks />
+            <FAQ />
+          </>
         );
 
       case 2:
@@ -420,6 +408,52 @@ const App = () => {
       default:
         return null;
     }
+  };
+
+  const renderPricing = () => {
+    return (
+      <div className="mt-4 space-y-2">
+        <div className="flex justify-between items-center">
+          <span>Original Price:</span>
+          <span>${originalPrice.toFixed(2)}</span>
+        </div>
+        
+        {appliedVoucher && (
+          <>
+            <div className="flex justify-between items-center text-green-600">
+              <span className="flex items-center">
+                Applied Voucher
+                <button
+                  onClick={handleRemoveVoucher}
+                  className="ml-2 text-red-500 hover:text-red-700"
+                  title="Remove voucher"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </span>
+              <span>-${(originalPrice - (discountedPrice || originalPrice)).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center font-bold">
+              <span>Final Price:</span>
+              <span>${(discountedPrice || originalPrice).toFixed(2)}</span>
+            </div>
+          </>
+        )}
+      </div>
+    );
   };
 
   return (
