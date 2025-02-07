@@ -285,10 +285,10 @@ function App() {
                     <select
                       value={formData.dateOfBirth.split('-')[1] || ''}
                       onChange={(e) => {
-                        const [year] = formData.dateOfBirth.split('-');
+                        const [year, _, day] = formData.dateOfBirth.split('-');
                         setFormData({
                           ...formData,
-                          dateOfBirth: `${year || new Date().getFullYear()}-${e.target.value}-`
+                          dateOfBirth: `${year || ''}-${e.target.value}-${day || ''}`
                         });
                       }}
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
@@ -307,10 +307,10 @@ function App() {
                     <select
                       value={formData.dateOfBirth.split('-')[2] || ''}
                       onChange={(e) => {
-                        const [year, month] = formData.dateOfBirth.split('-');
+                        const [year, month, _] = formData.dateOfBirth.split('-');
                         setFormData({
                           ...formData,
-                          dateOfBirth: `${year || new Date().getFullYear()}-${month || '01'}-${e.target.value}`
+                          dateOfBirth: `${year || ''}-${month || ''}-${e.target.value}`
                         });
                       }}
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
