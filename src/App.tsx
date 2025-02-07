@@ -73,20 +73,25 @@ function App() {
   const [appliedVoucher, setAppliedVoucher] = useState('');
   const [voucherError, setVoucherError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [remainingSeconds, setRemainingSeconds] = useState(120); // 2 minutes in seconds
+  const [remainingSeconds, setRemainingSeconds] = useState(120);
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
     setStep(2);
+    setRemainingSeconds(80);
   };
 
   const handleConsent = (e: React.FormEvent) => {
     e.preventDefault();
-    if (consent) setStep(3);
+    if (consent) {
+      setStep(3);
+      setRemainingSeconds(40);
+    }
   };
 
   const handlePaymentSuccess = () => {
     setStep(4);
+    setRemainingSeconds(0);
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {
@@ -123,25 +128,8 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    
-    if (step > 0 && step < 4) {
-      timer = setInterval(() => {
-        setRemainingSeconds((prev) => {
-          if (prev <= 0) return 0;
-          return prev - 1;
-        });
-      }, 1000);
-    }
-
-    return () => {
-      if (timer) clearInterval(timer);
-    };
-  }, [step]);
-
   const renderStep = () => {
-    const progressBar = (
+    const progressBar = step < 4 ? (
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
@@ -158,7 +146,7 @@ function App() {
           ></div>
         </div>
       </div>
-    );
+    ) : null;
 
     switch (step) {
       case 1:
