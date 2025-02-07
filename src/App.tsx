@@ -16,7 +16,7 @@ import {
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import ProgressBar from './components/ProgressBar';
-import { StripePayment } from './components/StripePayment';
+import StripePayment from './components/StripePayment';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
@@ -74,6 +74,7 @@ function App() {
   const [voucherError, setVoucherError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
+  const [discountPercent, setDiscountPercent] = useState<number>(0);
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -117,7 +118,7 @@ function App() {
       
       if (data.valid) {
         setAppliedVoucher(voucherCode);
-        // Update the price state or pass the discount to StripePayment
+        setDiscountPercent(data.coupon.percentOff || 0);
       } else {
         setVoucherError('Invalid promotion code');
         setVoucherCode('');
@@ -388,6 +389,7 @@ function App() {
                 price={price}
                 formData={formData}
                 appliedVoucher={appliedVoucher}
+                discountPercent={discountPercent}
               />
             </Elements>
             <div className="bg-primary/5 rounded-xl p-6">
@@ -396,7 +398,7 @@ function App() {
                 <span className="text-sm text-gray-600">Optional</span>
               </div>
               <div className="space-y-4">
-                {appliedVoucher ? (
+                {appliedVoucher && (
                   <div className="bg-white rounded-lg p-4 border-2 border-primary/20">
                     <div className="flex justify-between items-center">
                       <div>
@@ -407,6 +409,7 @@ function App() {
                         onClick={() => {
                           setAppliedVoucher('');
                           setVoucherCode('');
+                          setDiscountPercent(0);
                         }}
                         className="text-red-500 hover:text-red-600 text-sm"
                       >
@@ -420,34 +423,13 @@ function App() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Discount:</span>
-                        <span className="text-green-600">-${(price * 0.1).toFixed(2)} CAD</span>
+                        <span className="text-green-600">-${(price * discountPercent / 100).toFixed(2)} CAD</span>
                       </div>
                       <div className="flex justify-between font-semibold mt-2">
                         <span>Final Price:</span>
-                        <span className="text-primary">${(price * 0.9).toFixed(2)} CAD</span>
+                        <span className="text-primary">${(price * (1 - discountPercent / 100)).toFixed(2)} CAD</span>
                       </div>
                     </div>
-                  </div>
-                ) : (
-                  <div className="flex space-x-2">
-                    <input
-                      type="text"
-                      placeholder="Enter code"
-                      className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
-                      value={voucherCode}
-                      onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-                    />
-                    <button
-                      onClick={handleApplyVoucher}
-                      disabled={!voucherCode || isApplyingVoucher}
-                      className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
-                        !voucherCode || isApplyingVoucher
-                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                          : 'bg-primary text-white hover:bg-primary/90'
-                      }`}
-                    >
-                      {isApplyingVoucher ? 'Applying...' : 'Apply'}
-                    </button>
                   </div>
                 )}
                 {voucherError && (

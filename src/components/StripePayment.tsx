@@ -16,6 +16,7 @@ interface StripePaymentProps {
   price: number;
   voucherCode?: string;
   appliedVoucher?: string;
+  discountPercent?: number;
   formData: {
     firstName: string;
     middleName?: string;
@@ -30,7 +31,7 @@ interface StripePaymentProps {
   };
 }
 
-function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, formData }: StripePaymentProps) {
+function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, discountPercent, formData }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -127,7 +128,9 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, fo
             {appliedVoucher ? (
               <div>
                 <p className="text-sm line-through text-gray-500">${price} CAD</p>
-                <p className="text-lg font-bold text-primary">${(price * 0.9).toFixed(2)} CAD</p>
+                <p className="text-lg font-bold text-primary">
+                  ${(price * (1 - (discountPercent || 0) / 100)).toFixed(2)} CAD
+                </p>
               </div>
             ) : (
               <p className="text-lg font-bold text-primary">${price} CAD</p>
@@ -180,7 +183,7 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, fo
   );
 }
 
-export function StripePayment({ onSuccess, onBack, price, voucherCode, appliedVoucher, formData }: StripePaymentProps) {
+export default function StripePayment({ onSuccess, onBack, price, voucherCode, appliedVoucher, discountPercent, formData }: StripePaymentProps) {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -270,6 +273,7 @@ export function StripePayment({ onSuccess, onBack, price, voucherCode, appliedVo
         onBack={onBack}
         voucherCode={voucherCode}
         appliedVoucher={appliedVoucher}
+        discountPercent={discountPercent}
         formData={formData} 
       />
     </Elements>
