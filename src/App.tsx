@@ -133,13 +133,13 @@ function App() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
-          <span className="text-sm text-gray-600">
+          <span className="text-sm text-gray-600 font-medium">
             {Math.ceil(remainingSeconds / 60)} min remaining
           </span>
         </div>
-        <div className="h-2 bg-gray-200 rounded-full">
+        <div className="h-3 bg-gray-200 rounded-full shadow-inner">
           <div
-            className={`h-full bg-primary rounded-full transition-all duration-500 ${step === 1 ? 'animate-pulse w-[5%]' : ''}`}
+            className={`h-full bg-primary rounded-full transition-all duration-500 shadow-lg ${step === 1 ? 'animate-pulse w-[5%]' : ''}`}
             style={{ 
               width: step === 1 ? '5%' : `${100 - ((remainingSeconds / 120) * 100)}%` 
             }}
@@ -236,7 +236,6 @@ function App() {
           <div className="space-y-6">
             {progressBar}
             <div className="bg-white rounded-xl p-6 shadow-lg space-y-6">
-              <h2 className="text-2xl font-semibold text-gray-800">Legal Information</h2>
               <div className="space-y-4">
                 <div>
                   <label htmlFor="legalFirstName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -287,10 +286,10 @@ function App() {
                     <select
                       value={formData.dateOfBirth.split('-')[1] || ''}
                       onChange={(e) => {
-                        const [year, _, day] = formData.dateOfBirth.split('-');
+                        const [year] = formData.dateOfBirth.split('-');
                         setFormData({
                           ...formData,
-                          dateOfBirth: `${year || new Date().getFullYear()}-${e.target.value.padStart(2, '0')}-${day || '01'}`
+                          dateOfBirth: `${year || new Date().getFullYear()}-${e.target.value}-`
                         });
                       }}
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
@@ -300,7 +299,7 @@ function App() {
                         const month = i + 1;
                         return (
                           <option key={month} value={month.toString().padStart(2, '0')}>
-                            {new Date(2000, i).toLocaleString('default', { month: 'long' })}
+                            {month.toString().padStart(2, '0')} - {new Date(2000, i).toLocaleString('default', { month: 'long' })}
                           </option>
                         );
                       })}
@@ -312,7 +311,7 @@ function App() {
                         const [year, month] = formData.dateOfBirth.split('-');
                         setFormData({
                           ...formData,
-                          dateOfBirth: `${year || new Date().getFullYear()}-${month || '01'}-${e.target.value.padStart(2, '0')}`
+                          dateOfBirth: `${year || new Date().getFullYear()}-${month || '01'}-${e.target.value}`
                         });
                       }}
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
