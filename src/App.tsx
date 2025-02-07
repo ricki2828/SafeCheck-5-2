@@ -139,9 +139,9 @@ function App() {
         </div>
         <div className="h-2 bg-gray-200 rounded-full">
           <div
-            className="h-full bg-primary rounded-full transition-all duration-500"
+            className={`h-full bg-primary rounded-full transition-all duration-500 ${step === 1 ? 'animate-pulse w-[5%]' : ''}`}
             style={{ 
-              width: `${100 - ((remainingSeconds / 120) * 100)}%` 
+              width: step === 1 ? '5%' : `${100 - ((remainingSeconds / 120) * 100)}%` 
             }}
           ></div>
         </div>
@@ -210,7 +210,8 @@ function App() {
                           stroke="currentColor" 
                           strokeWidth="2"
                         >
-                          <path d="M20 4h-9.5M20 4v9.5M20 4L4 20" />
+                          <path d="M3 12h12M9 18l6-6-6-6" />
+                          <path d="M21 5v14" strokeLinecap="round" />
                         </svg>
                       </div>
                     </div>
