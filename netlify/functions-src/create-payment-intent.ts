@@ -25,9 +25,11 @@ const handler: Handler = async (event) => {
       }
     };
 
-    // If there's a promotion code, add it to the payment intent
+    // If there's a promotion code, add it to the payment intent via coupon
     if (promotion_code) {
-      paymentIntentData.promotion_code = promotion_code;
+      paymentIntentData.discounts = [{
+        promotion_code: promotion_code
+      }];
     }
 
     const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
