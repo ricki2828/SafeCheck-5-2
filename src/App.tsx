@@ -590,7 +590,7 @@ function App() {
                     />
                     <div className="space-y-1">
                       <p className="text-white/90 text-sm italic">
-                        "Got my background check in minutes and was back on the ice the same day!"
+                        "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
                       </p>
                       <p className="text-primary text-sm font-semibold">Mike Thompson</p>
                       <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
