@@ -74,6 +74,8 @@ const App = () => {
   const [voucherError, setVoucherError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
+  const [originalPrice] = useState(99.99);
+  const [discountedPrice, setDiscountedPrice] = useState<number | null>(null);
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -132,7 +134,12 @@ const App = () => {
       
       if (data.valid) {
         setAppliedVoucher(data.promotion_code);
-        setVoucherCode(''); // Clear input after successful application
+        if (data.coupon.percent_off) {
+          setDiscountedPrice(originalPrice * (1 - data.coupon.percent_off / 100));
+        } else if (data.coupon.amount_off) {
+          setDiscountedPrice(originalPrice - (data.coupon.amount_off / 100));
+        }
+        setVoucherCode('');
       } else {
         setVoucherError(data.message || 'Invalid promotion code');
       }
@@ -142,6 +149,58 @@ const App = () => {
     } finally {
       setIsApplyingVoucher(false);
     }
+  };
+
+  const handleRemoveVoucher = () => {
+    setAppliedVoucher(undefined);
+    setDiscountedPrice(null);
+    setVoucherError('');
+  };
+
+  const renderPricing = () => {
+    return (
+      <div className="mt-4 space-y-2">
+        <div className="flex justify-between items-center">
+          <span>Original Price:</span>
+          <span>${originalPrice.toFixed(2)}</span>
+        </div>
+        
+        {appliedVoucher && (
+          <>
+            <div className="flex justify-between items-center text-green-600">
+              <span className="flex items-center">
+                Applied Voucher
+                <button
+                  onClick={handleRemoveVoucher}
+                  className="ml-2 text-red-500 hover:text-red-700"
+                  title="Remove voucher"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              </span>
+              <span>-${(originalPrice - (discountedPrice || originalPrice)).toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center font-bold">
+              <span>Final Price:</span>
+              <span>${(discountedPrice || originalPrice).toFixed(2)}</span>
+            </div>
+          </>
+        )}
+      </div>
+    );
   };
 
   const renderStep = () => {
@@ -350,6 +409,30 @@ const App = () => {
                     </select>
                   </div>
                 </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={voucherCode}
+                    onChange={(e) => setVoucherCode(e.target.value)}
+                    placeholder="Enter voucher code"
+                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                    disabled={isApplyingVoucher || !!appliedVoucher}
+                  />
+                  <button
+                    onClick={handleApplyVoucher}
+                    disabled={isApplyingVoucher || !voucherCode || !!appliedVoucher}
+                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                  >
+                    {isApplyingVoucher ? 'Applying...' : 'Apply'}
+                  </button>
+                </div>
+                {voucherError && (
+                  <p className="text-red-500 text-sm">{voucherError}</p>
+                )}
+                {renderPricing()}
               </div>
 
               <div className="flex justify-end space-x-3">
