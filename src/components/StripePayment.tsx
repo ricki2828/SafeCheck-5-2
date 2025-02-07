@@ -12,6 +12,7 @@ import { BackgroundCheckResponse } from '../types/schema';
 interface StripePaymentProps {
   onSuccess: () => void;
   price: number;
+  promotionCode?: string;
   voucherCode?: string;
   formData: {
     firstName: string;
@@ -27,7 +28,7 @@ interface StripePaymentProps {
   };
 }
 
-function PaymentForm({ onSuccess, price, voucherCode, formData }: StripePaymentProps) {
+function PaymentForm({ onSuccess, price, promotionCode, voucherCode, formData }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
@@ -160,9 +161,39 @@ function PaymentForm({ onSuccess, price, voucherCode, formData }: StripePaymentP
   );
 }
 
-export function StripePayment({ onSuccess, price, voucherCode, formData }: StripePaymentProps) {
+export const StripePayment: React.FC<StripePaymentProps> = ({ 
+  onSuccess, 
+  price, 
+  promotionCode,
+  voucherCode,
+  formData 
+}) => {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  const createPaymentIntent = async () => {
+    try {
+      const response = await fetch('/api/stripe/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: price * 100, // Convert to cents
+          promotion_code: promotionCode,
+          metadata: {
+            // ... any metadata you want to include
+          }
+        }),
+      });
+
+      const data = await response.json();
+      return data.client_secret;
+    } catch (error) {
+      console.error('Error creating payment intent:', error);
+      throw error;
+    }
+  };
 
   useEffect(() => {
     const createIntent = async () => {
@@ -247,7 +278,7 @@ export function StripePayment({ onSuccess, price, voucherCode, formData }: Strip
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm price={price} onSuccess={onSuccess} voucherCode={voucherCode} formData={formData} />
+      <PaymentForm price={price} onSuccess={onSuccess} promotionCode={promotionCode} voucherCode={voucherCode} formData={formData} />
     </Elements>
   );
-}
+};

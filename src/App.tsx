@@ -104,8 +104,8 @@ function App() {
     setVoucherError('');
     
     try {
-      // Call Stripe's API to validate the promotion code
-      const response = await fetch('/api/stripe/validate-promotion', {
+      // Updated URL to use Netlify function
+      const response = await fetch('/.netlify/functions/validate-promotion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ function App() {
         setAppliedVoucher(data.promotion_code);
         setVoucherCode(''); // Clear input after successful application
       } else {
-        setVoucherError('Invalid promotion code');
+        setVoucherError(data.message || 'Invalid promotion code');
       }
     } catch (error) {
       setVoucherError('Error applying promotion code. Please try again.');
