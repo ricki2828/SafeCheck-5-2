@@ -498,19 +498,19 @@ function App() {
   };
 
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen relative">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="fixed inset-0 -z-10 h-screen w-screen object-cover"
+      >
+        <source src="/videos/hero.mp4" type="video/mp4" />
+      </video>
+      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
+      
       <div className="relative">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 -z-10 h-full w-full object-cover"
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
-        
         <header className="relative z-50">
           <div className="bg-dark/50 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
@@ -597,7 +597,7 @@ function App() {
                     />
                     <div className="space-y-1">
                       <p className="text-white/90 text-sm italic">
-                        "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
+                        "Got my background check in minutes and was back on the ice the same day!"
                       </p>
                       <p className="text-primary text-sm font-semibold">Mike Thompson</p>
                       <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
