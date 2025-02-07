@@ -24,16 +24,39 @@ import { scrollToSection } from './utils/scroll';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
+interface FormData {
+  email: string;
+  legalFirstName: string;
+  legalLastName: string;
+  legalMiddleName?: string;
+  dateOfBirth: string;
+  firstName: string;
+  middleName: string;
+  lastName: string;
+  maidenName: string;
+  sex: string;
+  phoneNumber: string;
+  streetAddress: string;
+  unitNumber: string;
+  city: string;
+  province: string;
+  postalCode: string;
+}
+
 function App() {
   const [email, setEmail] = useState('');
   const [step, setStep] = useState(1);
   const [consent, setConsent] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
+    email: '',
+    legalFirstName: '',
+    legalLastName: '',
+    legalMiddleName: '',
+    dateOfBirth: '',
     firstName: '',
     middleName: '',
     lastName: '',
     maidenName: '',
-    dateOfBirth: '',
     sex: '',
     phoneNumber: '',
     streetAddress: '',
@@ -208,64 +231,147 @@ function App() {
 
       case 2:
         return (
-          <form onSubmit={handleConsent} className="space-y-6">
+          <div className="space-y-6">
             {progressBar}
-            <h3 className="font-semibold text-gray-800">Important Information</h3>
-            <ul className="space-y-3 text-sm text-gray-600">
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-primary mr-2" /> You must be at least 18 years old.
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-primary mr-2" /> You consent to the collection of your personal information.
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-primary mr-2" /> We can only confirm disclosed convictions.
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-primary mr-2" /> This is not a Vulnerable Sector Check.
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-primary mr-2" /> These checks may not suit immigration/VISA purposes.
-              </li>
-              <li className="flex items-center">
-                <Check className="h-4 w-4 text-primary mr-2" /> No refunds once completed.
-              </li>
-            </ul>
-            <div className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl">
-              <input
-                id="consent"
-                type="checkbox"
-                checked={consent}
-                onChange={(e) => setConsent(e.target.checked)}
-                className="h-4 w-4 text-primary border-gray-300 rounded focus:ring-primary"
-                required
-              />
-              <label htmlFor="consent" className="text-sm text-gray-600">
-                I acknowledge that I have read, understood, and agree to all the terms.
-              </label>
+            <div className="bg-white rounded-xl p-6 shadow-lg space-y-6">
+              <h2 className="text-2xl font-semibold text-gray-800">Legal Information</h2>
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="legalFirstName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Legal First Name
+                  </label>
+                  <input
+                    type="text"
+                    id="legalFirstName"
+                    value={formData.legalFirstName}
+                    onChange={(e) => setFormData({ ...formData, legalFirstName: e.target.value })}
+                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                    required
+                  />
+                </div>
+                
+                <div>
+                  <label htmlFor="legalMiddleName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Legal Middle Name (Optional)
+                  </label>
+                  <input
+                    type="text"
+                    id="legalMiddleName"
+                    value={formData.legalMiddleName}
+                    onChange={(e) => setFormData({ ...formData, legalMiddleName: e.target.value })}
+                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="legalLastName" className="block text-sm font-medium text-gray-700 mb-1">
+                    Legal Last Name
+                  </label>
+                  <input
+                    type="text"
+                    id="legalLastName"
+                    value={formData.legalLastName}
+                    onChange={(e) => setFormData({ ...formData, legalLastName: e.target.value })}
+                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1">
+                    Date of Birth
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    <select
+                      value={formData.dateOfBirth.split('-')[1] || ''}
+                      onChange={(e) => {
+                        const [year, _, day] = formData.dateOfBirth.split('-');
+                        setFormData({
+                          ...formData,
+                          dateOfBirth: `${year || new Date().getFullYear()}-${e.target.value.padStart(2, '0')}-${day || '01'}`
+                        });
+                      }}
+                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                    >
+                      <option value="">Month</option>
+                      {Array.from({ length: 12 }, (_, i) => {
+                        const month = i + 1;
+                        return (
+                          <option key={month} value={month.toString().padStart(2, '0')}>
+                            {new Date(2000, i).toLocaleString('default', { month: 'long' })}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    <select
+                      value={formData.dateOfBirth.split('-')[2] || ''}
+                      onChange={(e) => {
+                        const [year, month] = formData.dateOfBirth.split('-');
+                        setFormData({
+                          ...formData,
+                          dateOfBirth: `${year || new Date().getFullYear()}-${month || '01'}-${e.target.value.padStart(2, '0')}`
+                        });
+                      }}
+                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                    >
+                      <option value="">Day</option>
+                      {Array.from({ length: 31 }, (_, i) => {
+                        const day = i + 1;
+                        return (
+                          <option key={day} value={day.toString().padStart(2, '0')}>
+                            {day}
+                          </option>
+                        );
+                      })}
+                    </select>
+
+                    <select
+                      value={formData.dateOfBirth.split('-')[0] || ''}
+                      onChange={(e) => {
+                        const [_, month, day] = formData.dateOfBirth.split('-');
+                        setFormData({
+                          ...formData,
+                          dateOfBirth: `${e.target.value}-${month || '01'}-${day || '01'}`
+                        });
+                      }}
+                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                    >
+                      <option value="">Year</option>
+                      {Array.from({ length: 100 }, (_, i) => {
+                        const year = new Date().getFullYear() - i - 16; // Start from 16 years ago
+                        return (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => setStep(step - 1)}
+                  className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                >
+                  Back
+                </button>
+                <button
+                  onClick={() => {
+                    if (formData.legalFirstName && formData.legalLastName && formData.dateOfBirth) {
+                      setStep(step + 1);
+                    }
+                  }}
+                  disabled={!formData.legalFirstName || !formData.legalLastName || !formData.dateOfBirth}
+                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                >
+                  Continue
+                </button>
+              </div>
             </div>
-            <div className="flex space-x-4">
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="flex-1 border-2 border-primary text-primary font-semibold py-4 px-6 rounded-xl transition-all duration-200 hover:bg-primary hover:text-white"
-              >
-                Back
-              </button>
-              <button
-                type="submit"
-                disabled={!consent}
-                className={`flex-1 font-semibold py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl ${
-                  consent 
-                    ? 'bg-primary hover:bg-opacity-90 text-white' 
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                }`}
-              >
-                <span>Continue</span>
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
-          </form>
+          </div>
         );
 
       case 3:
