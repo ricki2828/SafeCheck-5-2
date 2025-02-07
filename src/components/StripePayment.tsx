@@ -92,14 +92,7 @@ export const StripePayment: React.FC<StripePaymentProps> = ({
               colorPrimary: '#0066FF',
             },
           },
-          locale: 'en',
-          defaultValues: {
-            billingDetails: {
-              address: {
-                country: 'CA',
-              }
-            }
-          }
+          locale: 'en'
         }}
       >
         <PaymentForm onSuccess={onSuccess} />
@@ -113,11 +106,13 @@ const PaymentForm = ({ onSuccess }: { onSuccess: () => void }) => {
     <form>
       <PaymentElement 
         options={{
-          defaultValues: {
+          layout: {
+            type: 'tabs',
+            defaultCollapsed: false
+          },
+          fields: {
             billingDetails: {
-              address: {
-                country: 'CA',
-              }
+              address: 'auto'
             }
           }
         }}
