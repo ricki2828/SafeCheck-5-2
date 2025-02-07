@@ -79,14 +79,14 @@ function App() {
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
     setStep(2);
-    setRemainingSeconds(80);
+    setRemainingSeconds(60);
   };
 
   const handleConsent = (e: React.FormEvent) => {
     e.preventDefault();
     if (consent) {
       setStep(3);
-      setRemainingSeconds(40);
+      setRemainingSeconds(60);
     }
   };
 
@@ -143,7 +143,9 @@ function App() {
           <div
             className={`h-full bg-primary rounded-full transition-all duration-500 shadow-lg ${step === 1 ? 'animate-pulse w-[5%]' : ''}`}
             style={{ 
-              width: step === 1 ? '5%' : `${100 - ((remainingSeconds / 120) * 100)}%` 
+              width: step === 1 ? '5%' : 
+                     step === 2 ? '40%' :
+                     step === 3 ? '70%' : '100%'
             }}
           ></div>
         </div>
