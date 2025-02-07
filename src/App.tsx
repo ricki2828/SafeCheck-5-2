@@ -332,14 +332,14 @@ function App() {
                         const [_, month, day] = formData.dateOfBirth.split('-');
                         setFormData({
                           ...formData,
-                          dateOfBirth: `${e.target.value}-${month || '01'}-${day || '01'}`
+                          dateOfBirth: `${e.target.value}-${month || ''}-${day || ''}`
                         });
                       }}
                       className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                     >
                       <option value="">Year</option>
                       {Array.from({ length: 100 }, (_, i) => {
-                        const year = new Date().getFullYear() - i - 16; // Start from 16 years ago
+                        const year = new Date().getFullYear() - i - 16;
                         return (
                           <option key={year} value={year}>
                             {year}
