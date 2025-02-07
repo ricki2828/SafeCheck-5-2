@@ -133,15 +133,15 @@ function App() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
-          <span className="text-sm text-gray-600 font-medium">
+          <span className="text-sm text-gray-600">
             {Math.ceil(remainingSeconds / 60)} min remaining
           </span>
         </div>
-        <div className="h-3 bg-gray-200 rounded-full shadow-inner">
+        <div className="h-2 bg-gray-200 rounded-full">
           <div
-            className={`h-full bg-primary rounded-full transition-all duration-500 shadow-lg ${step === 1 ? 'animate-pulse w-[5%]' : ''}`}
+            className="h-full bg-primary rounded-full transition-all duration-500"
             style={{ 
-              width: step === 1 ? '5%' : `${100 - ((remainingSeconds / 120) * 100)}%` 
+              width: `${100 - ((remainingSeconds / 120) * 100)}%` 
             }}
           ></div>
         </div>
@@ -381,6 +381,7 @@ function App() {
             <Elements stripe={stripePromise}>
               <StripePayment 
                 onSuccess={handlePaymentSuccess} 
+                onBack={() => setStep(2)}
                 price={price}
                 promotionCode={appliedVoucher}
                 formData={{

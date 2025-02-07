@@ -11,6 +11,7 @@ import { BackgroundCheckResponse } from '../types/schema';
 
 interface StripePaymentProps {
   onSuccess: () => void;
+  onBack: () => void;
   price: number;
   promotionCode?: string;
   voucherCode?: string;
@@ -163,6 +164,7 @@ function PaymentForm({ onSuccess, price, promotionCode, voucherCode, formData }:
 
 export const StripePayment: React.FC<StripePaymentProps> = ({ 
   onSuccess, 
+  onBack,
   price, 
   promotionCode,
   voucherCode,
@@ -278,7 +280,26 @@ export const StripePayment: React.FC<StripePaymentProps> = ({
 
   return (
     <Elements stripe={stripePromise} options={options}>
-      <PaymentForm price={price} onSuccess={onSuccess} promotionCode={promotionCode} voucherCode={voucherCode} formData={formData} />
+      <div className="space-y-6">
+        <div className="flex items-center justify-between mb-4">
+          <button
+            onClick={onBack}
+            className="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            <svg 
+              viewBox="0 0 24 24" 
+              className="h-5 w-5 mr-1" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2"
+            >
+              <path d="M19 12H5M12 19l-7-7 7-7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            Back
+          </button>
+        </div>
+        <PaymentForm price={price} onSuccess={onSuccess} promotionCode={promotionCode} voucherCode={voucherCode} formData={formData} />
+      </div>
     </Elements>
   );
 };
