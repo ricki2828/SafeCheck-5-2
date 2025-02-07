@@ -154,6 +154,11 @@ function App() {
           <div className="space-y-6">
             {progressBar}
             <div className="relative border-2 border-gray-200 rounded-xl p-6 cursor-pointer group hover:border-primary transition-all duration-300">
+              <img 
+                src="/images/medal.svg" 
+                alt="Trust Medal" 
+                className="absolute -top-3 -right-3 w-12 h-12 z-10"
+              />
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800">Criminal Record Check</h3>
