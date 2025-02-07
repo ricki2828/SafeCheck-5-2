@@ -384,7 +384,6 @@ function App() {
               <StripePayment 
                 onSuccess={handlePaymentSuccess} 
                 price={price}
-                promotionCode={appliedVoucher}
                 formData={{
                   firstName: formData.firstName,
                   middleName: formData.middleName,
@@ -586,7 +585,7 @@ function App() {
             </div>
           </div>
         </header>
-        <main className="relative">
+        <div className="relative">
           <div className="relative pt-8 pb-20">
             <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
@@ -637,7 +636,7 @@ function App() {
               </div>
             </div>
           </div>
-        </main>
+        </div>
       </div>
       <div id="how-it-works" className="-mt-16 pt-16" />
       <HowItWorks />
