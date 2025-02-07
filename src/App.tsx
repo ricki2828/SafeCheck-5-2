@@ -104,7 +104,6 @@ function App() {
     setVoucherError('');
     
     try {
-      // Updated URL to use Netlify function
       const response = await fetch('/.netlify/functions/validate-promotion', {
         method: 'POST',
         headers: {
@@ -114,6 +113,7 @@ function App() {
       });
       
       const data = await response.json();
+      console.log('Promotion code response:', data);
       
       if (data.valid) {
         setAppliedVoucher(data.promotion_code);
@@ -122,6 +122,7 @@ function App() {
         setVoucherError(data.message || 'Invalid promotion code');
       }
     } catch (error) {
+      console.error('Voucher error:', error);
       setVoucherError('Error applying promotion code. Please try again.');
     } finally {
       setIsApplyingVoucher(false);
