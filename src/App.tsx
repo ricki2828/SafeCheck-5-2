@@ -99,6 +99,21 @@ const App = () => {
     setStep(5);
   };
 
+  const handleDateSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Extract day, month, year from the dateOfBirth string
+    const [year, month, day] = formData.dateOfBirth.split('-');
+    
+    // Check if all date fields are populated
+    if (!day || !month || !year) {
+      alert('Please fill in all date fields');
+      return;
+    }
+    
+    setStep(2);
+  };
+
   const handleApplyVoucher = async () => {
     setIsApplyingVoucher(true);
     setVoucherError('');
@@ -188,34 +203,19 @@ const App = () => {
                     <span className="text-sm">Secure digital delivery</span>
                   </li>
                 </ul>
-                <form onSubmit={handleStartCheck} className="mt-6 space-y-6">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Your email address
+                <form onSubmit={handleDateSubmit} className="mt-6 space-y-6">
+                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
+                    Date of Birth *
                   </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 pr-14 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                      placeholder="name@example.ca"
-                      required
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      <div className="flex items-center justify-center w-8 h-6 bg-gray-100 rounded border border-gray-300 shadow-sm">
-                        <svg 
-                          viewBox="0 0 24 24" 
-                          className="h-3.5 w-3.5 text-gray-500"
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2"
-                        >
-                          <path d="M20 4L20 10L8 10L8 6L3 12L8 18L8 14L20 14L20 20" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
+                  <input
+                    type="date"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    required
+                    value={formData.dateOfBirth}
+                    onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
                   <button
                     type="submit"
                     className="group w-full bg-primary text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden hover:bg-primary/90"
