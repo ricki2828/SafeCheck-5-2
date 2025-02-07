@@ -16,23 +16,30 @@ const handler: Handler = async (event) => {
   try {
     const { amount, promotion_code, metadata } = JSON.parse(event.body || '{}');
 
-    const paymentIntentData: Stripe.PaymentIntentCreateParams = {
+    // Create the payment intent first
+    const paymentIntent = await stripe.paymentIntents.create({
       amount,
       currency: 'cad',
       metadata,
       automatic_payment_methods: {
         enabled: true,
       }
-    };
+    });
 
-    // If there's a promotion code, add it to the payment intent via coupon
+    // If there's a promotion code, update the payment intent with coupon
     if (promotion_code) {
-      paymentIntentData.discounts = [{
-        promotion_code: promotion_code
-      }];
+      const promoCode = await stripe.promotionCodes.retrieve(promotion_code);
+      await stripe.paymentIntents.update(
+        paymentIntent.id,
+        { 
+          metadata: { 
+            ...metadata,
+            promotion_code_id: promotion_code,
+            coupon_id: promoCode.coupon.id
+          }
+        }
+      );
     }
-
-    const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
 
     return {
       statusCode: 200,

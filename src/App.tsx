@@ -43,7 +43,7 @@ interface FormData {
   postalCode: string;
 }
 
-function App() {
+const App = () => {
   const [email, setEmail] = useState('');
   const [step, setStep] = useState(1);
   const [consent, setConsent] = useState(false);
@@ -70,7 +70,7 @@ function App() {
   const price = 65;
   const [voucherCode, setVoucherCode] = useState('');
   const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
-  const [appliedVoucher, setAppliedVoucher] = useState('');
+  const [appliedVoucher, setAppliedVoucher] = useState<string>();
   const [voucherError, setVoucherError] = useState('');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
@@ -381,7 +381,7 @@ function App() {
             {progressBar}
             <Elements stripe={stripePromise}>
               <StripePayment 
-                onSuccess={handlePaymentSuccess} 
+                onSuccess={handlePaymentSuccess}
                 onBack={() => setStep(2)}
                 price={price}
                 promotionCode={appliedVoucher}
@@ -645,6 +645,6 @@ function App() {
       <FAQ />
     </main>
   );
-}
+};
 
 export default App;
