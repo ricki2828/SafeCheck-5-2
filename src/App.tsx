@@ -44,26 +44,18 @@ interface FormData {
 }
 
 const App = () => {
-  const [email, setEmail] = useState('');
   const [step, setStep] = useState(1);
-  const [consent, setConsent] = useState(false);
-  const [formData, setFormData] = useState<FormData>({
-    email: '',
-    legalFirstName: '',
-    legalLastName: '',
-    legalMiddleName: '',
-    dateOfBirth: '',
+  const [email, setEmail] = useState('');
+  const [formData, setFormData] = useState({
     firstName: '',
     middleName: '',
     lastName: '',
-    maidenName: '',
-    sex: '',
     phoneNumber: '',
+    dateOfBirth: '',
     streetAddress: '',
-    unitNumber: '',
     city: '',
     province: '',
-    postalCode: '',
+    postalCode: ''
   });
   const totalSteps = 5;
   const estimatedMinutes = 5;
@@ -77,43 +69,30 @@ const App = () => {
   const [originalPrice] = useState(99.99);
   const [discountedPrice, setDiscountedPrice] = useState<number | null>(null);
 
-  const handleStartCheck = (e: React.FormEvent) => {
+  const handleEmailSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setStep(2);
-    setRemainingSeconds(80);
+    if (email) {
+      setStep(2);
+    }
   };
 
-  const handleConsent = (e: React.FormEvent) => {
+  const handlePersonalInfoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (consent) {
+    
+    // Check if required fields are filled
+    if (
+      formData.firstName &&
+      formData.lastName &&
+      formData.phoneNumber &&
+      formData.dateOfBirth
+    ) {
       setStep(3);
-      setRemainingSeconds(40);
     }
   };
 
   const handlePaymentSuccess = () => {
     setStep(4);
     setRemainingSeconds(0);
-  };
-
-  const handleAddressSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep(5);
-  };
-
-  const handleDateSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Extract day, month, year from the dateOfBirth string
-    const [year, month, day] = formData.dateOfBirth.split('-');
-    
-    // Check if all date fields are populated
-    if (!day || !month || !year) {
-      alert('Please fill in all date fields');
-      return;
-    }
-    
-    setStep(2);
   };
 
   const handleApplyVoucher = async () => {
@@ -228,41 +207,83 @@ const App = () => {
         return (
           <div className="space-y-6">
             {progressBar}
-            <div className="relative border-2 border-gray-200 rounded-xl p-6 cursor-pointer group hover:border-primary transition-all duration-300">
-              <img 
-                src="/images/medal.svg" 
-                alt="Trust Medal" 
-                className="absolute -top-8 -right-8 w-32 h-32 z-10"
-              />
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Criminal Record Check</h3>
-                  <p className="text-sm text-gray-600">Comprehensive background verification</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-bold text-primary">${price}</p>
-                </div>
+            <form onSubmit={handleEmailSubmit} className="space-y-6">
+              <div>
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                  Email Address *
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                />
               </div>
-              <div className="bg-primary/5 rounded-xl p-4">
-                <ul className="space-y-2">
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Searches the RCMP's Canadian Police Information Centre (CPIC)</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Results typically available within 15 minutes</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Accepted by Canadian employers</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Secure digital delivery</span>
-                  </li>
-                </ul>
-                <form onSubmit={handleDateSubmit} className="mt-6 space-y-6">
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  disabled={!email}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+                >
+                  Continue
+                </button>
+              </div>
+            </form>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            {progressBar}
+            <form onSubmit={handlePersonalInfoSubmit} className="space-y-6">
+              <div className="space-y-4">
+                <div>
+                  <label htmlFor="firstName" className="block text-sm font-medium text-gray-700">
+                    First Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="firstName"
+                    name="firstName"
+                    required
+                    value={formData.firstName}
+                    onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">
+                    Last Name *
+                  </label>
+                  <input
+                    type="text"
+                    id="lastName"
+                    name="lastName"
+                    required
+                    value={formData.lastName}
+                    onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">
+                    Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    required
+                    value={formData.phoneNumber}
+                    onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
+                    className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  />
+                </div>
+                <div>
                   <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">
                     Date of Birth *
                   </label>
@@ -275,186 +296,25 @@ const App = () => {
                     onChange={(e) => setFormData({ ...formData, dateOfBirth: e.target.value })}
                     className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                   />
-                  <button
-                    type="submit"
-                    className="group w-full bg-primary text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden hover:bg-primary/90"
-                  >
-                    <span className="relative z-10 text-lg transition-transform group-hover:scale-105">
-                      Start Background Check
-                    </span>
-                    <ArrowRight className="h-5 w-5 relative z-10 transition-all duration-300 transform group-hover:translate-x-1" />
-                  </button>
-                </form>
-              </div>
-            </div>
-          </div>
-        );
-
-      case 2:
-        return (
-          <div className="space-y-6">
-            {progressBar}
-            <div className="bg-white rounded-xl p-6 shadow-lg space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="legalFirstName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Legal First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="legalFirstName"
-                    value={formData.legalFirstName}
-                    onChange={(e) => setFormData({ ...formData, legalFirstName: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="legalMiddleName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Legal Middle Name (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    id="legalMiddleName"
-                    value={formData.legalMiddleName}
-                    onChange={(e) => setFormData({ ...formData, legalMiddleName: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="legalLastName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Legal Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="legalLastName"
-                    value={formData.legalLastName}
-                    onChange={(e) => setFormData({ ...formData, legalLastName: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1">
-                    Date of Birth
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    <select
-                      value={formData.dateOfBirth.split('-')[1] || ''}
-                      onChange={(e) => {
-                        const [year] = formData.dateOfBirth.split('-');
-                        setFormData({
-                          ...formData,
-                          dateOfBirth: `${year || new Date().getFullYear()}-${e.target.value}-`
-                        });
-                      }}
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    >
-                      <option value="">Month</option>
-                      {Array.from({ length: 12 }, (_, i) => {
-                        const month = i + 1;
-                        return (
-                          <option key={month} value={month.toString().padStart(2, '0')}>
-                            {month.toString().padStart(2, '0')} - {new Date(2000, i).toLocaleString('default', { month: 'long' })}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    <select
-                      value={formData.dateOfBirth.split('-')[2] || ''}
-                      onChange={(e) => {
-                        const [year, month] = formData.dateOfBirth.split('-');
-                        setFormData({
-                          ...formData,
-                          dateOfBirth: `${year || new Date().getFullYear()}-${month || '01'}-${e.target.value}`
-                        });
-                      }}
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    >
-                      <option value="">Day</option>
-                      {Array.from({ length: 31 }, (_, i) => {
-                        const day = i + 1;
-                        return (
-                          <option key={day} value={day.toString().padStart(2, '0')}>
-                            {day}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    <select
-                      value={formData.dateOfBirth.split('-')[0] || ''}
-                      onChange={(e) => {
-                        const [_, month, day] = formData.dateOfBirth.split('-');
-                        setFormData({
-                          ...formData,
-                          dateOfBirth: `${e.target.value}-${month || '01'}-${day || '01'}`
-                        });
-                      }}
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    >
-                      <option value="">Year</option>
-                      {Array.from({ length: 100 }, (_, i) => {
-                        const year = new Date().getFullYear() - i - 16; // Start from 16 years ago
-                        return (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
                 </div>
               </div>
-
-              <div className="space-y-4">
-                <div className="flex gap-2">
-                  <input
-                    type="text"
-                    value={voucherCode}
-                    onChange={(e) => setVoucherCode(e.target.value)}
-                    placeholder="Enter voucher code"
-                    className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                    disabled={isApplyingVoucher || !!appliedVoucher}
-                  />
-                  <button
-                    onClick={handleApplyVoucher}
-                    disabled={isApplyingVoucher || !voucherCode || !!appliedVoucher}
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
-                  >
-                    {isApplyingVoucher ? 'Applying...' : 'Apply'}
-                  </button>
-                </div>
-                {voucherError && (
-                  <p className="text-red-500 text-sm">{voucherError}</p>
-                )}
-                {renderPricing()}
-              </div>
-
-              <div className="flex justify-end space-x-3">
+              <div className="flex justify-between">
                 <button
-                  onClick={() => setStep(step - 1)}
-                  className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="inline-flex justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                 >
                   Back
                 </button>
                 <button
-                  onClick={() => {
-                    if (formData.legalFirstName && formData.legalLastName && formData.dateOfBirth) {
-                      setStep(step + 1);
-                    }
-                  }}
-                  disabled={!formData.legalFirstName || !formData.legalLastName || !formData.dateOfBirth}
-                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
+                  type="submit"
+                  disabled={!formData.firstName || !formData.lastName || !formData.phoneNumber || !formData.dateOfBirth}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                 >
                   Continue
                 </button>
               </div>
-            </div>
+            </form>
           </div>
         );
 
@@ -462,61 +322,41 @@ const App = () => {
         return (
           <div className="space-y-6">
             {progressBar}
-            <Elements stripe={stripePromise}>
-              <StripePayment 
-                onSuccess={handlePaymentSuccess}
-                onBack={() => setStep(2)}
-                price={price}
-                promotionCode={appliedVoucher}
-                formData={{
-                  firstName: formData.firstName,
-                  middleName: formData.middleName,
-                  lastName: formData.lastName,
-                  email: email,
-                  phoneNumber: formData.phoneNumber,
-                  dateOfBirth: formData.dateOfBirth,
-                  streetAddress: formData.streetAddress,
-                  city: formData.city,
-                  province: formData.province,
-                  postalCode: formData.postalCode
-                }} 
-              />
-            </Elements>
-            <div className="bg-primary/5 rounded-xl p-6">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-800">Have a voucher code?</h3>
-                <span className="text-sm text-gray-600">Optional</span>
-              </div>
-              <div className="flex space-x-2">
+            <div className="space-y-4">
+              <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="Enter code"
-                  className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
                   value={voucherCode}
-                  onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                  onChange={(e) => setVoucherCode(e.target.value)}
+                  placeholder="Enter voucher code"
+                  className="flex-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                  disabled={isApplyingVoucher || !!appliedVoucher}
                 />
                 <button
                   onClick={handleApplyVoucher}
-                  disabled={!voucherCode || isApplyingVoucher}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    !voucherCode || isApplyingVoucher
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-primary text-white hover:bg-primary/90'
-                  }`}
+                  disabled={isApplyingVoucher || !voucherCode || !!appliedVoucher}
+                  className="inline-flex justify-center rounded-md border border-transparent bg-blue-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
                 >
                   {isApplyingVoucher ? 'Applying...' : 'Apply'}
                 </button>
               </div>
               {voucherError && (
-                <p className="mt-2 text-sm text-red-600">{voucherError}</p>
+                <p className="text-red-500 text-sm">{voucherError}</p>
               )}
-              {appliedVoucher && (
-                <div className="mt-2 flex items-center text-sm text-primary">
-                  <CheckCircle className="h-4 w-4 mr-1" />
-                  <span>Voucher applied successfully!</span>
-                </div>
-              )}
+              {renderPricing()}
             </div>
+            <Elements stripe={stripePromise}>
+              <StripePayment
+                onSuccess={handlePaymentSuccess}
+                onBack={() => setStep(2)}
+                price={discountedPrice || originalPrice}
+                promotionCode={appliedVoucher}
+                formData={{
+                  ...formData,
+                  email
+                }}
+              />
+            </Elements>
           </div>
         );
 
