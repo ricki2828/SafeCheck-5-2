@@ -6,6 +6,7 @@ import {
   useElements,
   Elements,
 } from '@stripe/react-stripe-js';
+import type { StripeElementsOptions } from '@stripe/stripe-js';
 import { stripePromise } from '../lib/stripe';
 import { BackgroundCheckResponse } from '../types/schema';
 
@@ -235,12 +236,12 @@ export function StripePayment({ onSuccess, price, voucherCode, formData }: Strip
     );
   }
 
-  const options = {
+  const options: StripeElementsOptions = {
     clientSecret,
     appearance: {
       theme: 'stripe',
       variables: {
-        colorPrimary: '#1DB954',
+        colorPrimary: '#0F766E',
       },
     },
   };
