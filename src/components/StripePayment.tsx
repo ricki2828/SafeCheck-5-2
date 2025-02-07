@@ -128,7 +128,17 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, formData }: Stripe
         </div>
         <div className="space-y-4">
           <div className="bg-white rounded-xl p-4 border-2 border-gray-200">
-            <PaymentElement />
+            <PaymentElement 
+              options={{
+                defaultValues: {
+                  billingDetails: {
+                    address: {
+                      country: 'CA',
+                    }
+                  }
+                }
+              }}
+            />
           </div>
           {error && (
             <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
