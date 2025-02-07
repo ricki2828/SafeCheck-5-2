@@ -198,12 +198,20 @@ function App() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="w-full px-4 py-3 pr-14 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                      placeholder="name@example.com"
+                      placeholder="name@example.ca"
                       required
                     />
                     <div className="absolute right-3 top-1/2 -translate-y-1/2">
                       <div className="flex items-center justify-center w-8 h-6 bg-gray-100 rounded border border-gray-300 shadow-sm">
-                        <ArrowRight className="h-3.5 w-3.5 text-gray-500" />
+                        <svg 
+                          viewBox="0 0 24 24" 
+                          className="h-3.5 w-3.5 text-gray-500"
+                          fill="none" 
+                          stroke="currentColor" 
+                          strokeWidth="2"
+                        >
+                          <path d="M20 4h-9.5M20 4v9.5M20 4L4 20" />
+                        </svg>
                       </div>
                     </div>
                   </div>
