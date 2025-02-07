@@ -499,8 +499,18 @@ function App() {
 
   return (
     <main className="min-h-screen">
-      <Hero />
       <div className="relative">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute inset-0 -z-10 h-full w-full object-cover"
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
+        
         <header className="relative z-50">
           <div className="bg-dark/50 backdrop-blur-sm">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
