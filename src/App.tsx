@@ -104,13 +104,14 @@ function App() {
     setVoucherError('');
     
     try {
-      const response = await fetch('/.netlify/functions/validate-promotion', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ code: voucherCode }),
-      });
+      const response = await fetch('/.netlify/functions/validate-promotions',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ code: voucherCode }),
+        });
       
       const data = await response.json();
       
