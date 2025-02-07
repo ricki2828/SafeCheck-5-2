@@ -104,8 +104,7 @@ function App() {
     setVoucherError('');
     
     try {
-      // Call Stripe's API to validate the promotion code
-      const response = await fetch('/api/stripe/validate-promotion', {
+      const response = await fetch('/.netlify/functions/validate-promotion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -116,10 +115,11 @@ function App() {
       const data = await response.json();
       
       if (data.valid) {
-        setAppliedVoucher(data.promotion_code);
-        setVoucherCode(''); // Clear input after successful application
+        setAppliedVoucher(voucherCode);
+        // Update the price state or pass the discount to StripePayment
       } else {
         setVoucherError('Invalid promotion code');
+        setVoucherCode('');
       }
     } catch (error) {
       setVoucherError('Error applying promotion code. Please try again.');
@@ -385,18 +385,7 @@ function App() {
                 onBack={() => setStep(2)}
                 onSuccess={handlePaymentSuccess} 
                 price={price}
-                formData={{
-                  firstName: formData.firstName,
-                  middleName: formData.middleName,
-                  lastName: formData.lastName,
-                  email: email,
-                  phoneNumber: formData.phoneNumber,
-                  dateOfBirth: formData.dateOfBirth,
-                  streetAddress: formData.streetAddress,
-                  city: formData.city,
-                  province: formData.province,
-                  postalCode: formData.postalCode
-                }} 
+                formData={formData}
               />
             </Elements>
             <div className="bg-primary/5 rounded-xl p-6">
@@ -404,35 +393,65 @@ function App() {
                 <h3 className="font-semibold text-gray-800">Have a voucher code?</h3>
                 <span className="text-sm text-gray-600">Optional</span>
               </div>
-              <div className="flex space-x-2">
-                <input
-                  type="text"
-                  placeholder="Enter code"
-                  className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
-                  value={voucherCode}
-                  onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
-                />
-                <button
-                  onClick={handleApplyVoucher}
-                  disabled={!voucherCode || isApplyingVoucher}
-                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
-                    !voucherCode || isApplyingVoucher
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-primary text-white hover:bg-primary/90'
-                  }`}
-                >
-                  {isApplyingVoucher ? 'Applying...' : 'Apply'}
-                </button>
+              <div className="space-y-4">
+                {appliedVoucher ? (
+                  <div className="bg-white rounded-lg p-4 border-2 border-primary/20">
+                    <div className="flex justify-between items-center">
+                      <div>
+                        <p className="text-sm font-medium text-gray-600">Applied Voucher</p>
+                        <p className="text-lg font-semibold text-primary">{voucherCode}</p>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setAppliedVoucher('');
+                          setVoucherCode('');
+                        }}
+                        className="text-red-500 hover:text-red-600 text-sm"
+                      >
+                        Remove
+                      </button>
+                    </div>
+                    <div className="mt-3 pt-3 border-t border-gray-100">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Original Price:</span>
+                        <span className="line-through">${price.toFixed(2)} CAD</span>
+                      </div>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Discount:</span>
+                        <span className="text-green-600">-${(price * 0.1).toFixed(2)} CAD</span>
+                      </div>
+                      <div className="flex justify-between font-semibold mt-2">
+                        <span>Final Price:</span>
+                        <span className="text-primary">${(price * 0.9).toFixed(2)} CAD</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      placeholder="Enter code"
+                      className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
+                      value={voucherCode}
+                      onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                    />
+                    <button
+                      onClick={handleApplyVoucher}
+                      disabled={!voucherCode || isApplyingVoucher}
+                      className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                        !voucherCode || isApplyingVoucher
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-primary text-white hover:bg-primary/90'
+                      }`}
+                    >
+                      {isApplyingVoucher ? 'Applying...' : 'Apply'}
+                    </button>
+                  </div>
+                )}
+                {voucherError && (
+                  <p className="text-sm text-red-600">{voucherError}</p>
+                )}
               </div>
-              {voucherError && (
-                <p className="mt-2 text-sm text-red-600">{voucherError}</p>
-              )}
-              {appliedVoucher && (
-                <div className="mt-2 flex items-center text-sm text-primary">
-                  <CheckCircle className="h-4 w-4 mr-1" />
-                  <span>Voucher applied successfully!</span>
-                </div>
-              )}
             </div>
           </div>
         );

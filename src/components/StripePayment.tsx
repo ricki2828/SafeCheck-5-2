@@ -179,12 +179,9 @@ export function StripePayment({ onSuccess, onBack, price, voucherCode, formData 
   useEffect(() => {
     const createIntent = async () => {
       try {
-        // Determine the base URL based on environment
         const baseUrl = import.meta.env.DEV 
           ? 'http://localhost:8888' 
           : '';
-        
-        console.log('Making request to:', `${baseUrl}/.netlify/functions/create-payment-intent`);
         
         const response = await fetch(`${baseUrl}/.netlify/functions/create-payment-intent`, {
           method: 'POST',
