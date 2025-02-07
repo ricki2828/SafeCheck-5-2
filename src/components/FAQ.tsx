@@ -35,103 +35,56 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
 
 const FAQ = () => {
   return (
-    <section id="faq" className="py-20 bg-black">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 bg-dark/40 backdrop-blur-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
             Frequently Asked Questions
           </h2>
-          <p className="text-lg text-white/80">
-            Everything you need to know about our criminal record checks
-          </p>
         </div>
 
-        <div className="space-y-0">
-          <FAQItem
-            question="What type of background check do you provide?"
-            answer={
-              <p>
-                We provide comprehensive criminal record checks through Certn, a leading Canadian background screening provider. 
-                Our checks search the Canadian Police Information Centre (CPIC) database maintained by the RCMP, ensuring you get 
-                official and accurate results.
-              </p>
-            }
-          />
+        <div className="grid md:grid-cols-2 gap-8">
+          <div className="bg-dark/40 rounded-xl p-6 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold text-white mb-4">What information will my criminal record check show?</h3>
+            <p className="text-white/70">
+              Your criminal record check will show any criminal convictions, pending charges, and court orders registered in the RCMP National Repository of Criminal Records. This includes information from the Canadian Police Information Centre (CPIC) database.
+            </p>
+          </div>
 
-          <FAQItem
-            question="How long does it take to get results?"
-            answer={
-              <p>
-                Most results are available within 15 minutes. In some cases where additional review is needed, it may take up to 24 hours. 
-                You'll receive an email notification as soon as your results are ready.
-              </p>
-            }
-          />
+          <div className="bg-dark/40 rounded-xl p-6 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold text-white mb-4">What if I want to dispute my results?</h3>
+            <p className="text-white/70">
+              If you believe there are errors in your criminal record check results, you can submit a dispute. Contact us immediately and we'll guide you through the process of having your record reviewed and corrected if necessary.
+            </p>
+          </div>
 
-          <FAQItem
-            question="Are these checks accepted by employers?"
-            answer={
-              <p>
-                Yes! Our criminal record checks are provided through Certn, a trusted name in background screening. They are widely 
-                accepted by employers across Canada and comply with all relevant privacy and employment laws.
-              </p>
-            }
-          />
+          <div className="bg-dark/40 rounded-xl p-6 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold text-white mb-4">I have old records. Can I get them pardoned?</h3>
+            <p className="text-white/70">
+              Yes, you may be eligible for a record suspension (pardon) for old criminal records. This is a separate process from a criminal record check. We recommend consulting with a legal professional or pardon service to understand your eligibility and the application process.
+            </p>
+          </div>
 
-          <FAQItem
-            question="How do you verify my identity?"
-            answer={
-              <p>
-                We use Certn's secure electronic identity verification system. This allows us to verify your identity remotely, 
-                without requiring you to visit a police station or submit physical documents. The process is quick, secure, and 
-                meets all Canadian legal requirements.
-              </p>
-            }
-          />
+          <div className="bg-dark/40 rounded-xl p-6 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold text-white mb-4">How long does it take?</h3>
+            <p className="text-white/70">
+              Most results are available within 15 minutes. In some cases, additional verification may be required which can take 24-48 hours.
+            </p>
+          </div>
 
-          <FAQItem
-            question="Is my information secure?"
-            answer={
-              <>
-                <p>
-                  Absolutely. We take security seriously and partner with Certn, which maintains bank-level security standards. 
-                  Your information is:
-                </p>
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Encrypted using industry-leading protocols</li>
-                  <li>Stored securely in Canadian data centers</li>
-                  <li>Protected according to PIPEDA privacy regulations</li>
-                  <li>Never shared without your consent</li>
-                </ul>
-              </>
-            }
-          />
+          <div className="bg-dark/40 rounded-xl p-6 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold text-white mb-4">Is it secure?</h3>
+            <p className="text-white/70">
+              Yes, we use bank-level encryption to protect your information. Our service is fully compliant with Canadian privacy laws and RCMP requirements.
+            </p>
+          </div>
 
-          <FAQItem
-            question="What information do I need to provide?"
-            answer={
-              <>
-                <p>To complete your criminal record check, you'll need to provide:</p>
-                <ul className="list-disc pl-5 mt-2 space-y-1">
-                  <li>Full legal name</li>
-                  <li>Date of birth</li>
-                  <li>Current address</li>
-                  <li>Email address</li>
-                  <li>Valid government-issued ID (for identity verification)</li>
-                </ul>
-              </>
-            }
-          />
-
-          <FAQItem
-            question="Can I share my results with multiple employers?"
-            answer={
-              <p>
-                Yes! Once you receive your results, you'll get a secure PDF certificate that you can download and share with 
-                any employer. Your results will be available in your secure online account for 30 days.
-              </p>
-            }
-          />
+          <div className="bg-dark/40 rounded-xl p-6 backdrop-blur-sm">
+            <h3 className="text-xl font-semibold text-white mb-4">Is it accepted by employers?</h3>
+            <p className="text-white/70">
+              Yes, our criminal record checks are accepted by employers across Canada. The results come directly from the RCMP's Canadian Police Information Centre.
+            </p>
+          </div>
         </div>
       </div>
     </section>
