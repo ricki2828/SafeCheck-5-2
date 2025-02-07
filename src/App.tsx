@@ -392,13 +392,14 @@ function App() {
                 discountPercent={discountPercent}
               />
             </Elements>
+            
             <div className="bg-primary/5 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800">Have a voucher code?</h3>
                 <span className="text-sm text-gray-600">Optional</span>
               </div>
               <div className="space-y-4">
-                {appliedVoucher && (
+                {appliedVoucher ? (
                   <div className="bg-white rounded-lg p-4 border-2 border-primary/20">
                     <div className="flex justify-between items-center">
                       <div>
@@ -430,6 +431,27 @@ function App() {
                         <span className="text-primary">${(price * (1 - discountPercent / 100)).toFixed(2)} CAD</span>
                       </div>
                     </div>
+                  </div>
+                ) : (
+                  <div className="flex space-x-2">
+                    <input
+                      type="text"
+                      placeholder="Enter code"
+                      className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
+                      value={voucherCode}
+                      onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                    />
+                    <button
+                      onClick={handleApplyVoucher}
+                      disabled={!voucherCode || isApplyingVoucher}
+                      className={`px-6 py-2 rounded-lg font-medium transition-all duration-200 ${
+                        !voucherCode || isApplyingVoucher
+                          ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                          : 'bg-primary text-white hover:bg-primary/90'
+                      }`}
+                    >
+                      {isApplyingVoucher ? 'Applying...' : 'Apply'}
+                    </button>
                   </div>
                 )}
                 {voucherError && (
