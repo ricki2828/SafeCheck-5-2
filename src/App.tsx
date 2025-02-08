@@ -75,6 +75,7 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
   const [discountPercent, setDiscountPercent] = useState<number>(0);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -129,6 +130,35 @@ function App() {
       setIsApplyingVoucher(false);
     }
   };
+
+  const createPaymentIntent = async () => {
+    try {
+      const response = await fetch('/.netlify/functions/create-payment-intent', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          amount: Math.round(price * (1 - discountPercent / 100) * 100),
+          currency: 'cad',
+        }),
+      });
+
+      const data = await response.json();
+      if (data.error) {
+        throw new Error(data.error);
+      }
+      setClientSecret(data.clientSecret);
+    } catch (err) {
+      console.error('Error creating payment intent:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (step === 3) {
+      createPaymentIntent();
+    }
+  }, [step, price, discountPercent]);
 
   const renderStep = () => {
     const progressBar = step < 4 ? (
@@ -384,16 +414,18 @@ function App() {
         return (
           <div className="space-y-6">
             {progressBar}
-            <Elements stripe={stripePromise}>
-              <StripePayment 
-                onBack={() => setStep(2)}
-                onSuccess={handlePaymentSuccess} 
-                price={price}
-                formData={formData}
-                appliedVoucher={appliedVoucher}
-                discountPercent={discountPercent}
-              />
-            </Elements>
+            {clientSecret && (
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <StripePayment 
+                  onBack={() => setStep(2)}
+                  onSuccess={handlePaymentSuccess} 
+                  price={price}
+                  formData={formData}
+                  appliedVoucher={appliedVoucher}
+                  discountPercent={discountPercent}
+                />
+              </Elements>
+            )}
             
             <div className="bg-primary/5 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
