@@ -22,7 +22,6 @@ import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
 import { scrollToSection } from './utils/scroll';
-import { useLanguage } from './contexts/LanguageContext';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -77,7 +76,6 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
   const [discountPercent, setDiscountPercent] = useState<number>(0);
-  const { language, setLanguage, t } = useLanguage();
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,9 +135,9 @@ function App() {
     const progressBar = step < 4 ? (
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold text-gray-800">{t('order_progress')}</h2>
+          <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
           <span className="text-sm text-gray-600 font-medium">
-            {Math.ceil(remainingSeconds / 60)} {t('min_remaining')}
+            {Math.ceil(remainingSeconds / 60)} minutes remaining
           </span>
         </div>
         <div className="h-3 bg-gray-200 rounded-full shadow-inner">
@@ -163,21 +161,21 @@ function App() {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
               <div>
                 <h2 className="text-2xl font-bold text-gray-800">
-                  {t('get_background_check')}
+                  Get Your Background Check
                 </h2>
                 <p className="text-gray-600 mt-2">
-                  {t('background_check_description')}
+                  Background check description
                 </p>
               </div>
               <div className="flex flex-wrap gap-2">
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                  {t('instant_verification')}
+                  Instant Verification
                 </span>
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                  {t('rcmp_certified')}
+                  RCMP Certified
                 </span>
                 <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                  {t('secure_encrypted')}
+                  Secure Encrypted
                 </span>
               </div>
             </div>
@@ -187,31 +185,31 @@ function App() {
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">{t('trusted_service')}</h3>
-                <p className="text-gray-600 text-sm">{t('trusted_service_description')}</p>
+                <h3 className="font-semibold text-gray-800 mb-2">Trusted Service</h3>
+                <p className="text-gray-600 text-sm">Trusted service description</p>
               </div>
 
               <div className="bg-white p-6 rounded-xl shadow-sm border-2 border-gray-100">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Clock className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">{t('fast_results')}</h3>
-                <p className="text-gray-600 text-sm">{t('fast_results_description')}</p>
+                <h3 className="font-semibold text-gray-800 mb-2">Fast Results</h3>
+                <p className="text-gray-600 text-sm">Fast results description</p>
               </div>
 
               <div className="bg-white p-6 rounded-xl shadow-sm border-2 border-gray-100">
                 <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                   <Lock className="h-6 w-6 text-primary" />
                 </div>
-                <h3 className="font-semibold text-gray-800 mb-2">{t('secure_process')}</h3>
-                <p className="text-gray-600 text-sm">{t('secure_process_description')}</p>
+                <h3 className="font-semibold text-gray-800 mb-2">Secure Process</h3>
+                <p className="text-gray-600 text-sm">Secure process description</p>
               </div>
             </div>
 
             <form onSubmit={handleStartCheck} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('enter_email')}
+                  Enter Email
                 </label>
                 <input
                   type="email"
@@ -226,7 +224,7 @@ function App() {
                 type="submit"
                 className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center space-x-2"
               >
-                <span>{t('start_check')}</span>
+                <span>Start Check</span>
                 <ArrowRight className="h-5 w-5" />
               </button>
             </form>
@@ -238,12 +236,12 @@ function App() {
           <div className="space-y-6">
             {progressBar}
             <h2 className="text-2xl font-bold text-gray-800">
-              {t('important_information')}
+              Important Information
             </h2>
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('legal_first_name')}
+                  Legal First Name
                 </label>
                 <input
                   type="text"
@@ -255,7 +253,7 @@ function App() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('legal_last_name')}
+                  Legal Last Name
                 </label>
                 <input
                   type="text"
@@ -267,7 +265,7 @@ function App() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  {t('date_of_birth')}
+                  Date of Birth
                 </label>
                 <div className="grid grid-cols-3 gap-4">
                   <select
@@ -281,7 +279,7 @@ function App() {
                     }}
                     className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                   >
-                    <option value="">{t('year')}</option>
+                    <option value="">Year</option>
                     {Array.from({ length: 100 }, (_, i) => {
                       const year = new Date().getFullYear() - i - 16;
                       return (
@@ -302,7 +300,7 @@ function App() {
                     }}
                     className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                   >
-                    <option value="">{t('month')}</option>
+                    <option value="">Month</option>
                     {Array.from({ length: 12 }, (_, i) => {
                       const month = i + 1;
                       return (
@@ -323,7 +321,7 @@ function App() {
                     }}
                     className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
                   >
-                    <option value="">{t('day')}</option>
+                    <option value="">Day</option>
                     {Array.from({ length: 31 }, (_, i) => {
                       const day = i + 1;
                       return (
@@ -346,7 +344,7 @@ function App() {
                 disabled={!formData.legalFirstName || !formData.legalLastName || !formData.dateOfBirth.split('-').every(Boolean)}
                 className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
               >
-                <span>{t('continue')}</span>
+                <span>Continue</span>
                 <ArrowRight className="h-5 w-5" />
               </button>
             </div>
@@ -370,8 +368,8 @@ function App() {
             
             <div className="bg-primary/5 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-800">{t('have_voucher')}</h3>
-                <span className="text-sm text-gray-600">{t('optional')}</span>
+                <h3 className="font-semibold text-gray-800">Have Voucher</h3>
+                <span className="text-sm text-gray-600">Optional</span>
               </div>
               <div className="space-y-4">
                 {appliedVoucher ? (
@@ -411,7 +409,7 @@ function App() {
                   <div className="flex space-x-2">
                     <input
                       type="text"
-                      placeholder={t('enter_code')}
+                      placeholder="Enter code"
                       className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
                       value={voucherCode}
                       onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
@@ -425,7 +423,7 @@ function App() {
                           : 'bg-primary text-white hover:bg-primary/90'
                       }`}
                     >
-                      {isApplyingVoucher ? t('applying') : t('apply')}
+                      {isApplyingVoucher ? 'Applying' : 'Apply'}
                     </button>
                   </div>
                 )}
@@ -554,19 +552,13 @@ function App() {
                         onClick={() => scrollToSection('how-it-works')} 
                         className="text-white/70 hover:text-primary transition-colors"
                       >
-                        {t('how_it_works')}
+                        How It Works
                       </button>
                       <button 
                         onClick={() => scrollToSection('faq')} 
                         className="text-white/70 hover:text-primary transition-colors"
                       >
-                        {t('faq')}
-                      </button>
-                      <button
-                        onClick={() => setLanguage(language === 'en' ? 'fr' : 'en')}
-                        className="text-white/70 hover:text-primary transition-colors"
-                      >
-                        {language === 'en' ? 'FR' : 'EN'}
+                        FAQ
                       </button>
                     </div>
                   </nav>
@@ -581,7 +573,7 @@ function App() {
                     }} 
                     className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
                   >
-                    {t('how_it_works')}
+                    How It Works
                   </button>
                   <button 
                     onClick={() => {
@@ -590,7 +582,7 @@ function App() {
                     }} 
                     className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
                   >
-                    {t('faq')}
+                    FAQ
                   </button>
                 </div>
               </div>
