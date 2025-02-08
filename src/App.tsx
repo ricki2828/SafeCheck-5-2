@@ -528,15 +528,18 @@ function App() {
 
   return (
     <main className="min-h-screen relative">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="fixed inset-0 -z-10 h-screen w-screen object-cover"
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-0 right-0 h-full w-auto max-w-none object-cover"
+          style={{ minWidth: '100%' }}
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+      </div>
       <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
       
       <div className="relative">
