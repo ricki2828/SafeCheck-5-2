@@ -89,12 +89,16 @@ export default function StripePayment({
     clearError();
 
     try {
+      if (!stripe || !elements) {
+        throw new Error('Stripe not initialized');
+      }
+
       const { error: submitError } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${window.location.origin}/success`,
+          return_url: window.location.href,
         },
-        redirect: 'always'
+        redirect: 'if_required'
       });
 
       if (submitError) {
@@ -102,10 +106,8 @@ export default function StripePayment({
       }
 
       // Payment successful
-      onSuccess();
-      
-      // Create background check
       await createBackgroundCheck();
+      onSuccess();
     } catch (err) {
       handleError(err);
     } finally {
