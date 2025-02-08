@@ -567,8 +567,11 @@ function App() {
             loop
             muted
             playsInline
-            className="absolute top-0 right-0 h-full object-cover"
-            style={{ width: '130%', objectPosition: 'right center' }}
+            className="absolute top-0 h-auto min-h-full object-cover md:-right-[30%] right-0"
+            style={{ 
+              width: window.innerWidth >= 768 ? '160%' : '130%',
+              maxWidth: 'none'
+            }}
           >
             <source src="/videos/hero.mp4" type="video/mp4" />
           </video>
