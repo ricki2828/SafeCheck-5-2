@@ -527,140 +527,142 @@ function App() {
   };
 
   return (
-    <main className="min-h-screen relative">
-      <div className="fixed inset-0 -z-10 overflow-hidden">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute top-0 right-0 h-full w-auto max-w-none object-cover"
-          style={{ minWidth: '100%' }}
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-        </video>
-      </div>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
-      
-      <div className="relative">
-        <header className="relative z-50">
-          <div className="bg-dark/50 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-dark p-2 rounded-xl">
-                    <div className="flex items-center space-x-3">
-                      <Shield className="h-6 w-6 text-primary" />
-                      <div className="flex flex-col">
-                        <div className="flex items-baseline">
-                          <span className="text-xl font-black tracking-tight leading-none text-primary">
-                            SAFE<span className="text-white">hire</span>
-                          </span>
+    <div>
+      <main className="min-h-screen relative">
+        <div className="fixed inset-0 -z-10 overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-0 right-0 h-full w-auto max-w-none object-cover"
+            style={{ minWidth: '100%' }}
+          >
+            <source src="/videos/hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
+        
+        <div className="relative">
+          <header className="relative z-50">
+            <div className="bg-dark/50 backdrop-blur-sm">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-dark p-2 rounded-xl">
+                      <div className="flex items-center space-x-3">
+                        <Shield className="h-6 w-6 text-primary" />
+                        <div className="flex flex-col">
+                          <div className="flex items-baseline">
+                            <span className="text-xl font-black tracking-tight leading-none text-primary">
+                              SAFE<span className="text-white">hire</span>
+                            </span>
+                          </div>
+                          <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
                         </div>
-                        <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:hidden">
+                    <button
+                      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                      className="p-2 rounded-lg text-white/70 hover:text-primary"
+                    >
+                      {isMobileMenuOpen ? (
+                        <X className="h-5 w-5" />
+                      ) : (
+                        <Menu className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                  <nav className="hidden md:flex items-center">
+                    <div className="flex items-center space-x-8">
+                      <button 
+                        onClick={() => scrollToSection('how-it-works')} 
+                        className="text-white/70 hover:text-primary transition-colors"
+                      >
+                        How it Works
+                      </button>
+                      <button 
+                        onClick={() => scrollToSection('faq')} 
+                        className="text-white/70 hover:text-primary transition-colors"
+                      >
+                        FAQ
+                      </button>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+              <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+                <div className="px-4 pt-2 pb-6 space-y-4">
+                  <button 
+                    onClick={() => {
+                      scrollToSection('how-it-works');
+                      setIsMobileMenuOpen(false);
+                    }} 
+                    className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                  >
+                    How it Works
+                  </button>
+                  <button 
+                    onClick={() => {
+                      scrollToSection('faq');
+                      setIsMobileMenuOpen(false);
+                    }} 
+                    className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                  >
+                    FAQ
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div className="relative">
+            <div className="relative pt-8 pb-20">
+              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
+                  <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
+                    <div className="flex items-start gap-2">
+                      <img 
+                        src="/images/hockey-coach.png"
+                        alt="Hockey Coach" 
+                        className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                      />
+                      <div className="space-y-1">
+                        <p className="text-white/90 text-sm italic">
+                          "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
+                        </p>
+                        <p className="text-primary text-sm font-semibold">Mike Thompson</p>
+                        <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="md:hidden">
-                  <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="p-2 rounded-lg text-white/70 hover:text-primary"
-                  >
-                    {isMobileMenuOpen ? (
-                      <X className="h-5 w-5" />
-                    ) : (
-                      <Menu className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-                <nav className="hidden md:flex items-center">
-                  <div className="flex items-center space-x-8">
-                    <button 
-                      onClick={() => scrollToSection('how-it-works')} 
-                      className="text-white/70 hover:text-primary transition-colors"
-                    >
-                      How it Works
-                    </button>
-                    <button 
-                      onClick={() => scrollToSection('faq')} 
-                      className="text-white/70 hover:text-primary transition-colors"
-                    >
-                      FAQ
-                    </button>
-                  </div>
-                </nav>
-              </div>
-            </div>
-            <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-              <div className="px-4 pt-2 pb-6 space-y-4">
-                <button 
-                  onClick={() => {
-                    scrollToSection('how-it-works');
-                    setIsMobileMenuOpen(false);
-                  }} 
-                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                >
-                  How it Works
-                </button>
-                <button 
-                  onClick={() => {
-                    scrollToSection('faq');
-                    setIsMobileMenuOpen(false);
-                  }} 
-                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                >
-                  FAQ
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
-        <div className="relative">
-          <div className="relative pt-8 pb-20">
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
-                <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
-                  <div className="flex items-start gap-2">
-                    <img 
-                      src="/images/hockey-coach.png"
-                      alt="Hockey Coach" 
-                      className="w-10 h-10 rounded-full border-2 border-primary object-cover"
-                    />
-                    <div className="space-y-1">
-                      <p className="text-white/90 text-sm italic">
-                        "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
-                      </p>
-                      <p className="text-primary text-sm font-semibold">Mike Thompson</p>
-                      <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                  <div className="order-2 lg:order-1">
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-[1.02] transition-transform duration-300">
+                      <h2 className="text-gray-800 text-2xl font-bold mb-6">
+                        {step === 1
+                          ? 'Get Your Background Check'
+                          : step === 2
+                          ? 'Important Information'
+                          : step === 3
+                          ? 'Payment Information'
+                          : 'Review Information'}
+                      </h2>
+                      {renderStep()}
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div className="order-2 lg:order-1">
-                  <div className="bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-[1.02] transition-transform duration-300">
-                    <h2 className="text-gray-800 text-2xl font-bold mb-6">
-                      {step === 1
-                        ? 'Get Your Background Check'
-                        : step === 2
-                        ? 'Important Information'
-                        : step === 3
-                        ? 'Payment Information'
-                        : 'Review Information'}
-                    </h2>
-                    {renderStep()}
-                  </div>
-                </div>
-                <div className="order-1 lg:order-2">
-                  <div className="space-y-6 translate-y-0 md:translate-y-1/2">
-                    <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
-                      <h1 className="text-4xl font-bold text-white">
-                        The fastest official criminal check in Canada
-                      </h1>
-                      <p className="text-xl text-white/80 mt-4">
-                        Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
-                      </p>
+                  <div className="order-1 lg:order-2">
+                    <div className="space-y-6 translate-y-0 md:translate-y-1/2">
+                      <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
+                        <h1 className="text-4xl font-bold text-white">
+                          The fastest official criminal check in Canada
+                        </h1>
+                        <p className="text-xl text-white/80 mt-4">
+                          Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -668,12 +670,12 @@ function App() {
             </div>
           </div>
         </div>
-      </div>
+      </main>
       <div id="how-it-works" className="-mt-16 pt-16" />
       <HowItWorks />
       <div id="faq" className="-mt-16 pt-16" />
       <FAQ />
-    </main>
+    </div>
   );
 }
 
