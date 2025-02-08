@@ -11,7 +11,8 @@ import {
   Search,
   Mail,
   Menu,
-  X
+  X,
+  Lock
 } from 'lucide-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -21,6 +22,7 @@ import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
 import { scrollToSection } from './utils/scroll';
+import { useLanguage } from './contexts/LanguageContext';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -75,6 +77,7 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [remainingSeconds, setRemainingSeconds] = useState(120);
   const [discountPercent, setDiscountPercent] = useState<number>(0);
+  const { language, setLanguage, t } = useLanguage();
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,9 +137,9 @@ function App() {
     const progressBar = step < 4 ? (
       <div className="mb-8">
         <div className="flex justify-between items-center mb-2">
-          <h2 className="text-lg font-semibold text-gray-800">Order Progress</h2>
+          <h2 className="text-lg font-semibold text-gray-800">{t('order_progress')}</h2>
           <span className="text-sm text-gray-600 font-medium">
-            {Math.ceil(remainingSeconds / 60)} min remaining
+            {Math.ceil(remainingSeconds / 60)} {t('min_remaining')}
           </span>
         </div>
         <div className="h-3 bg-gray-200 rounded-full shadow-inner">
@@ -157,80 +160,76 @@ function App() {
         return (
           <div className="space-y-6">
             {progressBar}
-            <div className="relative border-2 border-gray-200 rounded-xl p-6 cursor-pointer group hover:border-primary transition-all duration-300">
-              <img 
-                src="/images/medal.svg" 
-                alt="Trust Medal" 
-                className="absolute -top-8 -right-8 w-32 h-32 z-10"
-              />
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-800">Criminal Record Check</h3>
-                  <p className="text-sm text-gray-600">Comprehensive background verification</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-lg font-bold text-primary">${price}</p>
-                </div>
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 md:gap-8">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-800">
+                  {t('get_background_check')}
+                </h2>
+                <p className="text-gray-600 mt-2">
+                  {t('background_check_description')}
+                </p>
               </div>
-              <div className="bg-primary/5 rounded-xl p-4">
-                <ul className="space-y-2">
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Searches the RCMP's Canadian Police Information Centre (CPIC)</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Results typically available within 15 minutes</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Accepted by Canadian employers</span>
-                  </li>
-                  <li className="flex items-start space-x-2">
-                    <Check className="h-4 w-4 text-primary mr-2 flex-shrink-0" />
-                    <span className="text-sm">Secure digital delivery</span>
-                  </li>
-                </ul>
-                <form onSubmit={handleStartCheck} className="mt-6 space-y-6">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Your email address
-                  </label>
-                  <div className="relative">
-                    <input
-                      type="email"
-                      id="email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 pr-14 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                      placeholder="name@example.ca"
-                      required
-                    />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      <div className="flex items-center justify-center w-8 h-6 bg-gray-100 rounded border border-gray-300 shadow-sm">
-                        <svg 
-                          viewBox="0 0 24 24" 
-                          className="h-3.5 w-3.5 text-gray-500"
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2"
-                        >
-                          <path d="M20 4L20 10L8 10L8 6L3 12L8 18L8 14L20 14L20 20" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    className="group w-full bg-primary text-white font-bold py-4 px-6 rounded-xl flex items-center justify-center space-x-2 transition-all duration-300 shadow-lg hover:shadow-xl relative overflow-hidden hover:bg-primary/90"
-                  >
-                    <span className="relative z-10 text-lg transition-transform group-hover:scale-105">
-                      Start Background Check
-                    </span>
-                    <ArrowRight className="h-5 w-5 relative z-10 transition-all duration-300 transform group-hover:translate-x-1" />
-                  </button>
-                </form>
+              <div className="flex flex-wrap gap-2">
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                  {t('instant_verification')}
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                  {t('rcmp_certified')}
+                </span>
+                <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                  {t('secure_encrypted')}
+                </span>
               </div>
             </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-sm border-2 border-gray-100">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-gray-800 mb-2">{t('trusted_service')}</h3>
+                <p className="text-gray-600 text-sm">{t('trusted_service_description')}</p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl shadow-sm border-2 border-gray-100">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Clock className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-gray-800 mb-2">{t('fast_results')}</h3>
+                <p className="text-gray-600 text-sm">{t('fast_results_description')}</p>
+              </div>
+
+              <div className="bg-white p-6 rounded-xl shadow-sm border-2 border-gray-100">
+                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
+                  <Lock className="h-6 w-6 text-primary" />
+                </div>
+                <h3 className="font-semibold text-gray-800 mb-2">{t('secure_process')}</h3>
+                <p className="text-gray-600 text-sm">{t('secure_process_description')}</p>
+              </div>
+            </div>
+
+            <form onSubmit={handleStartCheck} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('enter_email')}
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="email@example.com"
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  required
+                />
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors flex items-center justify-center space-x-2"
+              >
+                <span>{t('start_check')}</span>
+                <ArrowRight className="h-5 w-5" />
+              </button>
+            </form>
           </div>
         );
 
@@ -238,144 +237,118 @@ function App() {
         return (
           <div className="space-y-6">
             {progressBar}
-            <div className="bg-white rounded-xl p-6 shadow-lg space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <label htmlFor="legalFirstName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Legal First Name
-                  </label>
-                  <input
-                    type="text"
-                    id="legalFirstName"
-                    value={formData.legalFirstName}
-                    onChange={(e) => setFormData({ ...formData, legalFirstName: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="legalMiddleName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Legal Middle Name (Optional)
-                  </label>
-                  <input
-                    type="text"
-                    id="legalMiddleName"
-                    value={formData.legalMiddleName}
-                    onChange={(e) => setFormData({ ...formData, legalMiddleName: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="legalLastName" className="block text-sm font-medium text-gray-700 mb-1">
-                    Legal Last Name
-                  </label>
-                  <input
-                    type="text"
-                    id="legalLastName"
-                    value={formData.legalLastName}
-                    onChange={(e) => setFormData({ ...formData, legalLastName: e.target.value })}
-                    className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700 mb-1">
-                    Date of Birth
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    <select
-                      value={formData.dateOfBirth.split('-')[1] || ''}
-                      onChange={(e) => {
-                        const [year, _, day] = formData.dateOfBirth.split('-');
-                        setFormData({
-                          ...formData,
-                          dateOfBirth: `${year || ''}-${e.target.value}-${day || ''}`
-                        });
-                      }}
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    >
-                      <option value="">Month</option>
-                      {Array.from({ length: 12 }, (_, i) => {
-                        const month = i + 1;
-                        return (
-                          <option key={month} value={month.toString().padStart(2, '0')}>
-                            {month.toString().padStart(2, '0')} - {new Date(2000, i).toLocaleString('default', { month: 'long' })}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    <select
-                      value={formData.dateOfBirth.split('-')[2] || ''}
-                      onChange={(e) => {
-                        const [year, month, _] = formData.dateOfBirth.split('-');
-                        setFormData({
-                          ...formData,
-                          dateOfBirth: `${year || ''}-${month || ''}-${e.target.value}`
-                        });
-                      }}
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    >
-                      <option value="">Day</option>
-                      {Array.from({ length: 31 }, (_, i) => {
-                        const day = i + 1;
-                        return (
-                          <option key={day} value={day.toString().padStart(2, '0')}>
-                            {day}
-                          </option>
-                        );
-                      })}
-                    </select>
-
-                    <select
-                      value={formData.dateOfBirth.split('-')[0] || ''}
-                      onChange={(e) => {
-                        const [_, month, day] = formData.dateOfBirth.split('-');
-                        setFormData({
-                          ...formData,
-                          dateOfBirth: `${e.target.value}-${month || ''}-${day || ''}`
-                        });
-                      }}
-                      className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                    >
-                      <option value="">Year</option>
-                      {Array.from({ length: 100 }, (_, i) => {
-                        const year = new Date().getFullYear() - i - 16;
-                        return (
-                          <option key={year} value={year}>
-                            {year}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  </div>
+            <h2 className="text-2xl font-bold text-gray-800">
+              {t('important_information')}
+            </h2>
+            <div className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('legal_first_name')}
+                </label>
+                <input
+                  type="text"
+                  value={formData.legalFirstName}
+                  onChange={(e) => setFormData({ ...formData, legalFirstName: e.target.value })}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('legal_last_name')}
+                </label>
+                <input
+                  type="text"
+                  value={formData.legalLastName}
+                  onChange={(e) => setFormData({ ...formData, legalLastName: e.target.value })}
+                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  {t('date_of_birth')}
+                </label>
+                <div className="grid grid-cols-3 gap-4">
+                  <select
+                    value={formData.dateOfBirth.split('-')[0] || ''}
+                    onChange={(e) => {
+                      const [year, _, day] = formData.dateOfBirth.split('-');
+                      setFormData({
+                        ...formData,
+                        dateOfBirth: `${year || ''}-${e.target.value}-${day || ''}`
+                      });
+                    }}
+                    className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  >
+                    <option value="">{t('year')}</option>
+                    {Array.from({ length: 100 }, (_, i) => {
+                      const year = new Date().getFullYear() - i - 16;
+                      return (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <select
+                    value={formData.dateOfBirth.split('-')[1] || ''}
+                    onChange={(e) => {
+                      const [year, month, _] = formData.dateOfBirth.split('-');
+                      setFormData({
+                        ...formData,
+                        dateOfBirth: `${year || ''}-${e.target.value}-${_ || ''}`
+                      });
+                    }}
+                    className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  >
+                    <option value="">{t('month')}</option>
+                    {Array.from({ length: 12 }, (_, i) => {
+                      const month = i + 1;
+                      return (
+                        <option key={month} value={month.toString().padStart(2, '0')}>
+                          {month.toString().padStart(2, '0')} - {new Date(2000, i).toLocaleString('default', { month: 'long' })}
+                        </option>
+                      );
+                    })}
+                  </select>
+                  <select
+                    value={formData.dateOfBirth.split('-')[2] || ''}
+                    onChange={(e) => {
+                      const [year, month, _] = formData.dateOfBirth.split('-');
+                      setFormData({
+                        ...formData,
+                        dateOfBirth: `${year || ''}-${month || ''}-${e.target.value}`
+                      });
+                    }}
+                    className="px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200"
+                  >
+                    <option value="">{t('day')}</option>
+                    {Array.from({ length: 31 }, (_, i) => {
+                      const day = i + 1;
+                      return (
+                        <option key={day} value={day.toString().padStart(2, '0')}>
+                          {day}
+                        </option>
+                      );
+                    })}
+                  </select>
                 </div>
               </div>
-
-              <div className="flex justify-end space-x-3">
-                <button
-                  onClick={() => setStep(step - 1)}
-                  className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={() => {
-                    const [year, month, day] = formData.dateOfBirth.split('-');
-                    const isDateComplete = Boolean(year && month && day);
-                    if (formData.legalFirstName && formData.legalLastName && isDateComplete) {
-                      setStep(step + 1);
-                    }
-                  }}
-                  disabled={!formData.legalFirstName || !formData.legalLastName || !formData.dateOfBirth.split('-').every(Boolean)}
-                  className="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed"
-                >
-                  Continue
-                </button>
-              </div>
+              <button
+                onClick={() => {
+                  const [year, month, day] = formData.dateOfBirth.split('-');
+                  const isDateComplete = Boolean(year && month && day);
+                  if (formData.legalFirstName && formData.legalLastName && isDateComplete) {
+                    setStep(step + 1);
+                  }
+                }}
+                disabled={!formData.legalFirstName || !formData.legalLastName || !formData.dateOfBirth.split('-').every(Boolean)}
+                className="w-full bg-primary text-white font-semibold py-3 px-6 rounded-xl hover:bg-primary/90 transition-colors disabled:bg-gray-300 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              >
+                <span>{t('continue')}</span>
+                <ArrowRight className="h-5 w-5" />
+              </button>
             </div>
           </div>
         );
@@ -397,8 +370,8 @@ function App() {
             
             <div className="bg-primary/5 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
-                <h3 className="font-semibold text-gray-800">Have a voucher code?</h3>
-                <span className="text-sm text-gray-600">Optional</span>
+                <h3 className="font-semibold text-gray-800">{t('have_voucher')}</h3>
+                <span className="text-sm text-gray-600">{t('optional')}</span>
               </div>
               <div className="space-y-4">
                 {appliedVoucher ? (
@@ -438,7 +411,7 @@ function App() {
                   <div className="flex space-x-2">
                     <input
                       type="text"
-                      placeholder="Enter code"
+                      placeholder={t('enter_code')}
                       className="flex-1 px-4 py-2 border-2 border-gray-200 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 uppercase"
                       value={voucherCode}
                       onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
@@ -452,7 +425,7 @@ function App() {
                           : 'bg-primary text-white hover:bg-primary/90'
                       }`}
                     >
-                      {isApplyingVoucher ? 'Applying...' : 'Apply'}
+                      {isApplyingVoucher ? t('applying') : t('apply')}
                     </button>
                   </div>
                 )}
@@ -528,136 +501,147 @@ function App() {
 
   return (
     <main className="min-h-screen relative">
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
-        className="fixed inset-0 -z-10 h-screen w-screen object-cover"
-      >
-        <source src="/videos/hero.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
-      
-      <div className="relative">
-        <header className="relative z-50">
-          <div className="bg-dark/50 backdrop-blur-sm">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center space-x-3">
-                  <div className="bg-dark p-2 rounded-xl">
-                    <div className="flex items-center space-x-3">
-                      <Shield className="h-6 w-6 text-primary" />
-                      <div className="flex flex-col">
-                        <div className="flex items-baseline">
-                          <span className="text-xl font-black tracking-tight leading-none text-primary">
-                            SAFE<span className="text-white">hire</span>
-                          </span>
+      <div className="relative min-h-screen">
+        <div className="absolute inset-0 overflow-hidden">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute top-0 right-0 h-full w-auto max-w-none object-cover"
+            style={{ minWidth: '100%' }}
+          >
+            <source src="/background.mp4" type="video/mp4" />
+          </video>
+        </div>
+        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
+        
+        <div className="relative">
+          <header className="relative z-50">
+            <div className="bg-dark/50 backdrop-blur-sm">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-dark p-2 rounded-xl">
+                      <div className="flex items-center space-x-3">
+                        <Shield className="h-6 w-6 text-primary" />
+                        <div className="flex flex-col">
+                          <div className="flex items-baseline">
+                            <span className="text-xl font-black tracking-tight leading-none text-primary">
+                              SAFE<span className="text-white">hire</span>
+                            </span>
+                          </div>
+                          <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
                         </div>
-                        <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="md:hidden">
+                    <button
+                      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                      className="p-2 rounded-lg text-white/70 hover:text-primary"
+                    >
+                      {isMobileMenuOpen ? (
+                        <X className="h-5 w-5" />
+                      ) : (
+                        <Menu className="h-5 w-5" />
+                      )}
+                    </button>
+                  </div>
+                  <nav className="hidden md:flex items-center">
+                    <div className="flex items-center space-x-8">
+                      <button 
+                        onClick={() => scrollToSection('how-it-works')} 
+                        className="text-white/70 hover:text-primary transition-colors"
+                      >
+                        {t('how_it_works')}
+                      </button>
+                      <button 
+                        onClick={() => scrollToSection('faq')} 
+                        className="text-white/70 hover:text-primary transition-colors"
+                      >
+                        {t('faq')}
+                      </button>
+                      <button
+                        onClick={() => setLanguage(language === 'en' ? 'fr' : 'en')}
+                        className="text-white/70 hover:text-primary transition-colors"
+                      >
+                        {language === 'en' ? 'FR' : 'EN'}
+                      </button>
+                    </div>
+                  </nav>
+                </div>
+              </div>
+              <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
+                <div className="px-4 pt-2 pb-6 space-y-4">
+                  <button 
+                    onClick={() => {
+                      scrollToSection('how-it-works');
+                      setIsMobileMenuOpen(false);
+                    }} 
+                    className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                  >
+                    {t('how_it_works')}
+                  </button>
+                  <button 
+                    onClick={() => {
+                      scrollToSection('faq');
+                      setIsMobileMenuOpen(false);
+                    }} 
+                    className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
+                  >
+                    {t('faq')}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </header>
+          <div className="relative">
+            <div className="relative pt-8 pb-20">
+              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
+                  <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
+                    <div className="flex items-start gap-2">
+                      <img 
+                        src="/images/hockey-coach.png"
+                        alt="Hockey Coach" 
+                        className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                      />
+                      <div className="space-y-1">
+                        <p className="text-white/90 text-sm italic">
+                          "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
+                        </p>
+                        <p className="text-primary text-sm font-semibold">Mike Thompson</p>
+                        <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div className="md:hidden">
-                  <button
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                    className="p-2 rounded-lg text-white/70 hover:text-primary"
-                  >
-                    {isMobileMenuOpen ? (
-                      <X className="h-5 w-5" />
-                    ) : (
-                      <Menu className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-                <nav className="hidden md:flex items-center">
-                  <div className="flex items-center space-x-8">
-                    <button 
-                      onClick={() => scrollToSection('how-it-works')} 
-                      className="text-white/70 hover:text-primary transition-colors"
-                    >
-                      How it Works
-                    </button>
-                    <button 
-                      onClick={() => scrollToSection('faq')} 
-                      className="text-white/70 hover:text-primary transition-colors"
-                    >
-                      FAQ
-                    </button>
-                  </div>
-                </nav>
-              </div>
-            </div>
-            <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-              <div className="px-4 pt-2 pb-6 space-y-4">
-                <button 
-                  onClick={() => {
-                    scrollToSection('how-it-works');
-                    setIsMobileMenuOpen(false);
-                  }} 
-                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                >
-                  How it Works
-                </button>
-                <button 
-                  onClick={() => {
-                    scrollToSection('faq');
-                    setIsMobileMenuOpen(false);
-                  }} 
-                  className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                >
-                  FAQ
-                </button>
-              </div>
-            </div>
-          </div>
-        </header>
-        <div className="relative">
-          <div className="relative pt-8 pb-20">
-            <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
-                <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
-                  <div className="flex items-start gap-2">
-                    <img 
-                      src="/images/hockey-coach.png"
-                      alt="Hockey Coach" 
-                      className="w-10 h-10 rounded-full border-2 border-primary object-cover"
-                    />
-                    <div className="space-y-1">
-                      <p className="text-white/90 text-sm italic">
-                        "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
-                      </p>
-                      <p className="text-primary text-sm font-semibold">Mike Thompson</p>
-                      <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                  <div className="order-2 lg:order-1">
+                    <div className="bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-[1.02] transition-transform duration-300">
+                      <h2 className="text-gray-800 text-2xl font-bold mb-6">
+                        {step === 1
+                          ? 'Get Your Background Check'
+                          : step === 2
+                          ? 'Important Information'
+                          : step === 3
+                          ? 'Payment Information'
+                          : 'Review Information'}
+                      </h2>
+                      {renderStep()}
                     </div>
                   </div>
-                </div>
-              </div>
-              <div className="grid lg:grid-cols-2 gap-12 items-center">
-                <div className="order-2 lg:order-1">
-                  <div className="bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-[1.02] transition-transform duration-300">
-                    <h2 className="text-gray-800 text-2xl font-bold mb-6">
-                      {step === 1
-                        ? 'Get Your Background Check'
-                        : step === 2
-                        ? 'Important Information'
-                        : step === 3
-                        ? 'Payment Information'
-                        : 'Review Information'}
-                    </h2>
-                    {renderStep()}
-                  </div>
-                </div>
-                <div className="order-1 lg:order-2">
-                  <div className="space-y-6 translate-y-0 md:translate-y-1/2">
-                    <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
-                      <h1 className="text-4xl font-bold text-white">
-                        The fastest official criminal check in Canada
-                      </h1>
-                      <p className="text-xl text-white/80 mt-4">
-                        Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
-                      </p>
+                  <div className="order-1 lg:order-2">
+                    <div className="space-y-6 translate-y-0 md:translate-y-1/2">
+                      <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
+                        <h1 className="text-4xl font-bold text-white">
+                          The fastest official criminal check in Canada
+                        </h1>
+                        <p className="text-xl text-white/80 mt-4">
+                          Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
