@@ -9,6 +9,7 @@ import {
 import type { StripeElementsOptions } from '@stripe/stripe-js';
 import { stripePromise } from '../lib/stripe';
 import { BackgroundCheckResponse } from '../types/schema';
+import { useErrorHandler } from '../hooks/useErrorHandler';
 
 interface StripePaymentProps {
   onSuccess: () => void;
@@ -35,16 +36,19 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, di
   const stripe = useStripe();
   const elements = useElements();
   const [processing, setProcessing] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const { error, handleError, clearError } = useErrorHandler();
   const [backgroundCheck, setBackgroundCheck] = useState<BackgroundCheckResponse | null>(null);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!stripe || !elements) return;
+    if (!stripe || !elements) {
+      handleError(new Error('Stripe has not been properly initialized'));
+      return;
+    }
 
     setProcessing(true);
-    setError(null);
+    clearError();
 
     try {
       const { error: submitError } = await stripe.confirmPayment({
@@ -56,51 +60,55 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, di
       });
 
       if (submitError) {
-        setError(submitError.message || 'Payment failed');
-      } else {
-        // Payment successful - call onSuccess immediately
-        onSuccess();
-        
-        // Try background check creation separately
-        try {
-          const response = await fetch('/.netlify/functions/create-background-check', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              first_name: formData.firstName,
-              middle_name: formData.middleName,
-              last_name: formData.lastName,
-              email: formData.email,
-              phone: formData.phoneNumber,
-              date_of_birth: formData.dateOfBirth,
-              address: {
-                street_address: formData.streetAddress,
-                city: formData.city,
-                province: formData.province,
-                postal_code: formData.postalCode,
-                country: 'CA',
-              },
-            }),
-          });
-
-          if (!response.ok) {
-            console.error('Background check creation failed:', await response.text());
-          } else {
-            const data = await response.json();
-            setBackgroundCheck(data);
-          }
-        } catch (error) {
-          console.error('Background check error:', error);
-          // Don't block the flow, just log the error
-        }
+        throw new Error(submitError.message || 'Payment failed');
       }
+
+      // Payment successful
+      onSuccess();
+      
+      // Create background check
+      await createBackgroundCheck();
     } catch (err) {
-      console.error('Payment error:', err);
-      setError(err instanceof Error ? err.message : 'Payment failed');
+      handleError(err);
     } finally {
       setProcessing(false);
+    }
+  };
+
+  const createBackgroundCheck = async () => {
+    try {
+      const response = await fetch('/.netlify/functions/create-background-check', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          first_name: formData.firstName,
+          middle_name: formData.middleName,
+          last_name: formData.lastName,
+          email: formData.email,
+          phone: formData.phoneNumber,
+          date_of_birth: formData.dateOfBirth,
+          address: {
+            street_address: formData.streetAddress,
+            city: formData.city,
+            province: formData.province,
+            postal_code: formData.postalCode,
+            country: 'CA',
+          },
+        }),
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Background check creation failed: ${errorText}`);
+      }
+
+      const data = await response.json();
+      setBackgroundCheck(data);
+    } catch (err) {
+      // Log error but don't block the flow
+      console.error('Background check error:', err);
     }
   };
 
@@ -153,7 +161,7 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, di
           </div>
           {error && (
             <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg">
-              {error}
+              {error.message}
             </div>
           )}
           <div className="text-sm text-gray-600">
@@ -184,8 +192,11 @@ function PaymentForm({ onSuccess, onBack, price, voucherCode, appliedVoucher, di
 }
 
 export default function StripePayment({ onSuccess, onBack, price, voucherCode, appliedVoucher, discountPercent, formData }: StripePaymentProps) {
-  const [clientSecret, setClientSecret] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const stripe = useStripe();
+  const elements = useElements();
+  const [processing, setProcessing] = useState(false);
+  const { error, handleError, clearError } = useErrorHandler();
+  const [backgroundCheck, setBackgroundCheck] = useState<BackgroundCheckResponse | null>(null);
 
   useEffect(() => {
     const createIntent = async () => {
@@ -217,33 +228,40 @@ export default function StripePayment({ onSuccess, onBack, price, voucherCode, a
           if (!data.clientSecret) {
             throw new Error('No client secret received from payment service');
           }
-          setClientSecret(data.clientSecret);
+          stripe.confirmPayment({
+            elements,
+            clientSecret: data.clientSecret,
+            confirmParams: {
+              return_url: `${window.location.origin}/success`,
+            },
+            redirect: 'if_required',
+          });
         } catch (parseError) {
           console.error('JSON Parse Error:', parseError);
           throw new Error(`Invalid JSON response: ${responseText.substring(0, 100)}...`);
         }
       } catch (err) {
         console.error('Error creating payment intent:', err);
-        setError(
+        handleError(
           err instanceof Error 
-            ? `${err.message}. Please ensure you're running Netlify Functions locally or the site is properly deployed.` 
-            : 'Payment initialization failed'
+            ? new Error(`${err.message}. Please ensure you're running Netlify Functions locally or the site is properly deployed.`)
+            : new Error('Payment initialization failed')
         );
       }
     };
 
     createIntent();
-  }, [price, voucherCode]);
+  }, [price, voucherCode, stripe, elements]);
 
   if (error) {
     return (
       <div className="text-red-500 text-sm bg-red-50 p-4 rounded-lg">
-        {error}
+        {error.message}
       </div>
     );
   }
 
-  if (!clientSecret) {
+  if (!stripe || !elements) {
     return (
       <div className="text-center p-4">
         <div className="animate-pulse">
@@ -256,7 +274,7 @@ export default function StripePayment({ onSuccess, onBack, price, voucherCode, a
   }
 
   const options: StripeElementsOptions = {
-    clientSecret,
+    clientSecret: stripe.clientSecret,
     appearance: {
       theme: 'stripe',
       variables: {

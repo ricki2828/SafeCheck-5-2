@@ -5,6 +5,7 @@ import App from './App.tsx';
 import Terms from './terms.tsx';
 import Privacy from './privacy.tsx';
 import './index.css';
+import { ErrorBoundary } from './components/ErrorBoundary';
 
 const router = createBrowserRouter([
   {
@@ -23,6 +24,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <ErrorBoundary>
+      <RouterProvider router={router} />
+    </ErrorBoundary>
   </StrictMode>
 );
