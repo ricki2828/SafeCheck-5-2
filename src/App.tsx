@@ -11,7 +11,8 @@ import {
   Search,
   Mail,
   Menu,
-  X
+  X,
+  ChevronDown
 } from 'lucide-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -20,7 +21,10 @@ import StripePayment from './components/StripePayment';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
+import Footer from './components/Footer';
 import { scrollToSection } from './utils/scroll';
+import { Link, useNavigate } from 'react-router-dom';
+import Layout from './components/Layout';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -76,6 +80,29 @@ function App() {
   const [remainingSeconds, setRemainingSeconds] = useState(120);
   const [discountPercent, setDiscountPercent] = useState<number>(0);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
+  const emailInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const [currentStep, setCurrentStep] = useState(1);
+  const [isHighlighted, setIsHighlighted] = useState(false);
+  const [isPulsing, setIsPulsing] = useState(false);
+
+  const provinces = [
+    { code: 'on', name: 'Ontario' },
+    { code: 'bc', name: 'British Columbia' },
+    { code: 'ab', name: 'Alberta' },
+    { code: 'qc', name: 'Quebec' },
+    { code: 'ns', name: 'Nova Scotia' },
+  ];
+
+  const useCases = [
+    { id: 'employment', name: 'Employment' },
+    { id: 'volunteering', name: 'Volunteering' },
+    { id: 'teaching', name: 'Teaching' },
+    { id: 'healthcare', name: 'Healthcare' },
+    { id: 'transportation', name: 'Transportation' },
+  ];
 
   const handleStartCheck = (e: React.FormEvent) => {
     e.preventDefault();
@@ -160,6 +187,52 @@ function App() {
     }
   }, [step, price, discountPercent]);
 
+  useEffect(() => {
+    // Check if we were redirected from another page
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('highlight') === 'email') {
+      const emailInput = emailInputRef.current;
+      if (emailInput) {
+        emailInput.focus();
+        emailInput.classList.add('highlight-animation');
+        setTimeout(() => {
+          emailInput.classList.remove('highlight-animation');
+        }, 2000);
+      }
+    }
+  }, []);
+
+  const scrollToTopWithHighlight = () => {
+    setCurrentStep(1);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    setTimeout(() => {
+      if (emailInputRef.current) {
+        emailInputRef.current.focus();
+        setIsHighlighted(true);
+        setTimeout(() => setIsHighlighted(false), 1000);
+      }
+    }, 500);
+  };
+
+  const handleGetCheck = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (window.location.pathname !== '/') {
+      navigate('/');
+      setTimeout(scrollToTopWithHighlight, 100);
+    } else {
+      scrollToTopWithHighlight();
+    }
+  };
+
+  useEffect(() => {
+    const emailInput = emailInputRef.current;
+    if (emailInput) {
+      console.log('Email input element:', emailInput);
+      console.log('Has highlight class:', emailInput.classList.contains('highlight-animation'));
+    }
+  }, [currentStep]);
+
   const renderStep = () => {
     const progressBar = step < 4 ? (
       <div className="mb-8">
@@ -182,7 +255,7 @@ function App() {
       </div>
     ) : null;
 
-    switch (step) {
+    switch (currentStep) {
       case 1:
         return (
           <div className="space-y-6">
@@ -222,32 +295,29 @@ function App() {
                   </li>
                 </ul>
                 <form onSubmit={handleStartCheck} className="mt-6 space-y-6">
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Your email address
-                  </label>
-                  <div className="relative">
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+                      Email Address
+                    </label>
                     <input
-                      type="email"
+                      ref={emailInputRef}
                       id="email"
+                      type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 pr-14 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-primary/20 focus:border-primary transition-all duration-200"
-                      placeholder="name@example.ca"
+                      className={`
+                        w-full px-4 py-3 rounded-lg border
+                        transition-all duration-300 ease-in-out
+                        ${isHighlighted 
+                          ? 'border-primary ring-2 ring-primary/50 scale-[1.02]' 
+                          : 'border-gray-300'
+                        }
+                        focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary
+                        hover:border-primary/50
+                      `}
+                      placeholder="Enter your email"
                       required
                     />
-                    <div className="absolute right-3 top-1/2 -translate-y-1/2">
-                      <div className="flex items-center justify-center w-8 h-6 bg-gray-100 rounded border border-gray-300 shadow-sm">
-                        <svg 
-                          viewBox="0 0 24 24" 
-                          className="h-3.5 w-3.5 text-gray-500"
-                          fill="none" 
-                          stroke="currentColor" 
-                          strokeWidth="2"
-                        >
-                          <path d="M20 4L20 10L8 10L8 6L3 12L8 18L8 14L20 14L20 20" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    </div>
                   </div>
                   <button
                     type="submit"
@@ -387,7 +457,7 @@ function App() {
 
               <div className="flex justify-end space-x-3">
                 <button
-                  onClick={() => setStep(step - 1)}
+                  onClick={() => setCurrentStep(currentStep - 1)}
                   className="px-6 py-2 text-gray-600 hover:text-gray-800 transition-colors"
                 >
                   Back
@@ -397,7 +467,7 @@ function App() {
                     const [year, month, day] = formData.dateOfBirth.split('-');
                     const isDateComplete = Boolean(year && month && day);
                     if (formData.legalFirstName && formData.legalLastName && isDateComplete) {
-                      setStep(step + 1);
+                      setCurrentStep(currentStep + 1);
                     }
                   }}
                   disabled={!formData.legalFirstName || !formData.legalLastName || !formData.dateOfBirth.split('-').every(Boolean)}
@@ -417,7 +487,7 @@ function App() {
             {clientSecret && (
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <StripePayment 
-                  onBack={() => setStep(2)}
+                  onBack={() => setCurrentStep(currentStep - 1)}
                   onSuccess={handlePaymentSuccess} 
                   price={price}
                   formData={formData}
@@ -559,158 +629,84 @@ function App() {
   };
 
   return (
-    <div>
-      <main className="min-h-screen relative">
-        <div className="fixed inset-0 -z-10 overflow-hidden">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="absolute top-0 h-auto min-h-full object-cover md:-right-[30%] right-0"
-            style={{ 
-              width: window.innerWidth >= 768 ? '160%' : '130%',
-              maxWidth: 'none'
-            }}
-          >
-            <source src="/videos/hero.mp4" type="video/mp4" />
-          </video>
-        </div>
-        <div className="absolute inset-0 -z-10 bg-gradient-to-t from-dark to-dark/50" />
-        
-        <div className="relative">
-          <header className="relative z-50">
-            <div className="bg-dark/50 backdrop-blur-sm">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-3">
-                    <div className="bg-dark p-2 rounded-xl">
-                      <div className="flex items-center space-x-3">
-                        <Shield className="h-6 w-6 text-primary" />
-                        <div className="flex flex-col">
-                          <div className="flex items-baseline">
-                            <span className="text-xl font-black tracking-tight leading-none text-primary">
-                              SAFE<span className="text-white">hire</span>
-                            </span>
-                          </div>
-                          <span className="text-xs text-gray-300 tracking-widest uppercase">.ca</span>
-                        </div>
-                      </div>
-                    </div>
+    <Layout onGetCheck={handleGetCheck}>
+      {/* Video Background */}
+      <div className="fixed inset-0 -z-10 overflow-hidden">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute top-0 h-auto min-h-full object-cover md:-right-[30%] right-0"
+          style={{ 
+            width: window.innerWidth >= 768 ? '160%' : '130%',
+            maxWidth: 'none'
+          }}
+        >
+          <source src="/videos/hero.mp4" type="video/mp4" />
+        </video>
+        <div className="absolute inset-0 bg-gradient-to-t from-dark to-dark/50" />
+      </div>
+
+      {/* Main Content */}
+      <div className="relative">
+        <div className="py-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Testimonial */}
+            <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
+              <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
+                <div className="flex items-start gap-2">
+                  <img 
+                    src="/images/hockey-coach.png"
+                    alt="Hockey Coach" 
+                    className="w-10 h-10 rounded-full border-2 border-primary object-cover"
+                  />
+                  <div className="space-y-1">
+                    <p className="text-white/90 text-sm italic">
+                      "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
+                    </p>
+                    <p className="text-primary text-sm font-semibold">Mike Thompson</p>
+                    <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
                   </div>
-                  <div className="md:hidden">
-                    <button
-                      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                      className="p-2 rounded-lg text-white/70 hover:text-primary"
-                    >
-                      {isMobileMenuOpen ? (
-                        <X className="h-5 w-5" />
-                      ) : (
-                        <Menu className="h-5 w-5" />
-                      )}
-                    </button>
-                  </div>
-                  <nav className="hidden md:flex items-center">
-                    <div className="flex items-center space-x-8">
-                      <button 
-                        onClick={() => scrollToSection('how-it-works')} 
-                        className="text-white/70 hover:text-primary transition-colors"
-                      >
-                        How it Works
-                      </button>
-                      <button 
-                        onClick={() => scrollToSection('faq')} 
-                        className="text-white/70 hover:text-primary transition-colors"
-                      >
-                        FAQ
-                      </button>
-                    </div>
-                  </nav>
-                </div>
-              </div>
-              <div className={`md:hidden ${isMobileMenuOpen ? 'block' : 'hidden'}`}>
-                <div className="px-4 pt-2 pb-6 space-y-4">
-                  <button 
-                    onClick={() => {
-                      scrollToSection('how-it-works');
-                      setIsMobileMenuOpen(false);
-                    }} 
-                    className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                  >
-                    How it Works
-                  </button>
-                  <button 
-                    onClick={() => {
-                      scrollToSection('faq');
-                      setIsMobileMenuOpen(false);
-                    }} 
-                    className="block w-full text-left px-4 py-2 text-white/70 hover:text-primary transition-colors"
-                  >
-                    FAQ
-                  </button>
                 </div>
               </div>
             </div>
-          </header>
-          <div className="relative">
-            <div className="relative pt-8 pb-20">
-              <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="hidden md:block absolute right-0 max-w-md" style={{ top: '0.5rem' }}>
-                  <div className="bg-dark/40 rounded-xl p-4 backdrop-blur-sm mx-4">
-                    <div className="flex items-start gap-2">
-                      <img 
-                        src="/images/hockey-coach.png"
-                        alt="Hockey Coach" 
-                        className="w-10 h-10 rounded-full border-2 border-primary object-cover"
-                      />
-                      <div className="space-y-1">
-                        <p className="text-white/90 text-sm italic">
-                          "As a hockey coach, I need my background check done quickly. Got mine in minutes and was back on the ice the same day!"
-                        </p>
-                        <p className="text-primary text-sm font-semibold">Mike Thompson</p>
-                        <p className="text-white/60 text-xs">Minor League Hockey Coach</p>
-                      </div>
-                    </div>
-                  </div>
+
+            {/* Main Grid */}
+            <div className="grid lg:grid-cols-2 gap-12 items-center">
+              <div className="order-2 lg:order-1">
+                <div className="bg-white rounded-2xl shadow-2xl p-8">
+                  <h2 className="text-gray-800 text-2xl font-bold mb-6">
+                    Get Your Background Check
+                  </h2>
+                  {renderStep()}
                 </div>
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
-                  <div className="order-2 lg:order-1">
-                    <div className="bg-white rounded-2xl shadow-2xl p-8 transform hover:scale-[1.02] transition-transform duration-300">
-                      <h2 className="text-gray-800 text-2xl font-bold mb-6">
-                        {step === 1
-                          ? 'Get Your Background Check'
-                          : step === 2
-                          ? 'Important Information'
-                          : step === 3
-                          ? 'Payment Information'
-                          : 'Review Information'}
-                      </h2>
-                      {renderStep()}
-                    </div>
-                  </div>
-                  <div className="order-1 lg:order-2">
-                    <div className="space-y-6 translate-y-0 md:translate-y-1/2">
-                      <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
-                        <h1 className="text-4xl font-bold text-white">
-                          The fastest official criminal check in Canada
-                        </h1>
-                        <p className="text-xl text-white/80 mt-4">
-                          Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
-                        </p>
-                      </div>
-                    </div>
+              </div>
+              <div className="order-1 lg:order-2">
+                <div className="space-y-6 translate-y-0 md:translate-y-1/2">
+                  <div className="bg-dark/40 backdrop-blur-sm rounded-xl p-6">
+                    <h1 className="text-4xl font-bold text-white">
+                      The fastest official criminal check in Canada
+                    </h1>
+                    <p className="text-xl text-white/80 mt-4">
+                      Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.
+                    </p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
+
+      {/* How It Works Section */}
       <div id="how-it-works" className="-mt-16 pt-16" />
       <HowItWorks />
+
+      {/* FAQ Section */}
       <div id="faq" className="-mt-16 pt-16" />
       <FAQ />
-    </div>
+    </Layout>
   );
 }
 
