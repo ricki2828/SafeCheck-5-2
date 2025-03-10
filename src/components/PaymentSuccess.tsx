@@ -61,4 +61,4 @@ export default function PaymentSuccess({ email = 'trev@catchconsultants.com' }: 
       </div>
     </div>
   );
-} 
+}
