@@ -13,9 +13,14 @@ i18n
       fr: { translation: fr }
     },
     fallbackLng: 'en',
+    debug: process.env.NODE_ENV === 'development',
     interpolation: {
       escapeValue: false
+    },
+    detection: {
+      order: ['localStorage', 'navigator'],
+      caches: ['localStorage']
     }
   });
 
-export default i18n; 
+export default i18n;
