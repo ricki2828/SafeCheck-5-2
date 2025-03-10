@@ -26,6 +26,7 @@
     "node-fetch": "^3.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-helmet-async": "^2.0.4",
     "react-i18next": "^15.4.0",
     "react-router-dom": "^6.22.3",
     "stream-browserify": "^3.0.0",
@@ -56,19 +57,5 @@
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3",
     "vite": "^5.4.2"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom",
-    "setupFilesAfterEnv": ["<rootDir>/src/test/setup.ts"],
-    "moduleNameMapper": {
-      "\\.(css|less|scss|sass)$": "identity-obj-proxy"
-    },
-    "testMatch": ["**/__tests__/**/*.ts?(x)", "**/?(*.)+(spec|test).ts?(x)"],
-    "transform": {
-      "^.+\\.tsx?$": ["ts-jest", {
-        "tsconfig": "tsconfig.test.json"
-      }]
-    }
   }
 }
