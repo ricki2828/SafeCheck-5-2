@@ -26,6 +26,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ProgressBar from './components/ProgressBar';
 import StripePayment from './components/StripePayment';
+import PaymentSuccess from './components/PaymentSuccess';
 import Hero from './components/Hero';
 import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
@@ -34,7 +35,6 @@ import TrustBadges from './components/TrustBadges';
 import Testimonials from './components/Testimonials';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { scrollToSection } from './utils/scroll';
-import PaymentSuccess from './components/PaymentSuccess';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 

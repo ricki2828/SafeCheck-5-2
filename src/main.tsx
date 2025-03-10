@@ -8,6 +8,7 @@ import Privacy from './pages/Privacy';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import BulkChecks from './pages/BulkChecks';
+import PaymentSuccessPage from './pages/PaymentSuccessPage';
 import './i18n/config';
 import './index.css';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
   {
     path: '/bulk-checks',
     element: <BulkChecks />,
+  },
+  {
+    path: '/payment-success',
+    element: <PaymentSuccessPage />,
   },
 ]);
 
