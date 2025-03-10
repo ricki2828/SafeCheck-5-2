@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   ArrowRight,
   Shield,
@@ -14,11 +14,16 @@ import {
   X,
   MoveRight,
   Users,
+  ChevronDown,
+  ChevronUp,
+  Package,
+  Star,
+  Tag,
 } from 'lucide-react';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import ProgressBar from './components/ProgressBar';
 import StripePayment from './components/StripePayment';
 import Hero from './components/Hero';
@@ -29,6 +34,7 @@ import TrustBadges from './components/TrustBadges';
 import Testimonials from './components/Testimonials';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { scrollToSection } from './utils/scroll';
+import PaymentSuccess from './components/PaymentSuccess';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -518,50 +524,7 @@ function App() {
         );
 
       case 4:
-        return (
-          <div className="space-y-8">
-            <div className="bg-primary/10 rounded-xl p-6 border border-primary/20">
-              <div className="flex items-center space-x-3 text-primary mb-4">
-                <CheckCircle className="h-6 w-6" />
-                <h3 className="text-xl font-semibold">{t('success.title')}</h3>
-              </div>
-              
-              <div className="space-y-6">
-                <div>
-                  <p className="text-gray-800 mb-2">
-                    {t('success.message')}
-                  </p>
-                  <ul className="space-y-3">
-                    {(t('success.steps', { returnObjects: true }) as string[]).map((step: string, index: number) => (
-                      <li key={index} className="flex items-start">
-                        {index === 0 && <Mail className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />}
-                        {index === 1 && <FileText className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />}
-                        {index === 2 && <Clock className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />}
-                        <span className="text-gray-600">{step}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="bg-dark/5 rounded-lg p-4">
-                  <p className="text-sm text-gray-600">
-                    <span className="font-semibold">{t('success.important')}</span> {t('success.emailNote', { email })}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <button
-                onClick={() => window.location.href = '/'}
-                className="bg-primary hover:bg-opacity-90 text-white font-semibold py-4 px-8 rounded-xl inline-flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                <span>{t('success.returnHome')}</span>
-                <ArrowRight className="h-5 w-5" />
-              </button>
-            </div>
-          </div>
-        );
+        return <PaymentSuccess email={email} />;
 
       default:
         return null;

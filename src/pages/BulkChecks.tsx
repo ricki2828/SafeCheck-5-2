@@ -6,6 +6,7 @@ import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import Footer from '../components/Footer';
 import StripePayment from '../components/StripePayment';
+import PaymentSuccess from '../components/PaymentSuccess';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -226,46 +227,7 @@ export default function BulkChecks() {
         );
 
       case 3:
-        return (
-          <div className="space-y-8">
-            <div className="bg-primary/10 rounded-xl p-6 border border-primary/20">
-              <div className="flex items-center space-x-3 text-primary mb-4">
-                <Shield className="h-6 w-6" />
-                <h3 className="text-xl font-semibold">Purchase Successful!</h3>
-              </div>
-              
-              <div className="space-y-6">
-                <p className="text-gray-800">
-                  Your bulk purchase of {quantity} background checks has been confirmed. You will receive an email with:
-                </p>
-                <ul className="space-y-3">
-                  <li className="flex items-start">
-                    <Package className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">Unique codes for each background check</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Info className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">Instructions for distributing the codes</span>
-                  </li>
-                  <li className="flex items-start">
-                    <Users className="h-5 w-5 text-primary mr-2 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-600">Access to your bulk checks dashboard</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-
-            <div className="text-center">
-              <Link
-                to="/"
-                className="bg-primary hover:bg-opacity-90 text-white font-semibold py-4 px-8 rounded-xl inline-flex items-center justify-center space-x-2 transition-all duration-200 shadow-lg hover:shadow-xl"
-              >
-                <span>Return to Home</span>
-                <ArrowLeft className="h-5 w-5 rotate-180" />
-              </Link>
-            </div>
-          </div>
-        );
+        return <PaymentSuccess />;
     }
   };
 
