@@ -1,12 +1,11 @@
 import { Handler } from '@netlify/functions';
 import Stripe from 'stripe';
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-if (!stripeSecretKey) {
+if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not configured');
 }
 
-const stripe = new Stripe(stripeSecretKey, {
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
 });
 
@@ -18,6 +17,7 @@ export const handler: Handler = async (event) => {
     'Content-Type': 'application/json',
   };
 
+  // Handle preflight requests
   if (event.httpMethod === 'OPTIONS') {
     return {
       statusCode: 200,
@@ -26,6 +26,7 @@ export const handler: Handler = async (event) => {
     };
   }
 
+  // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
@@ -35,6 +36,7 @@ export const handler: Handler = async (event) => {
   }
 
   try {
+    // Validate request body exists
     if (!event.body) {
       return {
         statusCode: 400,
@@ -43,10 +45,10 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    let amount: number;
+    // Parse request body
+    let data;
     try {
-      const data = JSON.parse(event.body);
-      amount = data.amount;
+      data = JSON.parse(event.body);
     } catch (parseError) {
       return {
         statusCode: 400,
@@ -55,6 +57,9 @@ export const handler: Handler = async (event) => {
       };
     }
 
+    const { amount, email, packageId, quantity } = data;
+
+    // Validate amount
     if (!amount || typeof amount !== 'number' || amount <= 0) {
       return {
         statusCode: 400,
@@ -63,14 +68,21 @@ export const handler: Handler = async (event) => {
       };
     }
 
+    // Create the payment intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount), // Ensure amount is an integer
+      amount: Math.round(amount), // Ensure amount is rounded to nearest integer
       currency: 'cad',
+      metadata: {
+        packageId,
+        email,
+        quantity: quantity?.toString(),
+      },
       automatic_payment_methods: {
         enabled: true,
       },
     });
 
+    // Return success response with proper error handling
     return {
       statusCode: 200,
       headers,
@@ -78,13 +90,28 @@ export const handler: Handler = async (event) => {
         clientSecret: paymentIntent.client_secret,
       }),
     };
-  } catch (error: any) {
+
+  } catch (error) {
     console.error('Payment intent creation error:', error);
+    
+    // Handle Stripe-specific errors
+    if (error instanceof Stripe.errors.StripeError) {
+      return {
+        statusCode: error.statusCode || 400,
+        headers,
+        body: JSON.stringify({
+          error: error.message,
+          type: error.type,
+        }),
+      };
+    }
+
+    // Handle general errors
     return {
-      statusCode: error.statusCode || 400,
+      statusCode: 500,
       headers,
       body: JSON.stringify({
-        error: error.message || 'Payment intent creation failed',
+        error: 'An unexpected error occurred while processing your payment',
       }),
     };
   }
