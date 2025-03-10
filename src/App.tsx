@@ -38,12 +38,6 @@ import { scrollToSection } from './utils/scroll';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
 
-useEffect(() => {
-  if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
-    console.error('VITE_STRIPE_PUBLIC_KEY is not configured. Stripe payments will not work.');
-  }
-}, []);
-
 interface FormData {
   email: string;
   legalFirstName: string;
@@ -100,6 +94,12 @@ function App() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [showScrollIndicator, setShowScrollIndicator] = useState(false);
   const price = 65;
+
+  useEffect(() => {
+    if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+      console.error('VITE_STRIPE_PUBLIC_KEY is not configured. Stripe payments will not work.');
+    }
+  }, []);
 
   const handleGetStarted = () => {
     setShowScrollIndicator(true);
