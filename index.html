@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Primary Meta Tags -->
+    <title>SafeHire.ca - The fastest official criminal check in Canada</title>
+    <meta name="title" content="SafeHire.ca - The fastest official criminal check in Canada">
+    <meta name="description" content="Get your criminal record check in minutes, not weeks. Official RCMP verified background checks for Canadian employers. Fast, secure, and reliable.">
+    <meta name="keywords" content="criminal record check, background check, police check, employment screening, RCMP check, Canada">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://safehire.ca/">
+    <meta property="og:title" content="SafeHire.ca - The fastest official criminal check in Canada">
+    <meta property="og:description" content="Get your criminal record check in minutes, not weeks. Official RCMP verified background checks for Canadian employers.">
+    <meta property="og:image" content="https://safehire.ca/og-image.jpg">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://safehire.ca/">
+    <meta property="twitter:title" content="SafeHire.ca - The fastest official criminal check in Canada">
+    <meta property="twitter:description" content="Get your criminal record check in minutes, not weeks. Official RCMP verified background checks for Canadian employers.">
+    <meta property="twitter:image" content="https://safehire.ca/twitter-image.jpg">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://safehire.ca/">
+    
+    <!-- Preload Critical Resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Preload Stripe -->
+    <link rel="preconnect" href="https://js.stripe.com">
+    <link rel="preconnect" href="https://api.stripe.com">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "SafeHire.ca",
+        "url": "https://safehire.ca",
+        "logo": "https://safehire.ca/logo.png",
+        "description": "The fastest official criminal record check service in Canada.",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "CA"
+        },
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+1-800-555-0123",
+          "contactType": "customer service",
+          "availableLanguage": ["English", "French"]
+        }
+      }
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Criminal Record Check",
+        "provider": {
+          "@type": "Organization",
+          "name": "SafeHire.ca"
+        },
+        "description": "Fast and secure criminal record checks for employment in Canada",
+        "areaServed": "CA",
+        "hasOfferCatalog": {
+          "@type": "OfferCatalog",
+          "name": "Background Check Services",
+          "itemListElement": [{
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Criminal Record Check",
+              "description": "Standard criminal record check for employment",
+              "price": "65.00",
+              "priceCurrency": "CAD"
+            }
+          }]
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,172 @@
+{
+  "header": {
+    "howItWorks": "Comment ça marche",
+    "faq": "FAQ",
+    "blog": "Blogue",
+    "getStarted": "Commencer",
+    "contact": "Support",
+    "buyForOthers": "Acheter des vérifications pour d'autres"
+  },
+  "footer": {
+    "description": "Le service de vérification du casier judiciaire le plus rapide et le plus fiable au Canada.",
+    "quickLinks": {
+      "title": "Liens rapides",
+      "howItWorks": "Comment ça marche",
+      "faq": "FAQ",
+      "blog": "Blogue"
+    },
+    "legal": {
+      "title": "Légal",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation"
+    },
+    "badges": {
+      "rcmp": {
+        "title": "Vérifié par la GRC",
+        "description": "Vérification officielle"
+      },
+      "security": {
+        "title": "Sécurité bancaire",
+        "description": "Cryptage 256-bit SSL"
+      },
+      "payments": {
+        "title": "Paiements sécurisés",
+        "description": "Conforme PCI DSS"
+      },
+      "trusted": {
+        "title": "Service de confiance",
+        "description": "Satisfaction garantie à 100%"
+      }
+    },
+    "copyright": "© {{year}} SafeHire.ca. Tous droits réservés."
+  },
+  "howItWorks": {
+    "subtitle": "Obtenez votre vérification du casier judiciaire en 4 étapes simples",
+    "step1": {
+      "title": "1. Appliquer en ligne",
+      "description": "Remplissez notre formulaire en ligne sécurisé avec vos informations de base. Pas besoin de visiter un poste de police."
+    },
+    "step2": {
+      "title": "2. Vérifier l'identité",
+      "description": "Nous utilisons une vérification d'identité électronique sécurisée pour confirmer votre identité et vous protéger contre la fraude."
+    },
+    "step3": {
+      "title": "3. Traitement rapide",
+      "description": "La plupart des résultats sont disponibles en 15 minutes. Nous vous informerons dès que votre vérification sera terminée."
+    },
+    "step4": {
+      "title": "4. Obtenir les résultats",
+      "description": "Téléchargez votre certificat PDF sécurisé immédiatement. Partagez-le directement avec votre employeur."
+    },
+    "trust": "Approuvé par les employeurs à travers le Canada"
+  },
+  "faq": {
+    "q1": {
+      "title": "Quelles informations ma vérification du casier judiciaire montrera-t-elle?",
+      "answer": "Votre vérification du casier judiciaire montrera toute condamnation criminelle, accusation en instance et ordonnance judiciaire enregistrée dans le Registre national des casiers judiciaires de la GRC. Cela inclut les informations de la base de données du Centre d'information de la police canadienne (CIPC)."
+    },
+    "q2": {
+      "title": "Que faire si je veux contester mes résultats?",
+      "answer": "Si vous pensez qu'il y a des erreurs dans les résultats de votre vérification du casier judiciaire, vous pouvez soumettre une contestation. Contactez-nous immédiatement et nous vous guiderons dans le processus de révision et de correction de votre dossier si nécessaire."
+    },
+    "q3": {
+      "title": "J'ai d'anciens dossiers. Puis-je obtenir un pardon?",
+      "answer": "Oui, vous pourriez être admissible à une suspension du casier (pardon) pour d'anciens casiers judiciaires. Il s'agit d'un processus distinct de la vérification du casier judiciaire. Nous vous recommandons de consulter un professionnel juridique ou un service de pardon pour comprendre votre admissibilité et le processus de demande."
+    },
+    "q4": {
+      "title": "Combien de temps cela prend-il?",
+      "answer": "La plupart des résultats sont disponibles en 15 minutes. Dans certains cas, une vérification supplémentaire peut être nécessaire, ce qui peut prendre 24 à 48 heures."
+    },
+    "q5": {
+      "title": "Est-ce sécurisé?",
+      "answer": "Oui, nous utilisons un cryptage de niveau bancaire pour protéger vos informations. Notre service est entièrement conforme aux lois canadiennes sur la protection de la vie privée et aux exigences de la GRC."
+    },
+    "q6": {
+      "title": "Est-ce accepté par les employeurs?",
+      "answer": "Oui, nos vérifications du casier judiciaire sont acceptées par les employeurs à travers le Canada. Les résultats proviennent directement du Centre d'information de la police canadienne de la GRC."
+    }
+  },
+  "hero": {
+    "title": "La vérification judiciaire officielle la plus rapide au Canada",
+    "subtitle": "Obtenez votre vérification du casier judiciaire en quelques minutes, pas en semaines. Approuvé par les employeurs à travers le Canada.",
+    "cta": "Vérifier mon casier judiciaire",
+    "emailPlaceholder": "nom@exemple.ca"
+  },
+  "steps": {
+    "start": {
+      "title": "Commencer votre vérification"
+    },
+    "personal": {
+      "title": "Informations personnelles"
+    },
+    "payment": {
+      "title": "Détails du paiement"
+    },
+    "confirmation": {
+      "title": "Confirmation"
+    }
+  },
+  "check": {
+    "title": "Vérification du casier judiciaire",
+    "subtitle": "Vérification officielle validée par la GRC",
+    "features": [
+      "Résultats en 15 minutes",
+      "Vérifié par la GRC",
+      "Valide dans tout le Canada",
+      "Livraison numérique sécurisée",
+      "Support 24/7"
+    ]
+  },
+  "form": {
+    "email": {
+      "label": "Adresse courriel",
+      "placeholder": "Entrez votre courriel"
+    },
+    "startButton": "Vérifier mon casier judiciaire",
+    "buyForOthers": "Acheter des vérifications pour d'autres",
+    "legalFirstName": {
+      "label": "Prénom légal"
+    },
+    "legalMiddleName": {
+      "label": "Second prénom (Optionnel)"
+    },
+    "legalLastName": {
+      "label": "Nom de famille légal"
+    },
+    "dateOfBirth": {
+      "label": "Date de naissance",
+      "month": "Mois",
+      "day": "Jour",
+      "year": "Année"
+    },
+    "back": "Retour",
+    "continue": "Continuer"
+  },
+  "voucher": {
+    "title": "Avez-vous un code promotionnel?",
+    "optional": "Optionnel",
+    "placeholder": "Entrez le code",
+    "apply": "Appliquer",
+    "applying": "Application...",
+    "applied": "Code promotionnel appliqué",
+    "remove": "Supprimer",
+    "originalPrice": "Prix original",
+    "discount": "Réduction",
+    "finalPrice": "Prix final"
+  },
+  "success": {
+    "title": "Vérification initiée",
+    "message": "Votre vérification a été initiée avec succès. Voici les prochaines étapes :",
+    "steps": [
+      "Vérifiez votre courriel pour la confirmation et les instructions",
+      "Complétez la vérification d'identité si nécessaire",
+      "Recevez vos résultats dans les 15 minutes"
+    ],
+    "important": "Important :",
+    "emailNote": "Veuillez vérifier votre courriel à {{email}} pour les instructions suivantes.",
+    "returnHome": "Retour à l'accueil"
+  },
+  "results": {
+    "timeframe": "Résultats en 15 minutes"
+  }
+}
