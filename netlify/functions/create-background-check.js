@@ -31,41 +31,49 @@ const handler = async (event) => {
             throw new Error('Request body is empty');
         }
         const data = JSON.parse(event.body);
-        // Create the case with the Canadian Criminal Check package
-        const certnResponse = await (0, node_fetch_1.default)('https://api.sandbox.certn.co/api/v3/cases/', {
+        // Check for API key at the start
+        if (!process.env.CERTN_API_KEY) {
+            console.error('CERTN_API_KEY environment variable is not set');
+            throw new Error('Missing required CERTN_API_KEY environment variable');
+        }
+        const authHeader = `Token ${process.env.CERTN_API_KEY}`;
+        // Hardcode the package ID for Canadian criminal checks
+        const CANADIAN_CRIMINAL_CHECK_PACKAGE_ID = "2b1e6443-35e4-408a-98b8-d6db7e5ad9c5";
+        const requestBody = {
+            package: CANADIAN_CRIMINAL_CHECK_PACKAGE_ID,
+            email_address: data.email
+        };
+        // Update the logging to show exactly what we're sending
+        console.info('Sending to Certn:', {
+            url: 'https://api.sandbox.certn.co/api/public/cases/order-package/',
+            headers: {
+                Authorization: 'Api-Key [REDACTED]',
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: requestBody
+        });
+        const certnResponse = await (0, node_fetch_1.default)('https://api.sandbox.certn.co/api/public/cases/order-package/', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${process.env.CERTN_KEY}`,
-                'Content-Type': 'application/json',
+                Authorization: `Api-Key ${process.env.CERTN_API_KEY}`,
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                first_name: data.first_name,
-                middle_name: data.middle_name,
-                last_name: data.last_name,
-                email: data.email,
-                phone: data.phone,
-                date_of_birth: data.date_of_birth,
-                address: {
-                    street_address: data.address.street_address,
-                    city: data.address.city,
-                    country: data.address.country || 'CA',
-                    postal_code: data.address.postal_code,
-                    province: data.address.province,
-                },
-                package_type: 'canadian_criminal_check',
-                consent: true,
-                send_email: true,
-                email_language: 'en',
-                webhook_url: process.env.SITE_URL + '/.netlify/functions/certn-webhook',
-            }),
+            body: JSON.stringify(requestBody)
         });
+        // Add detailed error logging
         if (!certnResponse.ok) {
-            const errorData = await certnResponse.json();
-            console.error('Certn API error details:', errorData);
-            throw new Error(`Certn API error: ${JSON.stringify(errorData)}`);
+            const errorBody = await certnResponse.text();
+            console.error('Certn API error response:', {
+                status: certnResponse.status,
+                statusText: certnResponse.statusText,
+                body: errorBody,
+                requestUrl: certnResponse.url
+            });
+            throw new Error(`Certn API error: ${certnResponse.status} - ${errorBody}`);
         }
-        const result = await certnResponse.json();
-        // Log the successful case creation
+        const result = (await certnResponse.json());
         console.log('Certn case created:', result);
         return {
             statusCode: 200,
@@ -79,7 +87,7 @@ const handler = async (event) => {
         };
     }
     catch (error) {
-        console.error('Background check error:', error);
+        console.error('Background check error details:', error);
         return {
             statusCode: error.response?.status || 500,
             headers,
