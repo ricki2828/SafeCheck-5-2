@@ -36,7 +36,13 @@ import Testimonials from './components/Testimonials';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { scrollToSection } from './utils/scroll';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || '');
+
+useEffect(() => {
+  if (!import.meta.env.VITE_STRIPE_PUBLIC_KEY) {
+    console.error('VITE_STRIPE_PUBLIC_KEY is not configured. Stripe payments will not work.');
+  }
+}, []);
 
 interface FormData {
   email: string;
@@ -524,7 +530,7 @@ function App() {
         );
 
       case 4:
-        return <PaymentSuccess email={email} />;
+        return <PaymentSuccess email={formData.email} />;
 
       default:
         return null;

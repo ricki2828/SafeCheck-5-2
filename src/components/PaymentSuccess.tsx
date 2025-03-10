@@ -1,16 +1,38 @@
-import { CheckCircle, Mail, FileText, Clock, ArrowRight } from 'lucide-react';
+import { CheckCircle, Mail, FileText, Clock } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
 
 interface PaymentSuccessProps {
-  email?: string;
+  email: string;
 }
 
-export default function PaymentSuccess({ email = 'trev@catchconsultants.com' }: PaymentSuccessProps) {
+export default function PaymentSuccess({ email }: PaymentSuccessProps) {
+  // Add error handling for Stripe analytics errors
+  useEffect(() => {
+    // Suppress Stripe analytics errors in the console
+    const originalError = console.error;
+    console.error = (...args) => {
+      // Filter out Stripe-related errors
+      if (
+        typeof args[0] === 'string' && 
+        (args[0].includes('r.stripe.com') || 
+         args[0].includes('Failed to fetch') ||
+         args[0].includes('ERR_BLOCKED_BY_CLIENT'))
+      ) {
+        return;
+      }
+      originalError(...args);
+    };
+
+    return () => {
+      // Restore original console.error when component unmounts
+      console.error = originalError;
+    };
+  }, []);
+
   return (
-    <div className="bg-white rounded-lg shadow-sm p-8 max-w-md mx-auto">
-      <h2 className="text-2xl font-bold mb-6">Review Information</h2>
-      
-      <div className="bg-accent rounded-lg p-6 mb-6">
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl border-2 border-primary/20 p-6 space-y-6">
         <div className="flex items-center mb-4">
           <CheckCircle className="h-6 w-6 text-primary mr-2" />
           <span className="text-xl font-medium text-primary">Payment Successful</span>
@@ -43,22 +65,19 @@ export default function PaymentSuccess({ email = 'trev@catchconsultants.com' }: 
           </li>
         </ul>
         
-        <div className="mt-6 bg-gray-light p-4 rounded-md">
+        <div className="mt-6 bg-gray-50 p-4 rounded-md">
           <p className="text-sm text-gray-600">
-            <span className="font-semibold">Important:</span> Your results will be delivered to the email address you provided ({email}). If you don't receive an email from Certn within 5 minutes, please check your spam folder.
+            <span className="font-semibold">Important:</span> Your results will be delivered to {email}. If you don't receive an email from Certn within 5 minutes, please check your spam folder.
           </p>
         </div>
       </div>
       
-      <div className="text-center">
-        <Link 
-          to="/" 
-          className="inline-flex items-center justify-center px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-light transition-colors"
-        >
-          <span>Return to Home</span>
-          <ArrowRight className="h-5 w-5 ml-2" />
-        </Link>
-      </div>
+      <Link 
+        to="/" 
+        className="inline-flex items-center justify-center w-full px-6 py-3 bg-primary text-white font-medium rounded-md hover:bg-primary/90 transition-colors"
+      >
+        Return to Home
+      </Link>
     </div>
   );
 }
