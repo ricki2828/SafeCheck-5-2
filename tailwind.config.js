@@ -4,14 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#1DB954', // Spotify green
-        secondary: '#121212', // Dark background
-        dark: '#181818', // Slightly lighter dark
-        accent: '#282828', // Card background
-        light: '#B3B3B3', // Text gray
-        background: '#121212', // Main background
-        'gray-light': '#282828',
-        'gray-medium': '#404040',
+        primary: '#10B981', // Emerald green
+        secondary: '#F8FAFC', // Light background
+        dark: '#064E3B', // Darker green
+        accent: '#ECFDF5', // Light mint
+        light: '#059669', // Medium green
+        background: '#FFFFFF', // White
+        'gray-light': '#F1F5F9',
+        'gray-medium': '#E2E8F0',
+        success: '#059669', // Green success
+        warning: '#F59E0B', // Amber warnings
+        error: '#EF4444', // Red errors
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
@@ -23,31 +26,9 @@ export default {
       backgroundSize: {
         '200%': '200%',
       },
-      typography: (theme) => ({
-        DEFAULT: {
-          css: {
-            color: theme('colors.gray.900'),
-            h1: {
-              color: theme('colors.gray.900'),
-            },
-            h2: {
-              color: theme('colors.gray.800'),
-            },
-            h3: {
-              color: theme('colors.gray.800'),
-            },
-            strong: {
-              color: theme('colors.gray.900'),
-            },
-            a: {
-              color: theme('colors.primary'),
-              '&:hover': {
-                color: theme('colors.primary/80'),
-              },
-            },
-          },
-        },
-      }),
+      boxShadow: {
+        'glow': '0 0 20px rgba(16, 185, 129, 0.15)',
+      },
     },
   },
   plugins: [
