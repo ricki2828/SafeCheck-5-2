@@ -17,12 +17,6 @@
   to = "/index.html"
   status = 200
 
-[[redirects]]
-  from = "/.netlify/functions/stripe-webhook"
-  status = 200
-  force = true
-  conditions = {Content-Type = "application/json"}
-
 [build.environment]
   SECRETS_SCAN_OMIT_KEYS = "VITE_STRIPE_PUBLIC_KEY,VITE_*,STRIPE_SECRET_KEY"
   SECRETS_SCAN_OMIT_PATHS = "/dist/*,/build/*,/supabase/functions/create-checkout-session/.env"
