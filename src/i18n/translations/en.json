@@ -1,0 +1,180 @@
+{
+  "header": {
+    "howItWorks": "How It Works",
+    "faq": "FAQ",
+    "blog": "Blog",
+    "getStarted": "Get Started",
+    "contact": "Contact Support",
+    "buyForOthers": "Buy Background Checks For Others"
+  },
+  "footer": {
+    "description": "The fastest and most reliable criminal record check service in Canada.",
+    "quickLinks": {
+      "title": "Quick Links",
+      "howItWorks": "How It Works",
+      "faq": "FAQ",
+      "blog": "Blog"
+    },
+    "legal": {
+      "title": "Legal",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service"
+    },
+    "badges": {
+      "rcmp": {
+        "title": "RCMP Verified",
+        "description": "Official Database Check"
+      },
+      "security": {
+        "title": "Bank-Level Security",
+        "description": "256-bit SSL Encryption"
+      },
+      "payments": {
+        "title": "Secure Payments",
+        "description": "PCI DSS Compliant"
+      },
+      "trusted": {
+        "title": "Trusted Service",
+        "description": "100% Satisfaction Guarantee"
+      }
+    },
+    "copyright": "© {{year}} SafeHire.ca. All rights reserved."
+  },
+  "howItWorks": {
+    "subtitle": "Get your criminal record check in 4 simple steps",
+    "step1": {
+      "title": "1. Apply Online",
+      "description": "Fill out our secure online form with your basic information. No need to visit a police station."
+    },
+    "step2": {
+      "title": "2. Verify Identity",
+      "description": "We use secure electronic ID verification to confirm your identity, protecting you against fraud."
+    },
+    "step3": {
+      "title": "3. Quick Processing",
+      "description": "Most results are available within 15 minutes. We'll notify you as soon as your check is complete."
+    },
+    "step4": {
+      "title": "4. Get Results",
+      "description": "Download your secure PDF certificate immediately. Share it directly with your employer."
+    },
+    "trust": "Trusted by employers across Canada"
+  },
+  "faq": {
+    "q1": {
+      "title": "What information will my criminal record check show?",
+      "answer": "Your criminal record check will show any criminal convictions, pending charges, and court orders registered in the RCMP National Repository of Criminal Records. This includes information from the Canadian Police Information Centre (CPIC) database."
+    },
+    "q2": {
+      "title": "What if I want to dispute my results?",
+      "answer": "If you believe there are errors in your criminal record check results, you can submit a dispute. Contact us immediately and we'll guide you through the process of having your record reviewed and corrected if necessary."
+    },
+    "q3": {
+      "title": "I have old records. Can I get them pardoned?",
+      "answer": "Yes, you may be eligible for a record suspension (pardon) for old criminal records. This is a separate process from a criminal record check. We recommend consulting with a legal professional or pardon service to understand your eligibility and the application process."
+    },
+    "q4": {
+      "title": "How long does it take?",
+      "answer": "Most results are available within 15 minutes. In some cases, additional verification may be required which can take 24-48 hours."
+    },
+    "q5": {
+      "title": "Is it secure?",
+      "answer": "Yes, we use bank-level encryption to protect your information. Our service is fully compliant with Canadian privacy laws and RCMP requirements."
+    },
+    "q6": {
+      "title": "Is it accepted by employers?",
+      "answer": "Yes, our criminal record checks are accepted by employers across Canada. The results come directly from the RCMP's Canadian Police Information Centre."
+    }
+  },
+  "hero": {
+    "title": "The fastest official criminal check in Canada",
+    "subtitle": "Get your criminal record check in minutes, not weeks. Trusted by employers across Canada.",
+    "cta": "Start Background Check on Myself",
+    "emailPlaceholder": "name@example.ca"
+  },
+  "steps": {
+    "start": {
+      "title": "Start Your Background Check"
+    },
+    "personal": {
+      "title": "Personal Information"
+    },
+    "payment": {
+      "title": "Payment Details"
+    },
+    "confirmation": {
+      "title": "Confirmation"
+    }
+  },
+  "check": {
+    "title": "Criminal Record Check",
+    "subtitle": "Official Canadian police check",
+    "features": [
+      "Results in 15 minutes",
+      "Valid across Canada",
+      "Secure digital delivery",
+      "24/7 support"
+    ]
+  },
+  "form": {
+    "email": {
+      "label": "Email Address",
+      "placeholder": "Enter your email"
+    },
+    "startButton": "Start Background Check on Myself",
+    "buyForOthers": "Buy Background Checks For Others",
+    "legalFirstName": {
+      "label": "Legal First Name"
+    },
+    "legalMiddleName": {
+      "label": "Legal Middle Name (Optional)"
+    },
+    "legalLastName": {
+      "label": "Legal Last Name"
+    },
+    "dateOfBirth": {
+      "label": "Date of Birth",
+      "month": "Month",
+      "day": "Day",
+      "year": "Year"
+    },
+    "back": "Back",
+    "continue": "Continue"
+  },
+  "voucher": {
+    "title": "Have a Promotion Code?",
+    "optional": "Optional",
+    "placeholder": "Enter code",
+    "apply": "Apply",
+    "applying": "Applying...",
+    "applied": "Promotion Code Applied",
+    "remove": "Remove",
+    "originalPrice": "Original Price",
+    "discount": "Discount",
+    "finalPrice": "Final Price"
+  },
+  "success": {
+    "title": "Background Check Initiated",
+    "message": "Your background check has been successfully initiated. Here's what happens next:",
+    "steps": [
+      "Check your email for confirmation and instructions",
+      "Complete identity verification if required",
+      "Receive your results within 15 minutes"
+    ],
+    "important": "Important:",
+    "emailNote": "Please check your email at {{email}} for further instructions.",
+    "returnHome": "Return to Home"
+  },
+  "results": {
+    "timeframe": "Results in 15 minutes"
+  },
+  "blog": {
+    "title": "Latest Articles",
+    "subtitle": "Expert insights on background checks and employment screening",
+    "readMore": "Read More",
+    "readTime": "{{time}} min read",
+    "backToHome": "Back to Home",
+    "backToBlog": "Back to Blog",
+    "publishedOn": "Published on {{date}}"
+  }
+}

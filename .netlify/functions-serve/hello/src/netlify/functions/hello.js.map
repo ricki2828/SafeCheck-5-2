@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../../../Ricki Taiaroa/Downloads/project-bolt-github-ntqfuhfl (1)/project/netlify/functions/hello.js"],
+  "sourceRoot": "C:/Users/RICKIT~1/AppData/Local/Temp/tmp-15860-0Sv42h0fGc9n",
+  "sourcesContent": ["\"use strict\";\nObject.defineProperty(exports, \"__esModule\", { value: true });\nexports.handler = void 0;\nconst handler = async () => {\n    return {\n        statusCode: 200,\n        body: JSON.stringify({ message: 'Hello World' }),\n    };\n};\nexports.handler = handler;\n"],
+  "mappings": ";AAAA;AACA,OAAO,eAAe,SAAS,cAAc,EAAE,OAAO;AACtD,QAAQ,UAAU;AAClB,IAAM,UAAU,YAAY;AACxB,SAAO;AAAA,IACH,YAAY;AAAA,IACZ,MAAM,KAAK,UAAU,EAAE,SAAS;AAAA;AAAA;AAGxC,QAAQ,UAAU;",
+  "names": []
+}
