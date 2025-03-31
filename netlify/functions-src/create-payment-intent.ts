@@ -87,8 +87,8 @@ export const handler: Handler = async (event) => {
         // Update customer if we have new info
         if (customerInfo.name || customerInfo.phone) {
           customer = await stripe.customers.update(customer.id, {
-            name: customerInfo.name || customer.name,
-            phone: customerInfo.phone || customer.phone,
+            name: customerInfo.name || (customer.name ?? undefined),
+            phone: customerInfo.phone || (customer.phone ?? undefined),
           });
         }
       } else {
@@ -107,7 +107,7 @@ export const handler: Handler = async (event) => {
         enabled: true,
       },
       customer: customer ? customer.id : undefined,
-      receipt_email: email,
+      receipt_email: email ?? null,
       metadata: {
         packageId,
         email: email || '',
