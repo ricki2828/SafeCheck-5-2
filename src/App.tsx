@@ -30,6 +30,21 @@ import Testimonials from './components/Testimonials';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { scrollToSection } from './utils/scroll';
 
+// Determine active package based on environment variable
+const activePackageMode = import.meta.env.VITE_ACTIVE_PACKAGE_MODE || 'standard';
+
+const standardPackage = {
+  id: import.meta.env.VITE_STANDARD_PACKAGE_ID || 'standard_check',
+  price: parseFloat(import.meta.env.VITE_STANDARD_PACKAGE_PRICE || '65'),
+};
+
+const testPackage = {
+  id: import.meta.env.VITE_TEST_PACKAGE_ID || 'test_check',
+  price: parseFloat(import.meta.env.VITE_TEST_PACKAGE_PRICE || '0.01'),
+};
+
+const activePackage = activePackageMode === 'test' ? testPackage : standardPackage;
+
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
 const appearance = {
@@ -116,7 +131,7 @@ function App() {
   const [isSecondaryButtonHovered, setIsSecondaryButtonHovered] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const price = 65;
+  const price = activePackage.price;
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -168,10 +183,10 @@ function App() {
       if (data.valid) {
         setAppliedVoucher(voucherCode);
         setDiscountPercent(data.coupon.percentOff || 0);
-        await createPaymentIntent();
       } else {
         setVoucherError('Invalid promotion code');
         setVoucherCode('');
+        setDiscountPercent(0);
       }
     } catch (error) {
       setVoucherError('Error applying promotion code. Please try again.');
@@ -183,8 +198,8 @@ function App() {
   const createPaymentIntent = async () => {
     try {
       setError(null);
-      const finalAmount = Math.round(price * (1 - discountPercent / 100) * 100); // Convert to cents
-      console.log('Creating payment intent with amount:', finalAmount);
+      const finalAmount = Math.round(price * (1 - discountPercent / 100) * 100);
+      console.log('Creating payment intent with amount:', finalAmount, 'for package:', activePackage.id);
 
       const response = await fetch('/.netlify/functions/create-payment-intent', {
         method: 'POST',
@@ -194,7 +209,7 @@ function App() {
         body: JSON.stringify({
           amount: finalAmount,
           email: formData.email || email,
-          packageId: 'standard_check',
+          packageId: activePackage.id,
           quantity: 1,
           formData: {
             firstName: formData.firstName,
@@ -225,6 +240,7 @@ function App() {
     } catch (err) {
       console.error('Error creating payment intent:', err);
       setError(err instanceof Error ? err.message : 'Failed to create payment intent');
+      setClientSecret(null);
     }
   };
 
@@ -259,7 +275,7 @@ function App() {
                   <p className="text-sm text-gray-600">{t('check.subtitle')}</p>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-primary">${price}</p>
+                  <p className="text-2xl font-bold text-primary">${price.toFixed(2)}</p>
                   <p className="text-sm text-gray-500">CAD</p>
                 </div>
               </div>

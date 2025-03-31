@@ -52,6 +52,30 @@ const createCertnBackgroundCheck = async (paymentIntent: PaymentIntent) => {
     if (!metadata.email) {
       throw new Error('Email is required for Certn integration');
     }
+    
+    // Determine which Certn package ID to use based on Stripe metadata
+    const standardCertnPackageId = process.env.STANDARD_CERTN_PACKAGE_ID;
+    const testCertnPackageId = process.env.TEST_CERTN_PACKAGE_ID;
+    
+    if (!standardCertnPackageId || !testCertnPackageId) {
+      throw new Error('Standard or Test Certn Package ID is not configured in environment variables');
+    }
+    
+    // Compare against VITE_ environment variables (as these hold the IDs sent from frontend)
+    const standardStripePackageId = process.env.VITE_STANDARD_PACKAGE_ID || 'standard_check';
+    const testStripePackageId = process.env.VITE_TEST_PACKAGE_ID || 'test_check';
+    
+    let certnPackageIdToUse;
+    if (metadata.packageId === testStripePackageId) {
+        console.log(`Using TEST Certn package ID: ${testCertnPackageId}`);
+        certnPackageIdToUse = testCertnPackageId;
+    } else if (metadata.packageId === standardStripePackageId) {
+        console.log(`Using STANDARD Certn package ID: ${standardCertnPackageId}`);
+        certnPackageIdToUse = standardCertnPackageId;
+    } else {
+        console.warn(`Unknown packageId (${metadata.packageId}) in payment metadata. Defaulting to standard Certn package.`);
+        certnPackageIdToUse = standardCertnPackageId;
+    }
 
     // Get customer details if we have a customer ID
     let customerDetails = {};
@@ -68,11 +92,8 @@ const createCertnBackgroundCheck = async (paymentIntent: PaymentIntent) => {
     // Use the appropriate Certn API endpoint for creating a background check
     const certnUrl = `${process.env.CERTN_API_URL}/cases/order-package/`;
 
-    // Hardcode the package ID for Canadian criminal checks
-    const CANADIAN_CRIMINAL_CHECK_PACKAGE_ID = "2b1e6443-35e4-408a-98b8-d6db7e5ad9c5";
-
     const requestBody = {
-      package: CANADIAN_CRIMINAL_CHECK_PACKAGE_ID,
+      package: certnPackageIdToUse, // Use determined Certn package ID
       email_address: metadata.email,
       first_name: metadata.firstName || '',
       last_name: metadata.lastName || '',
@@ -105,7 +126,8 @@ const createCertnBackgroundCheck = async (paymentIntent: PaymentIntent) => {
       metadata: { 
         ...metadata,
         certnCaseId: certnResponse.id,
-        certnStatus: certnResponse.status
+        certnStatus: certnResponse.status,
+        usedCertnPackage: certnPackageIdToUse // Store which Certn package was used
       }
     });
 
