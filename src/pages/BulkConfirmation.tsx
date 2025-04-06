@@ -1,8 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Shield, Check, Mail, Users } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
+declare global {
+  interface Window {
+    gtag: (...args: any[]) => void;
+  }
+}
+
 export default function BulkConfirmation() {
+  useEffect(() => {
+    // Get quantity from URL parameters
+    const quantity = parseInt(new URLSearchParams(window.location.search).get('quantity') || '1', 10);
+    const pricePerCheck = 65.00;
+    const totalValue = quantity * pricePerCheck;
+
+    // Track successful bulk transaction
+    window.gtag('event', 'purchase', {
+      transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
+      value: totalValue,
+      currency: 'CAD',
+      items: [{
+        item_name: 'Bulk Background Checks',
+        price: pricePerCheck,
+        quantity: quantity
+      }]
+    });
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
