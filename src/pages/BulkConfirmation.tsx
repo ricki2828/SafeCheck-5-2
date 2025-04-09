@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
+    dataLayer: any[];
   }
 }
 
@@ -15,7 +16,7 @@ export default function BulkConfirmation() {
     const pricePerCheck = 65.00;
     const totalValue = quantity * pricePerCheck;
 
-    // Track successful bulk transaction
+    // Google Analytics 4 purchase event tracking
     window.gtag('event', 'purchase', {
       transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
       value: totalValue,
@@ -25,6 +26,21 @@ export default function BulkConfirmation() {
         price: pricePerCheck,
         quantity: quantity
       }]
+    });
+
+    // Google Ads conversion tracking - update these with your actual conversion ID and label
+    window.gtag('event', 'conversion', {
+      'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL', // Replace with your Google Ads conversion ID and label
+      'value': totalValue,
+      'currency': 'CAD',
+      'transaction_id': new URLSearchParams(window.location.search).get('transaction_id') || 'unknown'
+    });
+    
+    // Add console logging to help with debugging
+    console.log('Bulk conversion tracking fired', {
+      transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
+      value: totalValue,
+      quantity: quantity
     });
   }, []);
 

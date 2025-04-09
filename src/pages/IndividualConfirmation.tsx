@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 declare global {
   interface Window {
     gtag: (...args: any[]) => void;
+    dataLayer: any[];
   }
 }
 
 export default function IndividualConfirmation() {
   useEffect(() => {
-    // Track successful transaction
+    // Google Analytics 4 purchase event tracking
     window.gtag('event', 'purchase', {
       transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
       value: 65.00,
@@ -20,6 +21,20 @@ export default function IndividualConfirmation() {
         price: 65.00,
         quantity: 1
       }]
+    });
+
+    // Google Ads conversion tracking - update these with your actual conversion ID and label
+    window.gtag('event', 'conversion', {
+      'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL', // Replace with your Google Ads conversion ID and label
+      'value': 65.00,
+      'currency': 'CAD',
+      'transaction_id': new URLSearchParams(window.location.search).get('transaction_id') || 'unknown'
+    });
+    
+    // Add console logging to help with debugging
+    console.log('Conversion tracking fired', {
+      transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
+      value: 65.00
     });
   }, []);
 
