@@ -28,9 +28,9 @@ export default function BulkConfirmation() {
       }]
     });
 
-    // Google Ads conversion tracking - update these with your actual conversion ID and label
+    // Google Ads conversion tracking with the likely account ID
     window.gtag('event', 'conversion', {
-      'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL', // Replace with your Google Ads conversion ID and label
+      'send_to': 'AW-602963673/ads_conversion_PURCHASE_1', // Using event name as placeholder for conversion label
       'value': totalValue,
       'currency': 'CAD',
       'transaction_id': new URLSearchParams(window.location.search).get('transaction_id') || 'unknown'
