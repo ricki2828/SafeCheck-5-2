@@ -201,6 +201,8 @@ function App() {
       const finalAmount = Math.round(price * (1 - discountPercent / 100) * 100);
       console.log('Creating payment intent with amount:', finalAmount, 'for package:', activePackage.id);
 
+      console.log('App.tsx - formData being sent:', formData);
+
       const response = await fetch('/.netlify/functions/create-payment-intent', {
         method: 'POST',
         headers: {

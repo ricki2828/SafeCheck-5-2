@@ -66,6 +66,10 @@ export const handler: Handler = async (event) => {
 
     console.log('Creating payment intent with amount:', amount);
     
+    // --- Add logging here ---
+    console.log('create-payment-intent: Received data:', data);
+    // ------------------------
+
     // Prepare customer data for potential future use with Certn
     const customerInfo = {
       email: email || '',
@@ -116,6 +120,10 @@ export const handler: Handler = async (event) => {
         requiresCertnIntegration: 'true',
       },
     });
+
+    // --- Add logging here ---
+    console.log('create-payment-intent: Stripe metadata being set:', paymentIntent.metadata);
+    // ------------------------
 
     console.log('Payment intent created:', paymentIntent.id);
 

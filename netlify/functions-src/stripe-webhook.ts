@@ -39,6 +39,8 @@ interface CertnResponse {
 
 const createCertnBackgroundCheck = async (paymentIntent: PaymentIntent) => {
   try {
+    console.log('stripe-webhook: Received paymentIntent metadata:', paymentIntent.metadata);
+
     if (!process.env.CERTN_API_KEY) {
       throw new Error('CERTN_API_KEY is not configured');
     }
