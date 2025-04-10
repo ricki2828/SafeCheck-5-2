@@ -4,31 +4,24 @@ import { Link } from 'react-router-dom';
 
 declare global {
   interface Window {
-    gtag: (...args: any[]) => void;
     dataLayer: any[];
   }
 }
 
 export default function IndividualConfirmation() {
   useEffect(() => {
-    // Google Analytics 4 purchase event tracking
-    window.gtag('event', 'purchase', {
-      transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
-      value: 65.00,
-      currency: 'CAD',
-      items: [{
-        item_name: 'Individual Background Check',
-        price: 65.00,
-        quantity: 1
-      }]
-    });
-
-    // Google Ads conversion tracking with the likely account ID
-    window.gtag('event', 'conversion', {
-      'send_to': 'AW-602963673/ads_conversion_PURCHASE_1', // Using event name as placeholder for conversion label
+    // Push purchase event to dataLayer for GTM to handle
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      'event': 'purchase',
+      'transaction_id': new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
       'value': 65.00,
       'currency': 'CAD',
-      'transaction_id': new URLSearchParams(window.location.search).get('transaction_id') || 'unknown'
+      'items': [{
+        'item_name': 'Individual Background Check',
+        'price': 65.00,
+        'quantity': 1
+      }]
     });
     
     // Add console logging to help with debugging
