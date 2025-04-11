@@ -26,7 +26,8 @@ import HowItWorks from './components/HowItWorks';
 import FAQ from './components/FAQ';
 import Footer from './components/Footer';
 import TrustBadges from './components/TrustBadges';
-import Testimonials from './components/Testimonials';
+// Temporarily removed testimonials - uncomment when ready to add back
+// import Testimonials from './components/Testimonials';
 import LanguageSwitcher from './components/LanguageSwitcher';
 import { scrollToSection } from './utils/scroll';
 
@@ -743,7 +744,9 @@ function App() {
                     <TrustBadges />
                   </div>
 
+                  {/* Temporarily removed testimonials - uncomment when ready to add back
                   <Testimonials />
+                  */}
                 </div>
               </div>
             </div>

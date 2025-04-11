@@ -31,9 +31,9 @@ interface PaymentStatus {
 
 const testimonials = [
   {
-    quote: "Got my background check in 12 minutes! Incredibly fast and professional service.",
-    author: "Michael Chen",
-    role: "Software Developer",
+    quote: "Secure and fast background check processing",
+    author: "Verified Service",
+    role: "15-minute average processing time",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
     rating: 5
   }

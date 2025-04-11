@@ -4,7 +4,7 @@
     "faq": "FAQ",
     "blog": "Blog",
     "getStarted": "Get Started",
-    "contact": "Contact Support",
+    "contact": "Contact",
     "buyForOthers": "Buy Background Checks For Others"
   },
   "footer": {
@@ -35,7 +35,7 @@
       },
       "trusted": {
         "title": "Trusted Service",
-        "description": "100% Satisfaction Guarantee"
+        "description": "Satisfaction Guaranteed"
       }
     },
     "copyright": "© {{year}} SafeHire.ca. All rights reserved."
@@ -64,15 +64,15 @@
     "title": "Frequently Asked Questions",
     "q1": {
       "title": "What shows up on my criminal record check?",
-      "answer": "Your criminal record check will show any criminal convictions, pending charges, and court orders registered in the National Repository of Criminal Records. This includes information from official Canadian law enforcement databases."
+      "answer": "The criminal record check will show any criminal convictions, pending charges, and court orders registered in the National Repository of Criminal Records. This includes information from official Canadian law enforcement databases."
     },
     "q2": {
       "title": "What if I want to dispute my results?",
-      "answer": "If you believe there are errors in your criminal record check results, you can submit a dispute. Contact us immediately and we will guide you through the review and correction process if necessary."
+      "answer": "If you believe there are errors in the criminal record check results, you can submit a dispute. Contact us for guidance through the review and correction process."
     },
     "q3": {
       "title": "I have old records. Can I get a pardon?",
-      "answer": "Yes, you may be eligible for a record suspension (pardon) for old criminal records. This is a separate process from the criminal record check. We recommend consulting a legal professional or pardon service to understand your eligibility and application process."
+      "answer": "Yes, you may be eligible for a record suspension (pardon) for old criminal records. This is a separate process from the criminal record check. We recommend consulting a legal professional or pardon service to understand eligibility and application process."
     },
     "q4": {
       "title": "How long does it take?",
@@ -80,11 +80,11 @@
     },
     "q5": {
       "title": "Is it secure?",
-      "answer": "Yes, we use bank-level encryption to protect your information. Our service is fully compliant with Canadian privacy laws and security requirements."
+      "answer": "Yes, we use bank-level encryption to protect all information. Our service is fully compliant with Canadian privacy laws and security requirements."
     },
     "q6": {
       "title": "Is it accepted by employers?",
-      "answer": "Yes, our criminal record checks are accepted by employers across Canada. The results come directly from official Canadian law enforcement databases and meet national standards for background screening."
+      "answer": "Yes, these criminal record checks are accepted by employers across Canada. The results come directly from official Canadian law enforcement databases and meet national standards for background screening."
     }
   },
   "hero": {

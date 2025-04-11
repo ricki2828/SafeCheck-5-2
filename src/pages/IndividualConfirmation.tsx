@@ -99,7 +99,7 @@ export default function IndividualConfirmation() {
 
           <div className="mt-8 text-center">
             <p className="text-gray-600">
-              At any point if you need some help, please reach out to us on{' '}
+              For assistance, please contact{' '}
               <a href="mailto:info@safehire.ca" className="text-primary hover:underline">
                 info@safehire.ca
               </a>

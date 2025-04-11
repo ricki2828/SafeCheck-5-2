@@ -4,7 +4,7 @@
     "faq": "FAQ",
     "blog": "Blogue",
     "getStarted": "Commencer",
-    "contact": "Support",
+    "contact": "Contact",
     "buyForOthers": "Acheter des vérifications pour d'autres"
   },
   "footer": {
@@ -35,7 +35,7 @@
       },
       "trusted": {
         "title": "Service de confiance",
-        "description": "Satisfaction garantie à 100%"
+        "description": "Satisfaction garantie"
       }
     },
     "copyright": "© {{year}} SafeHire.ca. Tous droits réservés."
@@ -63,15 +63,15 @@
   "faq": {
     "q1": {
       "title": "Quelles informations ma vérification du casier judiciaire montrera-t-elle?",
-      "answer": "Votre vérification du casier judiciaire montrera toute condamnation criminelle, accusation en instance et ordonnance judiciaire enregistrée dans le Registre national des casiers judiciaires. Cela inclut les informations des bases de données officielles des forces de l'ordre canadiennes."
+      "answer": "La vérification du casier judiciaire montrera toute condamnation criminelle, accusation en instance et ordonnance judiciaire enregistrée dans le Registre national des casiers judiciaires. Cela inclut les informations des bases de données officielles des forces de l'ordre canadiennes."
     },
     "q2": {
       "title": "Que faire si je veux contester mes résultats?",
-      "answer": "Si vous pensez qu'il y a des erreurs dans les résultats de votre vérification du casier judiciaire, vous pouvez soumettre une contestation. Contactez-nous immédiatement et nous vous guiderons dans le processus de révision et de correction si nécessaire."
+      "answer": "Si vous pensez qu'il y a des erreurs dans les résultats de la vérification du casier judiciaire, vous pouvez soumettre une contestation. Contactez-nous pour obtenir des conseils sur le processus de révision et de correction."
     },
     "q3": {
       "title": "J'ai d'anciens dossiers. Puis-je obtenir un pardon?",
-      "answer": "Oui, vous pourriez être admissible à une suspension du casier (pardon) pour d'anciens casiers judiciaires. Il s'agit d'un processus distinct de la vérification du casier judiciaire. Nous vous recommandons de consulter un professionnel juridique ou un service de pardon pour comprendre votre admissibilité et le processus de demande."
+      "answer": "Oui, vous pourriez être admissible à une suspension du casier (pardon) pour d'anciens casiers judiciaires. Il s'agit d'un processus distinct de la vérification du casier judiciaire. Nous vous recommandons de consulter un professionnel juridique ou un service de pardon pour comprendre l'admissibilité et le processus de demande."
     },
     "q4": {
       "title": "Combien de temps cela prend-il?",
@@ -79,11 +79,11 @@
     },
     "q5": {
       "title": "Est-ce sécurisé?",
-      "answer": "Oui, nous utilisons un cryptage de niveau bancaire pour protéger vos informations. Notre service est entièrement conforme aux lois canadiennes sur la protection de la vie privée et aux exigences de sécurité."
+      "answer": "Oui, nous utilisons un cryptage de niveau bancaire pour protéger toutes les informations. Notre service est entièrement conforme aux lois canadiennes sur la protection de la vie privée et aux exigences de sécurité."
     },
     "q6": {
       "title": "Est-ce accepté par les employeurs?",
-      "answer": "Oui, nos vérifications du casier judiciaire sont acceptées par les employeurs à travers le Canada. Les résultats proviennent directement des bases de données officielles des forces de l'ordre canadiennes et répondent aux normes nationales de vérification des antécédents."
+      "answer": "Oui, ces vérifications du casier judiciaire sont acceptées par les employeurs à travers le Canada. Les résultats proviennent directement des bases de données officielles des forces de l'ordre canadiennes et répondent aux normes nationales de vérification des antécédents."
     }
   },
   "hero": {

@@ -3,27 +3,27 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const testimonials = [
   {
-    quote: "As a hockey coach, I needed my background check done quickly. Got mine in minutes and was back on the ice the same day!",
-    name: "Michael Chen",
-    title: "Hockey Coach, Victoria BC",
+    quote: "Fast and secure background check service",
+    name: "Verified Process",
+    title: "15-minute average processing time",
     image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80"
   },
   {
-    quote: "The process was incredibly smooth. I needed my check for a healthcare position, and SafeHire delivered within the hour.",
-    name: "Sarah Johnson",
-    title: "Registered Nurse, Toronto ON",
+    quote: "Bank-level security and data protection",
+    name: "Secure Service",
+    title: "256-bit SSL encryption",
     image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80"
   },
   {
-    quote: "As a tech startup founder, I appreciate efficiency. SafeHire's digital process is exactly what modern businesses need.",
-    name: "David Patel",
-    title: "CEO, TechFlow Inc.",
+    quote: "Official Canadian police database check",
+    name: "Official Verification",
+    title: "Nationally recognized results",
     image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80"
   },
   {
-    quote: "I was worried about getting my background check for teaching, but it was so easy. Highly recommend!",
-    name: "Emily Rodriguez",
-    title: "Elementary Teacher, Vancouver BC",
+    quote: "Digital delivery of results",
+    name: "Instant Access",
+    title: "Secure PDF certificate",
     image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80"
   }
 ];

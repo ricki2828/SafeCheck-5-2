@@ -175,7 +175,7 @@ export default function BulkChecks() {
               <div className="flex items-start space-x-6">
                 <img
                   src="https://images.unsplash.com/photo-1556157382-97eda2d62296?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=400&q=80"
-                  alt="Robert Anderson"
+                  alt="Bulk Background Checks"
                   className="w-24 h-24 rounded-full object-cover border-4 border-primary/20"
                 />
                 <div className="flex-1">
@@ -185,11 +185,11 @@ export default function BulkChecks() {
                     ))}
                   </div>
                   <blockquote className="text-lg text-gray-700 italic mb-4">
-                    "SafeHire made it incredibly simple to organize background checks for our entire coaching staff. With the bulk purchase option, I was able to distribute unique codes to each coach, and they completed their checks on their own time. The whole process was streamlined and efficient - exactly what we needed for our 35+ coaching staff."
+                    "Streamlined bulk background check process for organizations. Purchase multiple checks at once and distribute unique codes to individuals. Each person can complete their verification on their own schedule. Perfect for teams of any size."
                   </blockquote>
                   <div>
-                    <p className="font-semibold text-gray-900">Robert Anderson</p>
-                    <p className="text-gray-600">President, Greater Vancouver Minor Hockey Association</p>
+                    <p className="font-semibold text-gray-900">Bulk Processing</p>
+                    <p className="text-gray-600">Efficient background checks for teams and organizations</p>
                   </div>
                 </div>
               </div>
