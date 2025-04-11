@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useStripe, useElements, PaymentElement } from '@stripe/react-stripe-js';
 import { useErrorHandler } from '../hooks/useErrorHandler';
-import { LoaderIcon, Star, Shield, Clock, CheckCircle } from 'lucide-react';
+import { LoaderIcon, Shield, Clock, CheckCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 interface StripePaymentProps {
@@ -28,16 +28,6 @@ interface PaymentStatus {
   status: 'idle' | 'processing' | 'succeeded' | 'requires_action' | 'error';
   message?: string;
 }
-
-const testimonials = [
-  {
-    quote: "Secure and fast background check processing",
-    author: "Verified Service",
-    role: "15-minute average processing time",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80",
-    rating: 5
-  }
-];
 
 export default function StripePayment({ 
   onSuccess, 
@@ -263,40 +253,16 @@ export default function StripePayment({
         )}
       </div>
 
-      <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-3 text-primary">
-              <Clock className="h-5 w-5" />
-              <span className="font-semibold">Results in 15 minutes</span>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Shield className="h-5 w-5 text-primary" />
-              <span className="font-semibold">Officially Verified Results</span>
-            </div>
+      <div className="grid md:grid-cols-2 gap-6">
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3 text-primary">
+            <Clock className="h-5 w-5" />
+            <span className="font-semibold">Results in 15 minutes</span>
           </div>
-          
-          {testimonials.map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-lg p-4 border border-gray-200">
-              <div className="flex items-start space-x-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.author}
-                  className="w-12 h-12 rounded-full object-cover"
-                />
-                <div>
-                  <div className="flex items-center space-x-1 mb-2">
-                    {[...Array(testimonial.rating)].map((_, i) => (
-                      <Star key={i} className="h-4 w-4 text-yellow-400 fill-current" />
-                    ))}
-                  </div>
-                  <p className="text-gray-600 text-sm italic mb-2">{testimonial.quote}</p>
-                  <p className="text-sm font-semibold">{testimonial.author}</p>
-                  <p className="text-xs text-gray-500">{testimonial.role}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+          <div className="flex items-center space-x-3">
+            <Shield className="h-5 w-5 text-primary" />
+            <span className="font-semibold">Officially Verified Results</span>
+          </div>
         </div>
       </div>
     </div>
