@@ -61,29 +61,30 @@
     "trust": "Trusted by employers across Canada"
   },
   "faq": {
+    "title": "Frequently Asked Questions",
     "q1": {
-      "title": "What information will my criminal record check show?",
-      "answer": "Your criminal record check will show any criminal convictions, pending charges, and court orders registered in the RCMP National Repository of Criminal Records. This includes information from the Canadian Police Information Centre (CPIC) database."
+      "title": "What shows up on my criminal record check?",
+      "answer": "Your criminal record check will show any criminal convictions, pending charges, and court orders registered in the National Repository of Criminal Records. This includes information from official Canadian law enforcement databases."
     },
     "q2": {
       "title": "What if I want to dispute my results?",
-      "answer": "If you believe there are errors in your criminal record check results, you can submit a dispute. Contact us immediately and we'll guide you through the process of having your record reviewed and corrected if necessary."
+      "answer": "If you believe there are errors in your criminal record check results, you can submit a dispute. Contact us immediately and we will guide you through the review and correction process if necessary."
     },
     "q3": {
-      "title": "I have old records. Can I get them pardoned?",
-      "answer": "Yes, you may be eligible for a record suspension (pardon) for old criminal records. This is a separate process from a criminal record check. We recommend consulting with a legal professional or pardon service to understand your eligibility and the application process."
+      "title": "I have old records. Can I get a pardon?",
+      "answer": "Yes, you may be eligible for a record suspension (pardon) for old criminal records. This is a separate process from the criminal record check. We recommend consulting a legal professional or pardon service to understand your eligibility and application process."
     },
     "q4": {
       "title": "How long does it take?",
-      "answer": "Most results are available within 15 minutes. In some cases, additional verification may be required which can take 24-48 hours."
+      "answer": "Most results are available within 15 minutes. In some cases, additional verification may be required, which can take 24-48 hours."
     },
     "q5": {
       "title": "Is it secure?",
-      "answer": "Yes, we use bank-level encryption to protect your information. Our service is fully compliant with Canadian privacy laws and RCMP requirements."
+      "answer": "Yes, we use bank-level encryption to protect your information. Our service is fully compliant with Canadian privacy laws and security requirements."
     },
     "q6": {
       "title": "Is it accepted by employers?",
-      "answer": "Yes, our criminal record checks are accepted by employers across Canada. The results come directly from the RCMP's Canadian Police Information Centre."
+      "answer": "Yes, our criminal record checks are accepted by employers across Canada. The results come directly from official Canadian law enforcement databases and meet national standards for background screening."
     }
   },
   "hero": {
@@ -176,5 +177,9 @@
     "backToHome": "Back to Home",
     "backToBlog": "Back to Blog",
     "publishedOn": "Published on {{date}}"
+  },
+  "badge": {
+    "title": "Officially Verified",
+    "subtitle": "Official Police Check"
   }
 }

@@ -270,9 +270,9 @@ export default function StripePayment({
               <Clock className="h-5 w-5" />
               <span className="font-semibold">Results in 15 minutes</span>
             </div>
-            <div className="flex items-center space-x-3 text-primary">
-              <Shield className="h-5 w-5" />
-              <span className="font-semibold">RCMP Verified Results</span>
+            <div className="flex items-center space-x-3">
+              <Shield className="h-5 w-5 text-primary" />
+              <span className="font-semibold">Officially Verified Results</span>
             </div>
           </div>
           

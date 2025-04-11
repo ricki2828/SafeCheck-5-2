@@ -12,9 +12,10 @@ export default function IndividualConfirmation() {
   useEffect(() => {
     // Push purchase event to dataLayer for GTM to handle
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    const transactionId = new URLSearchParams(window.location.search).get('transaction_id') || 'unknown';
+    const purchaseData = {
       'event': 'purchase',
-      'transaction_id': new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
+      'transaction_id': transactionId,
       'value': 65.00,
       'currency': 'CAD',
       'items': [{
@@ -22,12 +23,16 @@ export default function IndividualConfirmation() {
         'price': 65.00,
         'quantity': 1
       }]
-    });
+    };
     
-    // Add console logging to help with debugging
-    console.log('Conversion tracking fired', {
-      transaction_id: new URLSearchParams(window.location.search).get('transaction_id') || 'unknown',
-      value: 65.00
+    window.dataLayer.push(purchaseData);
+    
+    // Add detailed console logging for debugging
+    console.log('GTM Debug - Purchase Event:', {
+      dataLayer: window.dataLayer,
+      purchaseData,
+      transactionId,
+      timestamp: new Date().toISOString()
     });
   }, []);
 

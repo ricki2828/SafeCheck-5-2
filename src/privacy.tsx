@@ -43,7 +43,7 @@ export default function Privacy() {
             <h2>3. Information Sharing</h2>
             <p>We share your information with:</p>
             <ul>
-              <li>The Royal Canadian Mounted Police (RCMP) to process your criminal record check</li>
+              <li>Official Canadian law enforcement agencies to process your criminal record check</li>
               <li>Service providers who assist in operating our business</li>
               <li>Law enforcement when required by law</li>
             </ul>

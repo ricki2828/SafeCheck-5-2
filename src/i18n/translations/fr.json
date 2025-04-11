@@ -63,11 +63,11 @@
   "faq": {
     "q1": {
       "title": "Quelles informations ma vérification du casier judiciaire montrera-t-elle?",
-      "answer": "Votre vérification du casier judiciaire montrera toute condamnation criminelle, accusation en instance et ordonnance judiciaire enregistrée dans le Registre national des casiers judiciaires de la GRC. Cela inclut les informations de la base de données du Centre d'information de la police canadienne (CIPC)."
+      "answer": "Votre vérification du casier judiciaire montrera toute condamnation criminelle, accusation en instance et ordonnance judiciaire enregistrée dans le Registre national des casiers judiciaires. Cela inclut les informations des bases de données officielles des forces de l'ordre canadiennes."
     },
     "q2": {
       "title": "Que faire si je veux contester mes résultats?",
-      "answer": "Si vous pensez qu'il y a des erreurs dans les résultats de votre vérification du casier judiciaire, vous pouvez soumettre une contestation. Contactez-nous immédiatement et nous vous guiderons dans le processus de révision et de correction de votre dossier si nécessaire."
+      "answer": "Si vous pensez qu'il y a des erreurs dans les résultats de votre vérification du casier judiciaire, vous pouvez soumettre une contestation. Contactez-nous immédiatement et nous vous guiderons dans le processus de révision et de correction si nécessaire."
     },
     "q3": {
       "title": "J'ai d'anciens dossiers. Puis-je obtenir un pardon?",
@@ -79,11 +79,11 @@
     },
     "q5": {
       "title": "Est-ce sécurisé?",
-      "answer": "Oui, nous utilisons un cryptage de niveau bancaire pour protéger vos informations. Notre service est entièrement conforme aux lois canadiennes sur la protection de la vie privée et aux exigences de la GRC."
+      "answer": "Oui, nous utilisons un cryptage de niveau bancaire pour protéger vos informations. Notre service est entièrement conforme aux lois canadiennes sur la protection de la vie privée et aux exigences de sécurité."
     },
     "q6": {
       "title": "Est-ce accepté par les employeurs?",
-      "answer": "Oui, nos vérifications du casier judiciaire sont acceptées par les employeurs à travers le Canada. Les résultats proviennent directement du Centre d'information de la police canadienne de la GRC."
+      "answer": "Oui, nos vérifications du casier judiciaire sont acceptées par les employeurs à travers le Canada. Les résultats proviennent directement des bases de données officielles des forces de l'ordre canadiennes et répondent aux normes nationales de vérification des antécédents."
     }
   },
   "hero": {

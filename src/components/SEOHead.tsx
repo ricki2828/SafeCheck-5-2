@@ -9,8 +9,8 @@ interface SEOHeadProps {
 }
 
 export default function SEOHead({
-  title = 'SafeHire.ca - The fastest official criminal check in Canada',
-  description = 'Get your criminal record check in minutes, not weeks. Official RCMP verified background checks for Canadian employers.',
+  title = 'SafeHire.ca - Fast Criminal Record Checks in Canada',
+  description = 'Get your criminal record check in minutes, not weeks. Official Canadian background checks for employers.',
   canonicalUrl = 'https://safehire.ca',
   ogImage = 'https://safehire.ca/og-image.jpg',
   ogType = 'website'

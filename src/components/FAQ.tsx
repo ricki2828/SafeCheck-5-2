@@ -37,6 +37,15 @@ const FAQItem = ({ question, answer }: FAQItemProps) => {
 const FAQ = () => {
   const { t } = useTranslation();
 
+  const faqItems = [
+    { question: t('faq.q1.title'), answer: t('faq.q1.answer') },
+    { question: t('faq.q2.title'), answer: t('faq.q2.answer') },
+    { question: t('faq.q3.title'), answer: t('faq.q3.answer') },
+    { question: t('faq.q4.title'), answer: t('faq.q4.answer') },
+    { question: t('faq.q5.title'), answer: t('faq.q5.answer') },
+    { question: t('faq.q6.title'), answer: t('faq.q6.answer') }
+  ];
+
   return (
     <>
       <div className="h-1 bg-primary w-full" />
@@ -48,36 +57,14 @@ const FAQ = () => {
             </h2>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('faq.q1.title')}</h3>
-              <p className="text-gray-600">{t('faq.q1.answer')}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('faq.q2.title')}</h3>
-              <p className="text-gray-600">{t('faq.q2.answer')}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('faq.q3.title')}</h3>
-              <p className="text-gray-600">{t('faq.q3.answer')}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('faq.q4.title')}</h3>
-              <p className="text-gray-600">{t('faq.q4.answer')}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('faq.q5.title')}</h3>
-              <p className="text-gray-600">{t('faq.q5.answer')}</p>
-            </div>
-
-            <div className="bg-gray-50 rounded-xl p-6 border border-gray-200">
-              <h3 className="text-xl font-semibold text-gray-900 mb-4">{t('faq.q6.title')}</h3>
-              <p className="text-gray-600">{t('faq.q6.answer')}</p>
-            </div>
+          <div className="max-w-3xl mx-auto divide-y divide-gray-200">
+            {faqItems.map((item, index) => (
+              <FAQItem
+                key={index}
+                question={item.question}
+                answer={item.answer}
+              />
+            ))}
           </div>
         </div>
       </section>

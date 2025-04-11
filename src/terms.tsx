@@ -24,7 +24,7 @@ export default function Terms() {
             <p>By accessing and using SafeHire.ca ("the Service"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Service.</p>
 
             <h2>2. Description of Service</h2>
-            <p>SafeHire.ca provides criminal record check services through the Royal Canadian Mounted Police (RCMP) Canadian Police Information Centre (CPIC). Our service facilitates the process of obtaining criminal record checks for employment and other purposes.</p>
+            <p>SafeHire.ca provides criminal record check services through official Canadian law enforcement databases. Our service facilitates the process of obtaining criminal record checks for employment and other purposes.</p>
 
             <h2>3. User Responsibilities</h2>
             <ul>

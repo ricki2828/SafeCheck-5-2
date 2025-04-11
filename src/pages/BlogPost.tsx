@@ -13,7 +13,7 @@ const blogPosts = {
       <p>Criminal record checks are an essential part of many employment processes in Canada. This comprehensive guide will help you understand what they are, how they work, and why they're important.</p>
 
       <h2>What is a Criminal Record Check?</h2>
-      <p>A criminal record check, also known as a police check or background check, is a search of the Royal Canadian Mounted Police (RCMP) National Repository of Criminal Records. This search reveals any criminal convictions, pending charges, and court orders registered in the database.</p>
+      <p>A criminal record check, also known as a police check or background check, is a search of the National Repository of Criminal Records. This search reveals any criminal convictions, pending charges, and court orders registered in the database.</p>
 
       <h2>Types of Criminal Record Checks</h2>
       <ul>
