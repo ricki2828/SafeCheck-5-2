@@ -259,7 +259,7 @@ export default function BlogPost() {
               {post.title}
             </h1>
             <div className="text-sm text-gray-500 mb-8">
-              Agostinho Pedro, 
+              by Agostinho Pedro, Operations Specialist
             </div>
             <div 
               className="prose prose-lg max-w-none"
