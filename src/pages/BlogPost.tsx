@@ -254,14 +254,12 @@ export default function BlogPost() {
           <div className="p-8">
             <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
               <span>{post.date}</span>
-              <span>•</span>
-              <span>{t('blog.readTime', { time: post.readTime })}</span>
             </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-4">
               {post.title}
             </h1>
             <div className="text-sm text-gray-500 mb-8">
-              {t('blog.by')} {post.author.name}
+              Agostinho Pedro, 
             </div>
             <div 
               className="prose prose-lg max-w-none"

@@ -75,8 +75,6 @@ export default function Blog() {
               <div className="p-6">
                 <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
                   <span>{post.date}</span>
-                  <span>•</span>
-                  <span>{t('blog.readTime', { time: post.readTime })}</span>
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">
                   {post.title}
