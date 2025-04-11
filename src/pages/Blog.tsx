@@ -78,12 +78,10 @@ export default function Blog() {
                   <span>•</span>
                   <span>{t('blog.readTime', { time: post.readTime })}</span>
                 </div>
-                <h2 className="text-xl font-bold text-gray-900 mb-2">
+                <h2 className="text-xl font-semibold text-gray-900 mb-2">
                   {post.title}
                 </h2>
-                <p className="text-gray-600 mb-4">
-                  {post.excerpt}
-                </p>
+                <p className="text-gray-600 mb-4">{post.excerpt}</p>
                 <Link
                   to={`/blog/${post.id}`}
                   className="inline-flex items-center space-x-2 text-primary hover:text-primary/80"

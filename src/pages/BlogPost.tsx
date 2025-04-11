@@ -253,18 +253,6 @@ export default function BlogPost() {
           />
           
           <div className="p-8">
-            <div className="flex items-center space-x-4 mb-6">
-              <img
-                src={post.author.image}
-                alt={post.author.name}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <p className="font-semibold text-gray-900">{post.author.name}</p>
-                <p className="text-sm text-gray-500">{post.author.role}</p>
-              </div>
-            </div>
-
             <div className="flex items-center space-x-4 text-sm text-gray-500 mb-6">
               <span>{t('blog.publishedOn', { date: post.date })}</span>
               <span>•</span>
