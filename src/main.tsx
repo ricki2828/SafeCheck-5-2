@@ -18,35 +18,75 @@ import { ErrorBoundary } from './components/ErrorBoundary';
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
+    element: (
+      <>
+        <ScrollToTop />
+        <App />
+      </>
+    ),
   },
   {
     path: '/terms',
-    element: <Terms />,
+    element: (
+      <>
+        <ScrollToTop />
+        <Terms />
+      </>
+    ),
   },
   {
     path: '/privacy',
-    element: <Privacy />,
+    element: (
+      <>
+        <ScrollToTop />
+        <Privacy />
+      </>
+    ),
   },
   {
     path: '/blog',
-    element: <Blog />,
+    element: (
+      <>
+        <ScrollToTop />
+        <Blog />
+      </>
+    ),
   },
   {
     path: '/blog/:id',
-    element: <BlogPost />,
+    element: (
+      <>
+        <ScrollToTop />
+        <BlogPost />
+      </>
+    ),
   },
   {
     path: '/bulk-checks',
-    element: <BulkChecks />,
+    element: (
+      <>
+        <ScrollToTop />
+        <BulkChecks />
+      </>
+    ),
   },
   {
     path: '/confirmation/individual',
-    element: <IndividualConfirmation />,
+    element: (
+      <>
+        <ScrollToTop />
+        <IndividualConfirmation />
+      </>
+    ),
   },
   {
     path: '/confirmation/bulk',
-    element: <BulkConfirmation />,
+    element: (
+      <>
+        <ScrollToTop />
+        <BulkConfirmation />
+      </>
+    ),
   },
 ]);
 
@@ -61,7 +101,6 @@ createRoot(container).render(
   <StrictMode>
     <HelmetProvider context={helmetContext}>
       <ErrorBoundary>
-        <ScrollToTop />
         <RouterProvider router={router} />
       </ErrorBoundary>
     </HelmetProvider>
