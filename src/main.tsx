@@ -10,6 +10,7 @@ import BlogPost from './pages/BlogPost';
 import BulkChecks from './pages/BulkChecks';
 import IndividualConfirmation from './pages/IndividualConfirmation';
 import BulkConfirmation from './pages/BulkConfirmation';
+import ScrollToTop from './components/ScrollToTop';
 import './i18n/config';
 import './index.css';
 import { ErrorBoundary } from './components/ErrorBoundary';
@@ -60,6 +61,7 @@ createRoot(container).render(
   <StrictMode>
     <HelmetProvider context={helmetContext}>
       <ErrorBoundary>
+        <ScrollToTop />
         <RouterProvider router={router} />
       </ErrorBoundary>
     </HelmetProvider>
