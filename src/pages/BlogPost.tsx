@@ -4,8 +4,25 @@ import { Link, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Footer from '../components/Footer';
 
+interface BlogPost {
+  title: string;
+  content: string;
+  image: string;
+  date: string;
+  readTime: string;
+  author: {
+    name: string;
+    role: string;
+    image: string;
+  };
+}
+
+interface BlogPosts {
+  [key: number]: BlogPost;
+}
+
 // This would typically come from an API or CMS
-const blogPosts = {
+const blogPosts: BlogPosts = {
   1: {
     title: 'Understanding Criminal Record Checks in Canada: A Complete Guide',
     content: `
@@ -48,6 +65,12 @@ const blogPosts = {
 
       <h2>3. Reducing Liability</h2>
       <p>Companies can be held liable for negligent hiring if they fail to take reasonable precautions in screening employees. Background checks help mitigate this risk.</p>
+
+      <h2>4. Protecting Company Assets</h2>
+      <p>Background checks help verify a candidate's history of handling sensitive information and financial responsibilities, protecting company assets, intellectual property, and confidential data.</p>
+
+      <h2>5. Verifying Qualifications</h2>
+      <p>Criminal record checks, as part of a comprehensive background screening process, help verify a candidate's honesty and integrity, ensuring they meet the qualifications and trustworthiness required for the position.</p>
     `,
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     date: 'March 12, 2024',
