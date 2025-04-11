@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ArrowLeft } from 'lucide-react';
 import { Link, useParams, Navigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -43,12 +43,12 @@ const blogPosts: BlogPosts = {
       <p>With modern digital systems, most basic criminal record checks can be completed within 15 minutes. However, if there's a potential match that requires further verification, the process might take 24-48 hours.</p>
     `,
     image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 15, 2024',
-    readTime: '3',
+    date: 'April 7, 2025',
+    readTime: '5',
     author: {
       name: 'Agostinho Pedro',
-      role: 'Legal Compliance Specialist',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80'
+      role: '',
+      image: ''
     }
   },
   2: {
@@ -73,12 +73,12 @@ const blogPosts: BlogPosts = {
       <p>Criminal record checks, as part of a comprehensive background screening process, help verify a candidate's honesty and integrity, ensuring they meet the qualifications and trustworthiness required for the position.</p>
     `,
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 12, 2024',
+    date: 'March 31, 2025',
     readTime: '4',
     author: {
       name: 'Agostinho Pedro',
-      role: 'HR Director',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80'
+      role: '',
+      image: ''
     }
   },
   3: {
@@ -131,12 +131,12 @@ const blogPosts: BlogPosts = {
       <p>While traditional background checks still have their place, digital methods are increasingly becoming the preferred option for their speed, convenience, and cost-effectiveness. As technology continues to advance, we can expect digital background checks to become even more comprehensive and reliable.</p>
     `,
     image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 18, 2024',
-    readTime: '5',
+    date: 'March 24, 2025',
+    readTime: '6',
     author: {
       name: 'Agostinho Pedro',
-      role: 'Technology Integration Specialist',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80'
+      role: '',
+      image: ''
     }
   },
   4: {
@@ -211,12 +211,12 @@ const blogPosts: BlogPosts = {
       <p>Privacy and security are fundamental to maintaining trust in the background check process. By adhering to legal requirements, implementing strong security measures, and following best practices, organizations can protect sensitive information while still making informed hiring decisions.</p>
     `,
     image: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 20, 2024',
+    date: 'March 17, 2025',
     readTime: '7',
     author: {
       name: 'Agostinho Pedro',
-      role: 'Privacy and Compliance Officer',
-      image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=256&q=80'
+      role: '',
+      image: ''
     }
   }
 };
@@ -251,18 +251,18 @@ export default function BlogPost() {
             alt={post.title}
             className="w-full h-64 object-cover"
           />
-          
           <div className="p-8">
-            <div className="flex items-center space-x-4 text-sm text-gray-500 mb-6">
-              <span>{t('blog.publishedOn', { date: post.date })}</span>
+            <div className="flex items-center space-x-4 text-sm text-gray-500 mb-4">
+              <span>{post.date}</span>
               <span>•</span>
               <span>{t('blog.readTime', { time: post.readTime })}</span>
             </div>
-
-            <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            <h1 className="text-3xl font-bold text-gray-900 mb-4">
               {post.title}
             </h1>
-
+            <div className="text-sm text-gray-500 mb-8">
+              {t('blog.by')} {post.author.name}
+            </div>
             <div 
               className="prose prose-lg max-w-none"
               dangerouslySetInnerHTML={{ __html: post.content }}

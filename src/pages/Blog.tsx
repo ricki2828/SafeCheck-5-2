@@ -10,31 +10,31 @@ const blogPosts = [
     title: 'Understanding Criminal Record Checks in Canada: A Complete Guide',
     excerpt: 'Learn everything you need to know about criminal record checks in Canada, including types, requirements, and processing times.',
     image: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 15, 2024',
-    readTime: '8'
+    date: 'April 7, 2025',
+    readTime: '5'
   },
   {
     id: 2,
     title: 'Top 5 Reasons Employers Require Background Checks',
     excerpt: 'Discover why Canadian employers increasingly rely on criminal record checks for their hiring process.',
     image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 12, 2024',
-    readTime: '6'
+    date: 'March 31, 2025',
+    readTime: '4'
   },
   {
     id: 3,
     title: "Digital vs. Traditional Background Checks: What's the Difference?",
     excerpt: 'Compare modern digital background checks with traditional methods and see why online verification is the future.',
     image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 10, 2024',
-    readTime: '5'
+    date: 'March 24, 2025',
+    readTime: '6'
   },
   {
     id: 4,
     title: 'Privacy and Security in Background Checks: What You Need to Know',
     excerpt: 'Understanding how your information is protected during the background check process.',
     image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
-    date: 'March 8, 2024',
+    date: 'March 17, 2025',
     readTime: '7'
   }
 ];
