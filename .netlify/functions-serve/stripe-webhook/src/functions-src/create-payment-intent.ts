@@ -77,17 +77,16 @@ export const handler: Handler = async (event) => {
     
     // Prepare customer data for potential future use with Certn
     const customerInfo = {
-      email: email || '',
-      name: formData.firstName && formData.lastName ? 
-        `${formData.firstName} ${formData.lastName}` : '',
-      phone: formData.phoneNumber || '',
+      email: typeof email === 'string' && email.length > 0 ? email : undefined,
+      name: typeof formData.firstName === 'string' ? formData.firstName : undefined,
+      phone: typeof formData.phoneNumber === 'string' ? formData.phoneNumber : undefined,
     };
     
     // Create or retrieve a customer
     let customer;
-    if (email) {
+    if (customerInfo.email) {
       const customers = await stripe.customers.list({
-        email,
+        email: customerInfo.email,
         limit: 1,
       });
       
@@ -102,104 +101,100 @@ export const handler: Handler = async (event) => {
         }
       } else {
         customer = await stripe.customers.create({
-          email,
+          email: customerInfo.email,
           name: customerInfo.name,
           phone: customerInfo.phone,
         });
       }
     }
 
-    const paymentIntentData: Stripe.PaymentIntentCreateParams = {
-      amount: Math.round(amount), // Amount is already in cents
-      currency: 'cad',
-      automatic_payment_methods: {
-        enabled: true,
-      },
-      customer: customer?.id,
-      receipt_email: typeof email === 'string' ? email : undefined,
-      metadata: {
-        packageId: packageId || '',
-        email: email || '',
-        firstName: formData.firstName || '',
-        lastName: formData.lastName || '',
-        requiresCertnIntegration: 'true',
-      },
-    };
-
-    // Add promotion code if provided
+    // Validate promotion code if provided
+    let discount = 0;
+    let skipPayment = false;
+    let finalAmount = amount;
+    
     if (promotionCode) {
-      console.log('Validating promotion code:', promotionCode);
-      const promotionCodes = await stripe.promotionCodes.list({
-        code: promotionCode,
-        active: true,
-        limit: 1,
-      });
+      try {
+        const promotionCodeObj = await stripe.promotionCodes.list({
+          code: promotionCode,
+          active: true,
+          limit: 1,
+        });
 
-      if (promotionCodes.data.length > 0) {
-        const { coupon } = promotionCodes.data[0];
-        console.log('Found coupon:', JSON.stringify(coupon, null, 2));
-        
-        paymentIntentData.metadata = {
-          ...paymentIntentData.metadata,
-          promotionCode,
-          couponId: coupon.id,
-          originalAmount: amount.toString()
-        };
-        
-        // Apply the coupon discount directly to the amount
-        let discountedAmount = amount;
-        if (coupon.percent_off) {
-          console.log('Applying percentage discount:', coupon.percent_off);
-          const discountAmount = Math.round(amount * (coupon.percent_off / 100));
-          discountedAmount = Math.max(amount - discountAmount, 0);
-          console.log('Original amount:', amount);
-          console.log('Discount amount:', discountAmount);
-          console.log('Final amount:', discountedAmount);
-        } else if (coupon.amount_off) {
-          console.log('Applying fixed amount discount:', coupon.amount_off);
-          discountedAmount = Math.max(amount - coupon.amount_off, 0);
-          console.log('Original amount:', amount);
-          console.log('Discount amount:', coupon.amount_off);
-          console.log('Final amount:', discountedAmount);
+        if (!promotionCodeObj.data.length) {
+          throw new Error('Invalid promotion code');
         }
 
-        paymentIntentData.amount = discountedAmount;
+        const coupon = await stripe.coupons.retrieve(promotionCodeObj.data[0].coupon.id);
+        console.log('Retrieved coupon:', coupon);
 
-        // If the amount becomes 0, skip payment
-        if (discountedAmount === 0) {
-          console.log('Amount is 0, skipping payment intent creation');
+        if (coupon.percent_off) {
+          discount = coupon.percent_off;
+          console.log(`Applying percentage discount: ${discount}%`);
+          finalAmount = Math.round(amount * (1 - discount / 100));
+        } else if (coupon.amount_off) {
+          // amount_off is in cents
+          discount = coupon.amount_off;
+          console.log(`Applying fixed discount: $${discount / 100}`);
+          finalAmount = Math.max(0, amount - discount);
+        }
+
+        console.log('Original amount:', amount / 100);
+        console.log('Discount applied:', discount);
+        console.log('Final amount:', finalAmount / 100);
+
+        // If amount is 0 after discount, skip payment
+        if (finalAmount <= 0) {
+          console.log('Amount is 0 or less after discount, skipping payment');
+          skipPayment = true;
           return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({
-              skipPayment: true,
-              message: 'No payment required - 100% discount applied'
-            }),
+            body: JSON.stringify({ skipPayment: true })
           };
         }
-      } else {
-        console.log('No valid promotion code found');
+      } catch (error: any) {
+        console.error('Error processing promotion code:', error);
+        throw new Error(`Invalid promotion code: ${error.message}`);
       }
     }
 
-    console.log('Final payment intent data:', {
-      amount: paymentIntentData.amount,
-      currency: paymentIntentData.currency,
-      metadata: paymentIntentData.metadata
-    });
+    // Only create payment intent if we need payment
+    if (!skipPayment) {
+      try {
+        const paymentIntent = await stripe.paymentIntents.create({
+          amount: finalAmount,
+          currency: 'cad',
+          automatic_payment_methods: {
+            enabled: true,
+          },
+          customer: customer?.id,
+          receipt_email: customerInfo.email,
+          metadata: {
+            email: customerInfo.email,
+            packageId: packageId || '',
+            originalAmount: amount,
+            discount,
+            promotionCode: promotionCode || '',
+            ...formData
+          }
+        });
 
-    const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
+        return {
+          statusCode: 200,
+          headers,
+          body: JSON.stringify({
+            clientSecret: paymentIntent.client_secret,
+            amount: finalAmount,
+          }),
+        };
+      } catch (error: any) {
+        console.error('Error creating payment intent:', error);
+        throw new Error(`Error creating payment intent: ${error.message}`);
+      }
+    }
 
-    console.log('Payment intent created:', paymentIntent.id);
-
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        clientSecret: paymentIntent.client_secret,
-        customerId: customer ? customer.id : null,
-      }),
-    };
+    throw new Error('Unexpected end of function');
   } catch (error) {
     console.error('Payment intent creation error:', error);
     

@@ -180,16 +180,20 @@ function App() {
       });
       
       const data = await response.json();
+      console.log('Voucher validation response:', data);
       
       if (data.valid) {
         setAppliedVoucher(voucherCode);
         // Handle both percent_off and amount_off
         if (data.coupon.percent_off) {
+          console.log('Setting percent discount:', data.coupon.percent_off);
           setDiscountPercent(data.coupon.percent_off);
         } else if (data.coupon.amount_off) {
-          // Convert amount_off from cents to percentage
+          // Convert amount_off from cents to percentage for display
           const amountOffDollars = data.coupon.amount_off / 100;
+          console.log('Amount off in dollars:', amountOffDollars);
           const percentOff = (amountOffDollars / price) * 100;
+          console.log('Setting percent discount from fixed amount:', percentOff);
           setDiscountPercent(percentOff);
         }
         // Recreate payment intent with new price
@@ -200,6 +204,7 @@ function App() {
         setDiscountPercent(0);
       }
     } catch (error) {
+      console.error('Error applying voucher:', error);
       setVoucherError('Error applying promotion code. Please try again.');
     } finally {
       setIsApplyingVoucher(false);
@@ -209,11 +214,16 @@ function App() {
   const createPaymentIntent = async () => {
     try {
       setError(null);
+      // For fixed amount discounts, we'll let the backend handle the actual discount
+      // This calculation is just for display purposes
       const finalAmount = Math.round(price * (1 - discountPercent / 100) * 100);
-      console.log('Creating payment intent with amount:', finalAmount, 'for package:', activePackage.id);
-      console.log('Discount percent:', discountPercent);
-      console.log('Original price:', price);
-      console.log('Final amount in dollars:', finalAmount / 100);
+      console.log('Creating payment intent:', {
+        amount: finalAmount,
+        package: activePackage.id,
+        discountPercent,
+        originalPrice: price,
+        finalAmountInDollars: finalAmount / 100
+      });
 
       const response = await fetch('/.netlify/functions/create-payment-intent', {
         method: 'POST',
@@ -246,6 +256,7 @@ function App() {
       }
 
       const data = await response.json();
+      console.log('Payment intent response:', data);
       
       // Handle case where no payment is required (100% discount)
       if (data.skipPayment) {
