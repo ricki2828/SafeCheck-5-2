@@ -116,7 +116,7 @@ export const handler: Handler = async (event) => {
         enabled: true,
       },
       customer: customer?.id,
-      receipt_email: email ? email : undefined,
+      receipt_email: typeof email === 'string' ? email : undefined,
       metadata: {
         packageId: packageId || '',
         email: email || '',
@@ -135,11 +135,26 @@ export const handler: Handler = async (event) => {
       });
 
       if (promotionCodes.data.length > 0) {
+        const { coupon } = promotionCodes.data[0];
         paymentIntentData.metadata = {
           ...paymentIntentData.metadata,
           promotionCode,
+          couponId: coupon.id
         };
+        
+        // Apply the coupon discount directly to the amount
+        if (coupon.percent_off) {
+          const discountAmount = Math.round(amount * (coupon.percent_off / 100));
+          paymentIntentData.amount = Math.max(amount - discountAmount, 0);
+        } else if (coupon.amount_off) {
+          paymentIntentData.amount = Math.max(amount - coupon.amount_off, 0);
+        }
       }
+    }
+
+    // For $0 payments (100% discount), create a $1 payment intent that will be fully discounted
+    if (paymentIntentData.amount === 0) {
+      paymentIntentData.amount = 100; // $1 in cents
     }
 
     const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
