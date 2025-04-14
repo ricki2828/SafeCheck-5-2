@@ -214,6 +214,7 @@ function App() {
           email: formData.email || email,
           packageId: activePackage.id,
           quantity: 1,
+          promotionCode: appliedVoucher,
           formData: {
             firstName: formData.firstName,
             lastName: formData.lastName,

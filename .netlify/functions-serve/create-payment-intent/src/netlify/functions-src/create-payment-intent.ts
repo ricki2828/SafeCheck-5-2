@@ -54,7 +54,7 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const { amount, email, packageId = 'standard_check', formData = {} } = data;
+    const { amount, email, packageId = 'standard_check', formData = {}, promotionCode } = data;
 
     if (!amount || typeof amount !== 'number' || amount <= 0) {
       return {
@@ -100,6 +100,26 @@ export const handler: Handler = async (event) => {
       }
     }
 
+    // If a promotion code is provided, validate it
+    let promotionCodeId;
+    if (promotionCode) {
+      const promotionCodes = await stripe.promotionCodes.list({
+        code: promotionCode,
+        active: true,
+        limit: 1,
+      });
+
+      if (promotionCodes.data.length > 0) {
+        promotionCodeId = promotionCodes.data[0].id;
+      } else {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({ error: 'Invalid promotion code' }),
+        };
+      }
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(amount), // Amount is already in cents
       currency: 'cad',
@@ -108,12 +128,14 @@ export const handler: Handler = async (event) => {
       },
       customer: customer ? customer.id : undefined,
       receipt_email: email,
+      promotion_code: promotionCodeId,
       metadata: {
         packageId,
         email: email || '',
         firstName: formData.firstName || '',
         lastName: formData.lastName || '',
         requiresCertnIntegration: 'true',
+        promotionCode: promotionCode || '',
       },
     });
 

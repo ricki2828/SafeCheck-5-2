@@ -17,6 +17,11 @@ export default function BulkChecks() {
   const [error, setError] = useState<string | null>(null);
   const basePrice = 65;
   const navigate = useNavigate();
+  const [appliedVoucher, setAppliedVoucher] = useState('');
+  const [voucherCode, setVoucherCode] = useState('');
+  const [isApplyingVoucher, setIsApplyingVoucher] = useState(false);
+  const [voucherError, setVoucherError] = useState('');
+  const [discountPercent, setDiscountPercent] = useState(0);
   
   // Calculate bulk discounts
   const getDiscount = (qty: number) => {
@@ -46,7 +51,8 @@ export default function BulkChecks() {
           amount: amountInCents,
           packageId: 'bulk_checks',
           email: '', // Add email if needed
-          quantity
+          quantity,
+          promotionCode: appliedVoucher,
         }),
       });
 
@@ -76,6 +82,36 @@ export default function BulkChecks() {
 
   const handlePaymentSuccess = () => {
     navigate('/success/bulk');
+  };
+
+  const handleApplyVoucher = async () => {
+    setIsApplyingVoucher(true);
+    setVoucherError('');
+    
+    try {
+      const response = await fetch('/.netlify/functions/validate-promotions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ code: voucherCode }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.valid) {
+        setAppliedVoucher(voucherCode);
+        setDiscountPercent(data.coupon.percentOff || 0);
+      } else {
+        setVoucherError('Invalid promotion code');
+        setVoucherCode('');
+        setDiscountPercent(0);
+      }
+    } catch (error) {
+      setVoucherError('Error applying promotion code. Please try again.');
+    } finally {
+      setIsApplyingVoucher(false);
+    }
   };
 
   const renderStep = () => {
@@ -200,26 +236,74 @@ export default function BulkChecks() {
 
       case 2:
         return clientSecret ? (
-          <Elements stripe={stripePromise} options={{ clientSecret }}>
-            <StripePayment
-              onSuccess={handlePaymentSuccess}
-              onBack={() => setStep(1)}
-              price={totalPrice}
-              formData={{
-                firstName: '',
-                lastName: '',
-                email: '',
-                phoneNumber: '',
-                dateOfBirth: '',
-                streetAddress: '',
-                city: '',
-                province: '',
-                postalCode: '',
-              }}
-              appliedVoucher=""
-              discountPercent={discount * 100}
-            />
-          </Elements>
+          <div className="space-y-6">
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <StripePayment
+                onSuccess={handlePaymentSuccess}
+                onBack={() => setStep(1)}
+                price={totalPrice}
+                formData={{
+                  firstName: '',
+                  lastName: '',
+                  email: '',
+                  phoneNumber: '',
+                  dateOfBirth: '',
+                  streetAddress: '',
+                  city: '',
+                  province: '',
+                  postalCode: '',
+                }}
+                appliedVoucher={appliedVoucher}
+                discountPercent={discountPercent}
+              />
+            </Elements>
+            
+            <div className="bg-gray-50 rounded-xl p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-800">{t('voucher.title')}</h3>
+                <span className="text-sm text-gray-600">{t('voucher.optional')}</span>
+              </div>
+              
+              <div className="flex space-x-4">
+                <input
+                  type="text"
+                  value={voucherCode}
+                  onChange={(e) => setVoucherCode(e.target.value)}
+                  placeholder={t('voucher.placeholder')}
+                  className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none"
+                />
+                <button
+                  onClick={handleApplyVoucher}
+                  disabled={isApplyingVoucher || !voucherCode}
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-all duration-200 disabled:opacity-50"
+                >
+                  {isApplyingVoucher ? t('voucher.applying') : t('voucher.apply')}
+                </button>
+              </div>
+              
+              {voucherError && (
+                <p className="mt-2 text-red-600 text-sm">{voucherError}</p>
+              )}
+              
+              {appliedVoucher && (
+                <div className="mt-4 p-4 bg-green-50 rounded-lg">
+                  <div className="flex items-center justify-between">
+                    <span className="text-green-700">{t('voucher.applied')}</span>
+                    <button
+                      onClick={() => {
+                        setAppliedVoucher('');
+                        setVoucherCode('');
+                        setDiscountPercent(0);
+                      }}
+                      className="text-green-600 hover:text-green-700"
+                    >
+                      {t('voucher.remove')}
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
         ) : (
           <div className="flex items-center justify-center p-8">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
