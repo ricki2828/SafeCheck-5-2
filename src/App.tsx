@@ -183,7 +183,15 @@ function App() {
       
       if (data.valid) {
         setAppliedVoucher(voucherCode);
-        setDiscountPercent(data.coupon.percentOff || 0);
+        // Handle both percent_off and amount_off
+        if (data.coupon.percent_off) {
+          setDiscountPercent(data.coupon.percent_off);
+        } else if (data.coupon.amount_off) {
+          // Convert amount_off from cents to percentage
+          const amountOffDollars = data.coupon.amount_off / 100;
+          const percentOff = (amountOffDollars / price) * 100;
+          setDiscountPercent(percentOff);
+        }
         // Recreate payment intent with new price
         await createPaymentIntent();
       } else {
@@ -203,8 +211,9 @@ function App() {
       setError(null);
       const finalAmount = Math.round(price * (1 - discountPercent / 100) * 100);
       console.log('Creating payment intent with amount:', finalAmount, 'for package:', activePackage.id);
-
-      console.log('App.tsx - formData being sent:', formData);
+      console.log('Discount percent:', discountPercent);
+      console.log('Original price:', price);
+      console.log('Final amount in dollars:', finalAmount / 100);
 
       const response = await fetch('/.netlify/functions/create-payment-intent', {
         method: 'POST',

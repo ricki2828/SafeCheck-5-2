@@ -137,29 +137,36 @@ export const handler: Handler = async (event) => {
 
       if (promotionCodes.data.length > 0) {
         const { coupon } = promotionCodes.data[0];
-        console.log('Found coupon:', coupon);
+        console.log('Found coupon:', JSON.stringify(coupon, null, 2));
         
         paymentIntentData.metadata = {
           ...paymentIntentData.metadata,
           promotionCode,
-          couponId: coupon.id
+          couponId: coupon.id,
+          originalAmount: amount.toString()
         };
         
         // Apply the coupon discount directly to the amount
+        let discountedAmount = amount;
         if (coupon.percent_off) {
           console.log('Applying percentage discount:', coupon.percent_off);
           const discountAmount = Math.round(amount * (coupon.percent_off / 100));
-          paymentIntentData.amount = Math.max(amount - discountAmount, 0);
-          console.log('New amount after percentage discount:', paymentIntentData.amount);
+          discountedAmount = Math.max(amount - discountAmount, 0);
+          console.log('Original amount:', amount);
+          console.log('Discount amount:', discountAmount);
+          console.log('Final amount:', discountedAmount);
         } else if (coupon.amount_off) {
           console.log('Applying fixed amount discount:', coupon.amount_off);
-          // amount_off is in cents, our amount is already in cents
-          paymentIntentData.amount = Math.max(amount - coupon.amount_off, 0);
-          console.log('New amount after fixed discount:', paymentIntentData.amount);
+          discountedAmount = Math.max(amount - coupon.amount_off, 0);
+          console.log('Original amount:', amount);
+          console.log('Discount amount:', coupon.amount_off);
+          console.log('Final amount:', discountedAmount);
         }
 
-        // If the amount becomes 0, we'll handle it differently
-        if (paymentIntentData.amount === 0) {
+        paymentIntentData.amount = discountedAmount;
+
+        // If the amount becomes 0, skip payment
+        if (discountedAmount === 0) {
           console.log('Amount is 0, skipping payment intent creation');
           return {
             statusCode: 200,
