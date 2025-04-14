@@ -16,6 +16,15 @@ const headers = {
   'Content-Type': 'application/json',
 };
 
+interface PaymentIntentMetadata {
+  packageId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  requiresCertnIntegration: string;
+  promotionCode?: string;
+}
+
 export const handler: Handler = async (event) => {
   // Handle CORS preflight requests
   if (event.httpMethod === 'OPTIONS') {
@@ -54,7 +63,7 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const { amount, email, packageId = 'standard_check', formData = {} } = data;
+    const { amount, email, packageId = 'standard_check', formData = {}, promotionCode } = data;
 
     if (!amount || typeof amount !== 'number' || amount <= 0) {
       return {
@@ -100,22 +109,40 @@ export const handler: Handler = async (event) => {
       }
     }
 
-    const paymentIntent = await stripe.paymentIntents.create({
+    const paymentIntentData: Stripe.PaymentIntentCreateParams = {
       amount: Math.round(amount), // Amount is already in cents
       currency: 'cad',
       automatic_payment_methods: {
         enabled: true,
       },
-      customer: customer ? customer.id : undefined,
-      receipt_email: email,
+      customer: customer?.id,
+      receipt_email: email ? email : undefined,
       metadata: {
-        packageId,
+        packageId: packageId || '',
         email: email || '',
         firstName: formData.firstName || '',
         lastName: formData.lastName || '',
         requiresCertnIntegration: 'true',
       },
-    });
+    };
+
+    // Add promotion code if provided
+    if (promotionCode) {
+      const promotionCodes = await stripe.promotionCodes.list({
+        code: promotionCode,
+        active: true,
+        limit: 1,
+      });
+
+      if (promotionCodes.data.length > 0) {
+        paymentIntentData.metadata = {
+          ...paymentIntentData.metadata,
+          promotionCode,
+        };
+      }
+    }
+
+    const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
 
     console.log('Payment intent created:', paymentIntent.id);
 

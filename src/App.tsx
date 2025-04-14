@@ -184,6 +184,8 @@ function App() {
       if (data.valid) {
         setAppliedVoucher(voucherCode);
         setDiscountPercent(data.coupon.percentOff || 0);
+        // Recreate payment intent with new price
+        await createPaymentIntent();
       } else {
         setVoucherError('Invalid promotion code');
         setVoucherCode('');
@@ -252,7 +254,7 @@ function App() {
     if (step === 3) {
       createPaymentIntent();
     }
-  }, [step, discountPercent]);
+  }, [step, discountPercent, appliedVoucher]);
 
   const isEmailValid = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
 

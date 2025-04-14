@@ -1,0 +1,5 @@
+[33m58b1da0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Update blog components: remove author photos, update dates, and fix navigation
+[33md030931[m Update success page URLs to use /success/ prefix for consistency
+[33m3f42ada[m Update author display to show 'by Agostinho Pedro, Operations Specialist'
+[33m6831025[m Simplify blog author display and remove reading time references
+[33m1c9e449[m Update blog components: remove author photos, update dates, and fix navigation
