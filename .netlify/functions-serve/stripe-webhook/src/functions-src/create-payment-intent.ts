@@ -131,7 +131,7 @@ export const handler: Handler = async (event) => {
         if (coupon.percent_off) {
           discount = coupon.percent_off;
           console.log(`Applying percentage discount: ${discount}%`);
-          finalAmount = Math.round(amount * (1 - discount / 100));
+          finalAmount = Math.round(amount * ((100 - discount) / 100));
         } else if (coupon.amount_off) {
           // amount_off is in cents
           discount = coupon.amount_off;
