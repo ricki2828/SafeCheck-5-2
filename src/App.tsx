@@ -212,6 +212,7 @@ function App() {
   };
 
   const createPaymentIntent = async () => {
+    console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher);
     try {
       setError(null);
       // For fixed amount discounts, we'll let the backend handle the actual discount
@@ -280,6 +281,7 @@ function App() {
 
   useEffect(() => {
     if (step === 3) {
+      console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent);
       createPaymentIntent();
     }
   }, [step, discountPercent, appliedVoucher]);
