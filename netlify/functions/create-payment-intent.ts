@@ -54,7 +54,7 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const { amount, email, packageId, quantity } = data;
+    const { amount, email, packageId, quantity, promotionCode } = data;
 
     if (!amount || typeof amount !== 'number' || amount <= 0) {
       return {
@@ -66,8 +66,49 @@ export const handler: Handler = async (event) => {
 
     console.log('Creating payment intent:', { amount, email, packageId, quantity });
 
+    let finalAmount = amount;
+    let discount = 0;
+    
+    if (promotionCode) {
+      console.log(`Attempting to validate promotion code: ${promotionCode}`);
+      try {
+        const promotionCodeObj = await stripe.promotionCodes.list({
+          code: promotionCode,
+          active: true,
+          limit: 1,
+        });
+        console.log('Stripe promotion code lookup result:', JSON.stringify(promotionCodeObj));
+
+        if (!promotionCodeObj.data.length) {
+          console.log('No active promotion code found matching the provided code.');
+          throw new Error('Invalid promotion code');
+        }
+
+        const coupon = await stripe.coupons.retrieve(promotionCodeObj.data[0].coupon.id);
+        console.log('Retrieved coupon details:', JSON.stringify(coupon));
+
+        if (coupon.percent_off) {
+          discount = coupon.percent_off;
+          console.log(`Applying percentage discount: ${discount}%`);
+          finalAmount = Math.round(amount * ((100 - discount) / 100));
+        } else if (coupon.amount_off) {
+          discount = coupon.amount_off;
+          console.log(`Applying fixed discount: $${discount / 100}`);
+          finalAmount = Math.max(0, amount - discount);
+        } else {
+           console.log('Coupon found, but has no percent_off or amount_off value.');
+        }
+
+        console.log('Original amount:', amount / 100);
+      } catch (error: any) {
+        console.error('Error processing promotion code:', error.message);
+      }
+    } else {
+      console.log('No promotion code provided in the request.');
+    }
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount), // Ensure amount is rounded to nearest integer
+      amount: Math.round(finalAmount),
       currency: 'cad',
       metadata: {
         packageId,
