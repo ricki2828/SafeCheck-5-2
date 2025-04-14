@@ -197,7 +197,7 @@ function App() {
           setDiscountPercent(percentOff);
         }
         // Recreate payment intent with new price
-        await createPaymentIntent();
+        // await createPaymentIntent(); // Remove this direct call
       } else {
         setVoucherError('Invalid promotion code');
         setVoucherCode('');
