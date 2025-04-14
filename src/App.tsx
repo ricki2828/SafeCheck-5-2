@@ -237,6 +237,14 @@ function App() {
       }
 
       const data = await response.json();
+      
+      // Handle case where no payment is required (100% discount)
+      if (data.skipPayment) {
+        console.log('No payment required - proceeding to success');
+        handlePaymentSuccess();
+        return;
+      }
+
       if (!data.clientSecret) {
         throw new Error('No client secret received');
       }

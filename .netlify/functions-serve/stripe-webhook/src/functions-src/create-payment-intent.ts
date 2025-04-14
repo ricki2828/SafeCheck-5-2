@@ -128,6 +128,7 @@ export const handler: Handler = async (event) => {
 
     // Add promotion code if provided
     if (promotionCode) {
+      console.log('Validating promotion code:', promotionCode);
       const promotionCodes = await stripe.promotionCodes.list({
         code: promotionCode,
         active: true,
@@ -136,6 +137,8 @@ export const handler: Handler = async (event) => {
 
       if (promotionCodes.data.length > 0) {
         const { coupon } = promotionCodes.data[0];
+        console.log('Found coupon:', coupon);
+        
         paymentIntentData.metadata = {
           ...paymentIntentData.metadata,
           promotionCode,
@@ -144,18 +147,39 @@ export const handler: Handler = async (event) => {
         
         // Apply the coupon discount directly to the amount
         if (coupon.percent_off) {
+          console.log('Applying percentage discount:', coupon.percent_off);
           const discountAmount = Math.round(amount * (coupon.percent_off / 100));
           paymentIntentData.amount = Math.max(amount - discountAmount, 0);
+          console.log('New amount after percentage discount:', paymentIntentData.amount);
         } else if (coupon.amount_off) {
+          console.log('Applying fixed amount discount:', coupon.amount_off);
+          // amount_off is in cents, our amount is already in cents
           paymentIntentData.amount = Math.max(amount - coupon.amount_off, 0);
+          console.log('New amount after fixed discount:', paymentIntentData.amount);
         }
+
+        // If the amount becomes 0, we'll handle it differently
+        if (paymentIntentData.amount === 0) {
+          console.log('Amount is 0, skipping payment intent creation');
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({
+              skipPayment: true,
+              message: 'No payment required - 100% discount applied'
+            }),
+          };
+        }
+      } else {
+        console.log('No valid promotion code found');
       }
     }
 
-    // For $0 payments (100% discount), create a $1 payment intent that will be fully discounted
-    if (paymentIntentData.amount === 0) {
-      paymentIntentData.amount = 100; // $1 in cents
-    }
+    console.log('Final payment intent data:', {
+      amount: paymentIntentData.amount,
+      currency: paymentIntentData.currency,
+      metadata: paymentIntentData.metadata
+    });
 
     const paymentIntent = await stripe.paymentIntents.create(paymentIntentData);
 
