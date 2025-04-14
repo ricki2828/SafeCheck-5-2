@@ -158,7 +158,7 @@ function App() {
   };
 
   const handlePaymentSuccess = () => {
-    navigate('/confirmation/individual');
+    navigate('/success/individual');
   };
 
   const handleAddressSubmit = (e: React.FormEvent) => {

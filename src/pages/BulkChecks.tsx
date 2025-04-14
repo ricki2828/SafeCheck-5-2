@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowLeft, Shield, Info, Package, Users, CreditCard, Star } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
@@ -16,6 +16,7 @@ export default function BulkChecks() {
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const basePrice = 65;
+  const navigate = useNavigate();
   
   // Calculate bulk discounts
   const getDiscount = (qty: number) => {
@@ -74,7 +75,7 @@ export default function BulkChecks() {
   };
 
   const handlePaymentSuccess = () => {
-    setStep(3);
+    navigate('/success/bulk');
   };
 
   const renderStep = () => {

@@ -71,7 +71,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/confirmation/individual',
+    path: '/success/individual',
     element: (
       <>
         <ScrollToTop />
@@ -80,7 +80,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/confirmation/bulk',
+    path: '/success/bulk',
     element: (
       <>
         <ScrollToTop />
