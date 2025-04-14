@@ -114,19 +114,22 @@ export const handler: Handler = async (event) => {
     let finalAmount = amount;
     
     if (promotionCode) {
+      console.log(`Attempting to validate promotion code: ${promotionCode}`);
       try {
         const promotionCodeObj = await stripe.promotionCodes.list({
           code: promotionCode,
           active: true,
           limit: 1,
         });
+        console.log('Stripe promotion code lookup result:', JSON.stringify(promotionCodeObj));
 
         if (!promotionCodeObj.data.length) {
+          console.log('No active promotion code found matching the provided code.');
           throw new Error('Invalid promotion code');
         }
 
         const coupon = await stripe.coupons.retrieve(promotionCodeObj.data[0].coupon.id);
-        console.log('Retrieved coupon:', coupon);
+        console.log('Retrieved coupon details:', JSON.stringify(coupon));
 
         if (coupon.percent_off) {
           discount = coupon.percent_off;
@@ -137,6 +140,8 @@ export const handler: Handler = async (event) => {
           discount = coupon.amount_off;
           console.log(`Applying fixed discount: $${discount / 100}`);
           finalAmount = Math.max(0, amount - discount);
+        } else {
+           console.log('Coupon found, but has no percent_off or amount_off value.');
         }
 
         console.log('Original amount:', amount / 100);
@@ -154,9 +159,12 @@ export const handler: Handler = async (event) => {
           };
         }
       } catch (error: any) {
-        console.error('Error processing promotion code:', error);
-        throw new Error(`Invalid promotion code: ${error.message}`);
+        console.error('Error processing promotion code:', error.message);
+        // We will let the process continue without a discount, but log the error
+        // throw new Error(`Invalid promotion code: ${error.message}`); // Commenting out the throw for now
       }
+    } else {
+      console.log('No promotion code provided in the request.');
     }
 
     // Only create payment intent if we need payment
