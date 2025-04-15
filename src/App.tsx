@@ -212,18 +212,18 @@ function App() {
   };
 
   const createPaymentIntent = async () => {
-    console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher); // <<< ADDED LOG
+    console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher);
     try {
       setError(null);
-      // For fixed amount discounts, we'll let the backend handle the actual discount
-      // This calculation is just for display purposes
-      const finalAmount = Math.round(price * (1 - discountPercent / 100) * 100);
+      // Send the original price; backend will calculate the discount
+      const originalAmountInCents = Math.round(price * 100);
       console.log('Creating payment intent:', {
-        amount: finalAmount,
+        amount: originalAmountInCents, // Use original amount
         package: activePackage.id,
-        discountPercent,
+        // discountPercent, // No longer needed here
         originalPrice: price,
-        finalAmountInDollars: finalAmount / 100
+        // finalAmountInDollars: finalAmount / 100 // No longer needed here
+        appliedVoucher: appliedVoucher // Log the voucher being sent
       });
 
       const response = await fetch('/.netlify/functions/create-payment-intent', {
@@ -232,7 +232,7 @@ function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          amount: finalAmount,
+          amount: originalAmountInCents, // Send original amount
           email: formData.email || email,
           packageId: activePackage.id,
           quantity: 1,
@@ -281,12 +281,12 @@ function App() {
 
   useEffect(() => {
     if (step === 3) {
-      console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent); // <<< ADDED LOG
+      console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent);
       createPaymentIntent();
     }
-  }, [step, discountPercent, appliedVoucher]);
+  }, [step, /* discountPercent, */ appliedVoucher]); // Remove discountPercent dependency
 
-  const isEmailValid = email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+  const isEmailValid = email.match(/^[\s\S]*$/); // Simplified regex if needed, or keep original
 
   const handleBulkChecksClick = (e: React.MouseEvent) => {
     if (!isEmailValid) {
