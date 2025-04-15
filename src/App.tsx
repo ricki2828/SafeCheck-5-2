@@ -169,7 +169,7 @@ function App() {
   const handleApplyVoucher = async () => {
     setIsApplyingVoucher(true);
     setVoucherError('');
-    
+
     try {
       const response = await fetch('/.netlify/functions/validate-promotions', {
         method: 'POST',
@@ -178,10 +178,10 @@ function App() {
         },
         body: JSON.stringify({ code: voucherCode }),
       });
-      
+
       const data = await response.json();
       console.log('Voucher validation response:', data);
-      
+
       if (data.valid) {
         setAppliedVoucher(voucherCode);
         // Handle both percent_off and amount_off
@@ -212,7 +212,7 @@ function App() {
   };
 
   const createPaymentIntent = async () => {
-    console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher);
+    console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher); // <<< ADDED LOG
     try {
       setError(null);
       // For fixed amount discounts, we'll let the backend handle the actual discount
@@ -258,7 +258,7 @@ function App() {
 
       const data = await response.json();
       console.log('Payment intent response:', data);
-      
+
       // Handle case where no payment is required (100% discount)
       if (data.skipPayment) {
         console.log('No payment required - proceeding to success');
@@ -281,7 +281,7 @@ function App() {
 
   useEffect(() => {
     if (step === 3) {
-      console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent);
+      console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent); // <<< ADDED LOG
       createPaymentIntent();
     }
   }, [step, discountPercent, appliedVoucher]);
@@ -372,19 +372,19 @@ function App() {
                       </div>
                       <Users className="h-5 w-5 relative z-10" />
                     </Link>
-                    
+
                     {/* Certn Integration - Subtle Version */}
                     <div className="flex items-center justify-center space-x-3 mt-6 pt-6 border-t border-gray-200">
                       <span className="text-sm text-gray-500">Powered by</span>
-                      <a 
-                        href="https://certn.co" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                      <a
+                        href="https://certn.co"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center hover:opacity-80 transition-opacity"
                       >
-                        <img 
-                          src="/images/certn-logo.svg" 
-                          alt="Certn" 
+                        <img
+                          src="/images/certn-logo.svg"
+                          alt="Certn"
                           className="h-6 w-auto"
                           style={{ minWidth: '80px' }}
                         />
@@ -415,7 +415,7 @@ function App() {
                     required
                   />
                 </div>
-                
+
                 <div>
                   <label htmlFor="legalMiddleName" className="block text-sm font-medium text-gray-700 mb-1">
                     {t('form.legalMiddleName.label')}
@@ -547,9 +547,9 @@ function App() {
           <div className="space-y-6">
             {clientSecret && (
               <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
-                <StripePayment 
+                <StripePayment
                   onBack={() => setStep(2)}
-                  onSuccess={handlePaymentSuccess} 
+                  onSuccess={handlePaymentSuccess}
                   price={price}
                   formData={formData}
                   appliedVoucher={appliedVoucher}
@@ -557,7 +557,7 @@ function App() {
                 />
               </Elements>
             )}
-            
+
             <div className="bg-gray-50 rounded-xl p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-800">{t('voucher.title')}</h3>
@@ -652,26 +652,26 @@ function App() {
                 </div>
 
                 <nav className="hidden md:flex items-center space-x-8">
-                  <button 
-                    onClick={() => scrollToSection('how-it-works')} 
+                  <button
+                    onClick={() => scrollToSection('how-it-works')}
                     className="text-gray-600 hover:text-primary transition-colors"
                   >
                     {t('header.howItWorks')}
                   </button>
-                  <button 
-                    onClick={() => scrollToSection('faq')} 
+                  <button
+                    onClick={() => scrollToSection('faq')}
                     className="text-gray-600 hover:text-primary transition-colors"
                   >
                     {t('header.faq')}
                   </button>
-                  <Link 
-                    to="/blog" 
+                  <Link
+                    to="/blog"
                     className="text-gray-600 hover:text-primary transition-colors"
                   >
                     {t('header.blog')}
                   </Link>
                   <LanguageSwitcher />
-                  <button 
+                  <button
                     onClick={() => setStep(1)}
                     onMouseEnter={() => setIsButtonHovered(true)}
                     onMouseLeave={() => setIsButtonHovered(false)}
@@ -681,10 +681,10 @@ function App() {
                       <span className="relative z-10">{t('header.getStarted')}</span>
                       <MoveRight className={`h-5 w-5 relative z-10 transition-all duration-300 transform ${isButtonHovered ? 'translate-x-1' : ''}`} />
                     </div>
-                    <div 
+                    <div
                       className={`absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 transform transition-transform duration-1000 ${
                         isButtonHovered ? 'translate-x-full' : '-translate-x-full'
-                      }`} 
+                      }`}
                     />
                   </button>
                 </nav>
@@ -705,7 +705,7 @@ function App() {
             {isMobileMenuOpen && (
               <div className="md:hidden border-t border-gray-200">
                 <div className="px-4 py-4 space-y-4">
-                  <button 
+                  <button
                     onClick={() => {
                       scrollToSection('how-it-works');
                       setIsMobileMenuOpen(false);
@@ -714,7 +714,7 @@ function App() {
                   >
                     {t('header.howItWorks')}
                   </button>
-                  <button 
+                  <button
                     onClick={() => {
                       scrollToSection('faq');
                       setIsMobileMenuOpen(false);
@@ -723,8 +723,8 @@ function App() {
                   >
                     {t('header.faq')}
                   </button>
-                  <Link 
-                    to="/blog" 
+                  <Link
+                    to="/blog"
                     className="block w-full text-left px-4 py-2 text-gray-600 hover:text-primary transition-colors"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
@@ -733,7 +733,7 @@ function App() {
                   <div className="px-4">
                     <LanguageSwitcher />
                   </div>
-                  <button 
+                  <button
                     onClick={() => {
                       setStep(1);
                       setIsMobileMenuOpen(false);
