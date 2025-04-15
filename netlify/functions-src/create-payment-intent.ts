@@ -1,5 +1,6 @@
 import { Handler } from '@netlify/functions';
 import Stripe from 'stripe';
+import fetch from 'node-fetch';
 
 if (!process.env.STRIPE_SECRET_KEY) {
   throw new Error('STRIPE_SECRET_KEY is not configured');
@@ -141,13 +142,78 @@ export const handler: Handler = async (event) => {
         console.log('Original amount received:', amount / 100); // Log original amount received
         console.log('Calculated final amount:', finalAmount / 100); // Log calculated final amount
 
-        // If amount is 0 after discount, skip payment
+        // If amount is 0 after discount, skip payment BUT initiate Certn first
         if (finalAmount <= 0) {
-          console.log('Amount is 0 or less after discount, skipping payment');
+          console.log('Amount is 0 or less after discount. Initiating Certn check directly.');
+          
+          // --- Start copied/adapted Certn logic ---
+          try {
+            if (!process.env.CERTN_API_KEY || !process.env.CERTN_API_URL) {
+              throw new Error('Certn API Key or URL not configured');
+            }
+            if (!customerInfo.email) { // Use customerInfo directly if available, or fallback
+                throw new Error('Email is required for Certn integration');
+            }
+            
+            const standardCertnPackageId = process.env.STANDARD_CERTN_PACKAGE_ID;
+            const testCertnPackageId = process.env.TEST_CERTN_PACKAGE_ID;
+            if (!standardCertnPackageId || !testCertnPackageId) {
+              throw new Error('Standard or Test Certn Package ID env vars missing');
+            }
+            const standardStripePackageId = process.env.VITE_STANDARD_PACKAGE_ID || 'standard_check';
+            const testStripePackageId = process.env.VITE_TEST_PACKAGE_ID || 'test_check';
+            
+            let certnPackageIdToUse;
+            if (packageId === testStripePackageId) { // Use packageId from request data
+                console.log(`Using TEST Certn package ID: ${testCertnPackageId}`);
+                certnPackageIdToUse = testCertnPackageId;
+            } else { // Default to standard
+                console.log(`Using STANDARD Certn package ID: ${standardCertnPackageId}`);
+                certnPackageIdToUse = standardCertnPackageId;
+            }
+
+            const certnUrl = `${process.env.CERTN_API_URL}/cases/order-package/`;
+            const requestBody = {
+              package: certnPackageIdToUse,
+              email_address: customerInfo.email, // Use email from customerInfo
+              first_name: customerInfo.name.split(' ')[0] || '', // Use first name from customerInfo
+              last_name: customerInfo.name.split(' ')[1] || '', // Use last name from customerInfo
+              payment_reference: `discounted_order_${Date.now()}`, // Placeholder reference
+              // Add other relevant customerInfo fields if needed by Certn
+              phone: customerInfo.phone || undefined, 
+            };
+
+            console.log('Initiating Certn background check for $0 order:', requestBody);
+            const certnResponse = await fetch(certnUrl, {
+              method: 'POST',
+              headers: {
+                'Authorization': `Api-Key ${process.env.CERTN_API_KEY}`,
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
+              body: JSON.stringify(requestBody)
+            });
+
+            if (!certnResponse.ok) {
+              const errorText = await certnResponse.text();
+              throw new Error(`Certn API error for $0 order: ${certnResponse.status} - ${errorText}`);
+            }
+            const certnData = await certnResponse.json();
+            console.log('Certn background check initiated for $0 order:', certnData);
+            // Optionally store Certn ID somewhere if needed, maybe logs are enough
+
+          } catch (certnError: any) {
+             console.error('Failed to initiate Certn background check for $0 order:', certnError.message);
+             // Decide if failure here should prevent returning skipPayment: true
+             // For now, we'll still return skipPayment, but log the error
+          }
+          // --- End copied/adapted Certn logic ---
+
+          // Now return skipPayment
           return {
             statusCode: 200,
             headers,
-            body: JSON.stringify({ skipPayment: true })
+            body: JSON.stringify({ skipPayment: true, certnInitiated: true }) // Indicate Certn was attempted
           };
         }
       } catch (error: any) {
