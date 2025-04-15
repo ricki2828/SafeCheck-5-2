@@ -133,6 +133,7 @@ function App() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const price = activePackage.price;
+  const [finalAmountFromBackend, setFinalAmountFromBackend] = useState<number | null>(null);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -258,6 +259,7 @@ function App() {
 
       const data = await response.json();
       console.log('Payment intent response:', data);
+      setFinalAmountFromBackend(data.finalAmount || null);
 
       // Handle case where no payment is required (100% discount)
       if (data.skipPayment) {
@@ -589,11 +591,11 @@ function App() {
                       </div>
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">{t('voucher.discount')}:</span>
-                        <span className="text-green-600">-${(price * discountPercent / 100).toFixed(2)} CAD</span>
+                        <span className="text-green-600">-${(price - (finalAmountFromBackend !== null ? finalAmountFromBackend / 100 : price)).toFixed(2)} CAD</span>
                       </div>
                       <div className="flex justify-between font-semibold mt-2">
                         <span>{t('voucher.finalPrice')}:</span>
-                        <span className="text-primary">${(price * (1 - discountPercent / 100)).toFixed(2)} CAD</span>
+                        <span className="text-primary">${(finalAmountFromBackend !== null ? finalAmountFromBackend / 100 : price).toFixed(2)} CAD</span>
                       </div>
                     </div>
                   </div>

@@ -189,6 +189,7 @@ export const handler: Handler = async (event) => {
       body: JSON.stringify({
         clientSecret: paymentIntent.client_secret,
         customerId: customer ? customer.id : null,
+        finalAmount: finalAmount
       }),
     };
   } catch (error) {
