@@ -22,6 +22,7 @@ interface StripePaymentProps {
   };
   appliedVoucher: string;
   discountPercent: number;
+  finalAmount: number | null;
 }
 
 interface PaymentStatus {
@@ -34,7 +35,8 @@ export default function StripePayment({
   onBack, 
   price, 
   formData, 
-  discountPercent 
+  discountPercent,
+  finalAmount
 }: StripePaymentProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -161,7 +163,8 @@ export default function StripePayment({
     }
   };
 
-  const finalPrice = price * (1 - discountPercent / 100);
+  // Calculate amount for display using finalAmount if available, otherwise fallback
+  const displayAmount = finalAmount !== null ? finalAmount / 100 : price * (1 - discountPercent / 100);
 
   // Render different UI based on payment status
   const renderPaymentStatusContent = () => {
@@ -244,7 +247,7 @@ export default function StripePayment({
                   </>
                 ) : (
                   <>
-                    <span>Pay ${finalPrice.toFixed(2)} CAD</span>
+                    <span>Pay ${displayAmount.toFixed(2)} CAD</span>
                   </>
                 )}
               </button>

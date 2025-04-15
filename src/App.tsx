@@ -553,6 +553,7 @@ function App() {
                   formData={formData}
                   appliedVoucher={appliedVoucher}
                   discountPercent={discountPercent}
+                  finalAmount={finalAmountFromBackend}
                 />
               </Elements>
             )}
