@@ -66,6 +66,7 @@ export const handler: Handler = async (event) => {
 
     console.log('Creating payment intent:', { amount, email, packageId, quantity });
 
+    // Force rebuild test
     let finalAmount = amount;
     let discount = 0;
     
