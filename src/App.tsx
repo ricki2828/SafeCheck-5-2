@@ -213,7 +213,7 @@ function App() {
   };
 
   const createPaymentIntent = async () => {
-    console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher);
+    // console.log('[createPaymentIntent] Starting. Applied voucher:', appliedVoucher);
     try {
       setError(null);
       // Send the original price; backend will calculate the discount
@@ -221,10 +221,7 @@ function App() {
       console.log('Creating payment intent:', {
         amount: originalAmountInCents, // Use original amount
         package: activePackage.id,
-        // discountPercent, // No longer needed here
         originalPrice: price,
-        // finalAmountInDollars: finalAmount / 100 // No longer needed here
-        appliedVoucher: appliedVoucher // Log the voucher being sent
       });
 
       const response = await fetch('/.netlify/functions/create-payment-intent', {
@@ -283,10 +280,10 @@ function App() {
 
   useEffect(() => {
     if (step === 3) {
-      console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent);
+      // console.log('[useEffect] Step 3 detected. Applied voucher state:', appliedVoucher, 'Discount:', discountPercent);
       createPaymentIntent();
     }
-  }, [step, /* discountPercent, */ appliedVoucher]); // Remove discountPercent dependency
+  }, [step, appliedVoucher]);
 
   const isEmailValid = email.match(/^[\s\S]*$/); // Simplified regex if needed, or keep original
 
@@ -548,7 +545,7 @@ function App() {
         return (
           <div className="space-y-6">
             {clientSecret && (
-              <Elements stripe={stripePromise} options={{ clientSecret, appearance }}>
+              <Elements key={clientSecret} stripe={stripePromise} options={{ clientSecret, appearance }}>
                 <StripePayment
                   onBack={() => setStep(2)}
                   onSuccess={handlePaymentSuccess}
@@ -585,7 +582,7 @@ function App() {
                       </button>
                     </div>
                     {/* Log the state right before rendering the price */}
-                    {console.log('[UI Render] finalAmountFromBackend:', finalAmountFromBackend, 'Original Price:', price)}
+                    {/* {console.log('[UI Render] finalAmountFromBackend:', finalAmountFromBackend, 'Original Price:', price)} */}
                     <div className="mt-3 pt-3 border-t border-gray-100">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">{t('voucher.originalPrice')}:</span>
