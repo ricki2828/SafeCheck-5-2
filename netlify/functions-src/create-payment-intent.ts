@@ -54,7 +54,7 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const { amount, email, packageId = 'standard_check', formData = {} } = data;
+    const { amount, email, packageId = 'standard_check', formData = {}, promotionCode } = data;
 
     if (!amount || typeof amount !== 'number' || amount <= 0) {
       return {
@@ -104,8 +104,64 @@ export const handler: Handler = async (event) => {
       }
     }
 
+    let finalAmount = amount;
+    let discount = 0;
+    
+    if (promotionCode) {
+      console.log(`Attempting to validate promotion code: ${promotionCode}`); // Log received code
+      try {
+        const promotionCodeObj = await stripe.promotionCodes.list({
+          code: promotionCode,
+          active: true,
+          limit: 1,
+        });
+        console.log('Stripe promotion code lookup result:', JSON.stringify(promotionCodeObj)); // Log lookup result
+
+        if (!promotionCodeObj.data.length) {
+          console.log('No active promotion code found matching the provided code.'); // Log specific failure reason
+          throw new Error('Invalid promotion code');
+        }
+
+        const coupon = await stripe.coupons.retrieve(promotionCodeObj.data[0].coupon.id);
+        console.log('Retrieved coupon details:', JSON.stringify(coupon)); // Log retrieved coupon
+
+        if (coupon.percent_off) {
+          discount = coupon.percent_off;
+          console.log(`Applying percentage discount: ${discount}%`);
+          finalAmount = Math.round(amount * ((100 - discount) / 100)); // Correct calculation
+        } else if (coupon.amount_off) {
+          // amount_off is in cents
+          discount = coupon.amount_off;
+          console.log(`Applying fixed discount: $${discount / 100}`);
+          finalAmount = Math.max(0, amount - discount);
+        } else {
+           console.log('Coupon found, but has no percent_off or amount_off value.'); // Log if coupon has no discount
+        }
+
+        console.log('Original amount received:', amount / 100); // Log original amount received
+        console.log('Calculated final amount:', finalAmount / 100); // Log calculated final amount
+
+        // If amount is 0 after discount, skip payment
+        if (finalAmount <= 0) {
+          console.log('Amount is 0 or less after discount, skipping payment');
+          return {
+            statusCode: 200,
+            headers,
+            body: JSON.stringify({ skipPayment: true })
+          };
+        }
+      } catch (error: any) {
+        console.error('Error processing promotion code:', error.message); // Log specific error message
+        // Allow process to continue without discount if code is invalid
+      }
+    } else {
+      console.log('No promotion code provided in the request.'); // Log if no code was sent
+    }
+
+    // Create payment intent with the potentially discounted amount
+    console.log(`Creating payment intent with final amount: ${finalAmount}`);
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount), // Amount is already in cents
+      amount: Math.round(finalAmount), // Amount is already in cents
       currency: 'cad',
       automatic_payment_methods: {
         enabled: true,
