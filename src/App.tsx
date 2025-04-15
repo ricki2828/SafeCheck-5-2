@@ -584,6 +584,8 @@ function App() {
                         {t('voucher.remove')}
                       </button>
                     </div>
+                    {/* Log the state right before rendering the price */}
+                    {console.log('[UI Render] finalAmountFromBackend:', finalAmountFromBackend, 'Original Price:', price)}
                     <div className="mt-3 pt-3 border-t border-gray-100">
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">{t('voucher.originalPrice')}:</span>
