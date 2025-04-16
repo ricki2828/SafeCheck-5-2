@@ -159,6 +159,13 @@ function App() {
   };
 
   const handlePaymentSuccess = () => {
+    // Push a custom event to the dataLayer for GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: 'individual_purchase_success'
+      // TODO: Consider pushing ecommerce data here if needed
+    });
+
     navigate('/success/individual');
   };
 
