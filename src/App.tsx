@@ -159,12 +159,30 @@ function App() {
   };
 
   const handlePaymentSuccess = () => {
-    // Push a custom event to the dataLayer for GTM
+    // Extract Payment Intent ID from clientSecret (remove _secret_ part)
+    const paymentIntentId = clientSecret ? clientSecret.split('_secret_')[0] : 'FREE_ORDER_OR_UNKNOWN'; // Provide a default for $0/skipped payments
+    // Use the final amount confirmed by backend, default to 0 if somehow null
+    const conversionValue = finalAmountFromBackend !== null ? finalAmountFromBackend / 100 : 0;
+
+    // Push a custom event with ecommerce data to the dataLayer for GTM
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: 'individual_purchase_success'
-      // TODO: Consider pushing ecommerce data here if needed
-    });
+    const purchaseData = {
+      event: 'individual_purchase_success',
+      ecommerce: {
+        transaction_id: paymentIntentId,
+        value: conversionValue,
+        currency: 'CAD',
+        // Optionally add item data if needed by Ads/Analytics
+        // items: [{
+        //   item_id: activePackage.id,
+        //   item_name: 'Criminal Record Check', // Replace with dynamic name if needed
+        //   price: conversionValue,
+        //   quantity: 1
+        // }]
+      }
+    };
+    window.dataLayer.push(purchaseData);
+    console.log('GTM Debug - Purchase Event Pushed:', purchaseData); // Log for debugging
 
     navigate('/success/individual');
   };
