@@ -55,7 +55,10 @@ export const handler: Handler = async (event) => {
       };
     }
 
-    const { amount, email, packageId = 'standard_check', formData = {}, promotionCode } = data;
+    const { amount, email: emailFromStep1, packageId = 'standard_check', formData = {}, promotionCode } = data;
+
+    // Prioritize email from formData, fallback to Step 1 email
+    const effectiveEmail = formData.email || emailFromStep1 || '';
 
     if (!amount || typeof amount !== 'number' || amount <= 0) {
       return {
@@ -73,7 +76,7 @@ export const handler: Handler = async (event) => {
 
     // Prepare customer data for potential future use with Certn
     const customerInfo = {
-      email: email || '',
+      email: effectiveEmail, // Use the prioritized email
       name: formData.firstName && formData.lastName ? 
         `${formData.firstName} ${formData.lastName}` : '',
       phone: formData.phoneNumber || '',
@@ -81,9 +84,9 @@ export const handler: Handler = async (event) => {
     
     // Create or retrieve a customer
     let customer;
-    if (email) {
+    if (effectiveEmail) { // Use the prioritized email for lookup/create
       const customers = await stripe.customers.list({
-        email,
+        email: effectiveEmail,
         limit: 1,
       });
       
@@ -98,7 +101,7 @@ export const handler: Handler = async (event) => {
         }
       } else {
         customer = await stripe.customers.create({
-          email,
+          email: effectiveEmail, // Use the prioritized email
           name: customerInfo.name,
           phone: customerInfo.phone,
         });
@@ -233,10 +236,10 @@ export const handler: Handler = async (event) => {
         enabled: true,
       },
       customer: customer ? customer.id : undefined,
-      receipt_email: email ?? null,
+      receipt_email: effectiveEmail || undefined, // Use the prioritized email, allow undefined
       metadata: {
         packageId,
-        email: email || '',
+        email: effectiveEmail, // Use the prioritized email in metadata too
         firstName: formData.firstName || '',
         lastName: formData.lastName || '',
         requiresCertnIntegration: 'true',
