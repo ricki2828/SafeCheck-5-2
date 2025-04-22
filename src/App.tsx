@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import clarity from '@microsoft/clarity'; // Corrected import
 import {
   ArrowRight,
   Shield,
@@ -134,6 +135,11 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const price = activePackage.price;
   const [finalAmountFromBackend, setFinalAmountFromBackend] = useState<number | null>(null);
+
+  // Initialize Clarity
+  useEffect(() => {
+    clarity.init('r7waa8trhf');
+  }, []); // Empty dependency array ensures it runs only once
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
