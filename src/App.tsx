@@ -811,29 +811,29 @@ function App() {
                       {t('hero.subtitle')}
                     </p>
                     
-                    {/* Add Stats Boxes Here */}
+                    {/* Remove Added Stats Boxes Here - TrustBadges likely handles this */}
+                    {/* 
                     <div className="grid grid-cols-2 gap-4 mb-6"> 
-                      {/* Checks Completed Box */}
                       <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center space-x-3">
                         <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                           <CheckCircle className="h-4 w-4 text-primary" /> 
                         </div>
                         <div>
                           <p className="text-sm text-gray-500">Checks completed</p>
-                          <p className="text-lg font-semibold text-gray-800">10,000+</p> {/* Placeholder */}
+                          <p className="text-lg font-semibold text-gray-800">10,000+</p> 
                         </div>
                       </div>
-                      {/* Average Completion Box */}
                       <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center space-x-3">
                         <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                           <Clock className="h-4 w-4 text-primary" />
                         </div>
                         <div>
                           <p className="text-sm text-gray-500">Average completion</p>
-                          <p className="text-lg font-semibold text-gray-800">15 mins</p> {/* Updated placeholder */}
+                          <p className="text-lg font-semibold text-gray-800">15 mins</p> 
                         </div>
                       </div>
                     </div>
+                    */}
                     
                     <TrustBadges />
                   </div>
