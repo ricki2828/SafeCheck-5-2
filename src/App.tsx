@@ -783,8 +783,8 @@ function App() {
 
         <div className="relative pt-8 pb-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              <div className="order-2 lg:order-1">
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              <div className="lg:order-1">
                 <div className="bg-white rounded-2xl shadow-lg p-8">
                   <h2 className="text-gray-800 text-2xl font-bold mb-6">
                     {step === 1
@@ -798,7 +798,7 @@ function App() {
                   {renderStep()}
                 </div>
               </div>
-              <div className="order-1 lg:order-2">
+              <div className="lg:order-2">
                 <div className="space-y-6">
                   <div className="bg-gray-50 rounded-xl p-8 border border-gray-200">
                     <h1 className="text-4xl font-bold text-gray-900 mb-4">
@@ -807,6 +807,31 @@ function App() {
                     <p className="text-xl text-gray-600 mb-6">
                       {t('hero.subtitle')}
                     </p>
+                    
+                    {/* Add Stats Boxes Here */}
+                    <div className="grid grid-cols-2 gap-4 mb-6"> 
+                      {/* Checks Completed Box */}
+                      <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                          <CheckCircle className="h-4 w-4 text-primary" /> 
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Checks completed</p>
+                          <p className="text-lg font-semibold text-gray-800">10,000+</p> {/* Placeholder */}
+                        </div>
+                      </div>
+                      {/* Average Completion Box */}
+                      <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center space-x-3">
+                        <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                          <Clock className="h-4 w-4 text-primary" />
+                        </div>
+                        <div>
+                          <p className="text-sm text-gray-500">Average completion</p>
+                          <p className="text-lg font-semibold text-gray-800">-- mins</p> {/* Placeholder */}
+                        </div>
+                      </div>
+                    </div>
+                    
                     <TrustBadges />
                   </div>
 
