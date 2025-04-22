@@ -835,6 +835,19 @@ function App() {
                     <TrustBadges />
                   </div>
 
+                  {/* Remove Secure Box */}
+                  {/* 
+                  <div className="bg-white p-4 rounded-lg border border-gray-200 flex items-center space-x-3">
+                    <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                      <Shield className="h-4 w-4 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-sm text-gray-500">Secure</p>
+                      <p className="text-lg font-semibold text-gray-800">PCI DSS compliant</p> 
+                    </div>
+                  </div> 
+                  */}
+
                   {/* Temporarily removed testimonials - uncomment when ready to add back
                   <Testimonials />
                   */}
