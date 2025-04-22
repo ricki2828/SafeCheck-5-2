@@ -384,6 +384,8 @@ function App() {
                       </span>
                       <ArrowRight className="h-5 w-5 relative z-10 transition-all duration-300 transform group-hover:translate-x-1" />
                     </button>
+                    {/* Remove Buy for Others Button */}
+                    {/* 
                     <Link
                       to="/bulk-checks"
                       onClick={handleBulkChecksClick}
@@ -402,7 +404,8 @@ function App() {
                       </div>
                       <Users className="h-5 w-5 relative z-10" />
                     </Link>
-
+                    */}
+                    
                     {/* Certn Integration - Subtle Version */}
                     <div className="flex items-center justify-center space-x-3 mt-6 pt-6 border-t border-gray-200">
                       <span className="text-sm text-gray-500">Powered by</span>
