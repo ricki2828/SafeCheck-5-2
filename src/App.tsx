@@ -830,7 +830,7 @@ function App() {
                         </div>
                         <div>
                           <p className="text-sm text-gray-500">Average completion</p>
-                          <p className="text-lg font-semibold text-gray-800">-- mins</p> {/* Placeholder */}
+                          <p className="text-lg font-semibold text-gray-800">15 mins</p> {/* Updated placeholder */}
                         </div>
                       </div>
                     </div>
