@@ -35,6 +35,14 @@ import { scrollToSection } from './utils/scroll';
 // Determine active package based on environment variable
 const activePackageMode = import.meta.env.VITE_ACTIVE_PACKAGE_MODE || 'standard';
 
+// Declare global Window interface to include dataLayer and gtag
+declare global {
+  interface Window {
+    dataLayer: any[];
+    gtag: (...args: any[]) => void;
+  }
+}
+
 const standardPackage = {
   id: import.meta.env.VITE_STANDARD_PACKAGE_ID || 'standard_check',
   price: parseFloat(import.meta.env.VITE_STANDARD_PACKAGE_PRICE || '65'),
@@ -172,22 +180,28 @@ function App() {
 
     // Push a custom event with ecommerce data to the dataLayer for GTM
     window.dataLayer = window.dataLayer || [];
+    
+    // Clear previous ecommerce data
+    window.dataLayer.push({ ecommerce: null });
+    
+    // GA4 ecommerce data format
     const purchaseData = {
-      event: 'individual_purchase_success',
+      event: 'purchase',
       ecommerce: {
         transaction_id: paymentIntentId,
         value: conversionValue,
         currency: 'CAD',
-        // Optionally add item data if needed by Ads/Analytics
-        // items: [{
-        //   item_id: activePackage.id,
-        //   item_name: 'Criminal Record Check', // Replace with dynamic name if needed
-        //   price: conversionValue,
-        //   quantity: 1
-        // }]
+        items: [{
+          item_id: activePackage.id,
+          item_name: 'Criminal Record Check',
+          price: conversionValue,
+          quantity: 1
+        }]
       }
     };
+    
     window.dataLayer.push(purchaseData);
+    
     console.log('GTM Debug - Purchase Event Pushed:', purchaseData); // Log for debugging
 
     navigate('/success/individual');

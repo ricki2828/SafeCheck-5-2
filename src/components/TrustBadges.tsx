@@ -2,7 +2,7 @@ import { Shield, Clock, CheckCircle, CreditCard } from 'lucide-react';
 
 export default function TrustBadges() {
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-2 gap-4">
       <div className="bg-white rounded-lg p-4 border border-primary/20 hover:border-primary transition-colors duration-300 shadow-sm">
         <div className="flex items-center space-x-2 text-primary mb-2">
           <Shield className="h-5 w-5" />

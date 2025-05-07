@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 declare global {
   interface Window {
     dataLayer: any[];
+    gtag: (...args: any[]) => void;
   }
 }
 
@@ -13,18 +14,25 @@ export default function BulkConfirmation() {
     // Push purchase event to dataLayer for GTM to handle
     window.dataLayer = window.dataLayer || [];
     const transactionId = new URLSearchParams(window.location.search).get('transaction_id') || 'unknown';
+    
+    // GA4 ecommerce data format
     const purchaseData = {
       'event': 'purchase',
-      'transaction_id': transactionId,
-      'value': 65.00,
-      'currency': 'CAD',
-      'items': [{
-        'item_name': 'Bulk Background Check',
-        'price': 65.00,
-        'quantity': 1
-      }]
+      'ecommerce': {
+        'transaction_id': transactionId,
+        'value': 65.00,
+        'currency': 'CAD',
+        'items': [{
+          'item_id': 'bulk_check',
+          'item_name': 'Bulk Background Check',
+          'price': 65.00,
+          'quantity': 1
+        }]
+      }
     };
     
+    // Push to dataLayer for GTM
+    window.dataLayer.push({ ecommerce: null }); // Clear previous ecommerce object
     window.dataLayer.push(purchaseData);
     
     // Add detailed console logging for debugging
